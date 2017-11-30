@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Comment from './Comment';
 import '../style/index.css';
 import { TextField, shapes } from '@cimpress/react-components';
+let { Spinner } = shapes;
 
 export default class Comments extends React.Component {
 
@@ -17,6 +18,14 @@ export default class Comments extends React.Component {
       comments: [],
       commentToAdd: ''
     };
+  }
+
+  componentWillReceiveProps (newProps) {
+    if (newProps.resourceUri !== this.props.resourceUri) {
+      this.setState({
+        ready: true,
+      }, () => this.fetchComments(this.state.visible));
+    }
   }
 
   onInputChange (e) {
@@ -33,7 +42,7 @@ export default class Comments extends React.Component {
     this.setState({
       visible: isVisible
     });
-    if (isVisible) {
+    if (isVisible && this.props.resourceUri) {
       this.setState({
         loading: true
       });
@@ -136,15 +145,19 @@ export default class Comments extends React.Component {
   }
 
   render () {
+
     let encodedUri = encodeURIComponent(this.props.resourceUri);
     let url = `${this.commentServiceUrl}/v0/resources/${encodedUri}/comments/`;
     let comments = null;
-    if (this.state.comments.length > 0) {
+
+    if (!this.props.resourceUri) {
+      comments = <p>Incorrect component setup.</p>;
+    } else if (this.state.comments.length > 0) {
       comments = this.state.comments.map(
         (id, index) => <Comment className={'comment ' + ((index % 2 === 0) ? 'comment-even' : 'comment-odd')} key={id} accessToken={this.props.accessToken}
                                 commentUri={url + id} editComments={this.props.editComments}/>);
     } else if (this.state.loading) {
-      comments = <p>Retrieving comments.</p>;
+      comments = <div><div className="inline-spinner"><Spinner size={20}/></div><div className="inline-spinner">Retrieving comments.</div></div>;
     } else {
       comments = <p>No comments here yet.</p>;
     }
@@ -156,7 +169,7 @@ export default class Comments extends React.Component {
       autoFocus
       onChange={this.onInputChange.bind(this)}
       rightAddon={
-        <button onClick={this.addComment.bind(this)} className="btn btn-default">
+        <button disabled={!this.props.resourceUri} onClick={this.addComment.bind(this)} className="btn btn-default">
           publish
         </button>
       }
@@ -177,8 +190,8 @@ export default class Comments extends React.Component {
 }
 
 Comments.propTypes = {
-  accessToken: PropTypes.string,
-  resourceUri: PropTypes.string,
+  accessToken: PropTypes.string.isRequired,
+  resourceUri: PropTypes.string.isRequired,
   newestFirst: PropTypes.bool,
   editComments: PropTypes.bool
 };

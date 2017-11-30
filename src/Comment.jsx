@@ -24,6 +24,14 @@ export default class Comment extends React.Component {
     };
   }
 
+  componentWillReceiveProps (newProps) {
+    if (newProps.commentUri !== this.props.commentUri) {
+      this.setState({
+        ready: false,
+      }, () => this.fetchComment(this.state.visible));
+    }
+  }
+
   fetchUserName (userId) {
     let url = `https://api.cimpress.io/auth/access-management/v1/principals/${userId}`;
     let headers = new Headers();

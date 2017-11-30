@@ -34,3 +34,9 @@
 .comment-editing {
     width: 100%
 }
+
+.inline-spinner {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 2px;
+}
