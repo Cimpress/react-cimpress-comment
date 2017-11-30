@@ -1,0 +1,39 @@
+{
+  "name": "react-cimpress-comment",
+  "version": "0.0.1",
+  "description": "Visualizes comment(s) for a particular platform resource",
+  "main": "./lib/index.js",
+  "scripts": {
+    "build": "babel src -d lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cimpress/react-cimpress-comment.git"
+  },
+  "keywords": [
+    "cimpress",
+    "comment"
+  ],
+  "files": [
+    "lib",
+    "style"
+  ],
+  "bugs": {
+    "url": "https://github.com/Cimpress/react-cimpress-comment/issues"
+  },
+  "homepage": "https://github.com/Cimpress/react-cimpress-comment#readme",
+  "author": "Rafał Nowosielski <rafal@nowosielski.email>",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-cli": "^6.24.1",
+    "babel-plugin-transform-react-jsx": "^6.24.1"
+  },
+  "dependencies": {
+    "@cimpress/react-components": "^1.2.1",
+    "react-placeholder": "^1.0.8",
+    "react-timeago": "^3.4.3",
+    "react-visibility-sensor": "^3.10.1",
+    "riek": "^1.1.0"
+  }
+}

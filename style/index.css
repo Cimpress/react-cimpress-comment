@@ -1,0 +1,36 @@
+.comment {
+    padding: 5px;
+}
+
+.comment-even {
+    background-color: white;
+    border-bottom: 1px solid #c4cdd6;
+}
+
+.comment-odd {
+    background-color: white;
+    border-bottom: 1px solid #c4cdd6;
+}
+
+.comment:last-child {
+    border-bottom-width: 0px;
+}
+
+.comments {
+    padding: 2px;
+    border: 0px solid #c4cdd6;
+    border-radius: 0px;
+    margin: 2px
+}
+
+.comment-creator {
+    font-size: 10px;
+    margin-bottom: 6px;
+    margin-top: 6px;
+    width: 500px;
+    color: #c4cdd6
+}
+
+.comment-editing {
+    width: 100%
+}
