@@ -10,6 +10,7 @@ export default class Comments extends React.Component {
 
   constructor (props) {
     super(props);
+    this.commentServiceUrl = "https://comment.staging.trdlnk.cimpress.io";
     this.state = {
       visible: false,
       loading: false,
@@ -27,8 +28,6 @@ export default class Comments extends React.Component {
       this.setState({commentToAdd: ''});
     });
   }
-
-  commentServiceUrl = `https://comment.staging.trdlnk.cimpress.io`;
 
   fetchComments (isVisible) {
     this.setState({
