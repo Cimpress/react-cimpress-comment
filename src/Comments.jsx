@@ -16,7 +16,8 @@ export default class Comments extends React.Component {
       visible: false,
       loading: false,
       comments: [],
-      commentToAdd: ''
+      commentToAdd: '',
+      failed: false
     };
   }
 
@@ -78,6 +79,10 @@ export default class Comments extends React.Component {
           }).map(c => c.id)
         });
       }).catch(err => {
+        this.setState({
+          loading: false,
+          failed: true
+        });
         console.log(err);
       });
     }
@@ -92,7 +97,6 @@ export default class Comments extends React.Component {
       URI: this.props.resourceUri,
       comments: []
     };
-    console.log(payload);
     let init = {
       method: 'POST',
       headers: headers,
@@ -101,7 +105,6 @@ export default class Comments extends React.Component {
       body: JSON.stringify(payload)
     };
     return fetch(url, init).then(response => {
-      console.log(response);
       if (response.status === 201) {
         return response.json();
       } else {
@@ -122,7 +125,6 @@ export default class Comments extends React.Component {
       comment: comment,
       URI: this.props.resourceUri
     };
-    console.log(payload);
     let init = {
       method: 'POST',
       headers: headers,
@@ -131,7 +133,6 @@ export default class Comments extends React.Component {
       body: JSON.stringify(payload)
     };
     return fetch(url, init).then(response => {
-      console.log(response);
       if (response.status === 200) {
         return response.json();
       } else if (response.status === 404) {
@@ -158,6 +159,8 @@ export default class Comments extends React.Component {
                                 commentUri={url + id} editComments={this.props.editComments}/>);
     } else if (this.state.loading) {
       comments = <div><div className="inline-spinner"><Spinner size={20}/></div><div className="inline-spinner">Retrieving comments.</div></div>;
+    } else if (this.state.failed) {
+      comments = <p>Unable to retrieve comments.</p>;
     } else {
       comments = <p>No comments here yet.</p>;
     }
