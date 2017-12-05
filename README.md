@@ -27,3 +27,17 @@ and then use wherever needed
 which will result in something like
 
 ![Demo](./demo.gif)
+
+There is also a variant of the component that places the comments in a drawer, and provides a button with comment count as a badge that opens the drawer.
+
+    render() {
+
+        return (
+          <div>
+            <CommentsDrawerLink resourceUri={"https://some_resource_server.cimpress.io/v0/resource/resourceId"}
+                      newestFirst={false} editComments={true} accessToken={"accessToken"}/>
+          </div>
+        );
+      }
+
+![Demo](./demo-drawer.gif)
