@@ -41,19 +41,20 @@
     padding: 2px;
 }
 
-.notify-badge{
+.comment-count-badge {
     position: absolute;
     right:-7px;
     top:7px;
     background:red;
     text-align: center;
+    align-content: center;
     border-radius: 30px 30px 30px 30px;
     color:white;
-    padding:2px 4px;
+    padding:2px 4px 1px 3px;
     font-size:7px;
 }
 
-.badgeable-content {
+.comment-drawer-button {
     font-size:2em;
     position:relative;
     padding-top:5px;

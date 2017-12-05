@@ -6,6 +6,7 @@ import { RIETextArea } from 'riek';
 import PropTypes from 'prop-types';
 import '../style/index.css';
 import TimeAgo from 'react-timeago';
+import CommentClient from './CommentClient';
 
 if (!global.globalNameCache) {
   global.globalNameCache = {};
@@ -15,6 +16,7 @@ export default class _Comment extends React.Component {
 
   constructor (props) {
     super(props);
+    this.commentClient = new CommentClient(props.accessToken, props.commentUri);
     this.state = {
       comment: (props.comment) ? props.comment.comment : '',
       createdBy: (props.comment) ? props.comment.createdBy : '',
@@ -29,6 +31,7 @@ export default class _Comment extends React.Component {
   }
 
   componentWillReceiveProps (newProps) {
+    this.commentClient = new CommentClient(newProps.accessToken, newProps.commentUri);
     if (newProps.commentUri !== this.props.commentUri) {
       this.setState({
         comment: (newProps.comment) ? newProps.comment.comment : '',
@@ -38,7 +41,7 @@ export default class _Comment extends React.Component {
         updatedAt: (newProps.comment) ? newProps.comment.updatedAt : '',
         updatedByName: (newProps.comment) ? global.globalNameCache[newProps.comment.updatedBy] : null,
         createdByName: (newProps.comment) ? global.globalNameCache[newProps.comment.createdBy] : null,
-        ready: newProps.comment != null,
+        ready: newProps.comment != null
       }, () => this.fetchComment(this.state.visible));
     }
   }
@@ -54,9 +57,9 @@ export default class _Comment extends React.Component {
       cache: 'default'
     };
     if (global.globalNameCache[userId]) {
-        this.setState({
-          [stateToUpdate]: global.globalNameCache[userId]
-        });
+      this.setState({
+        [stateToUpdate]: global.globalNameCache[userId]
+      });
     }
     return fetch(url, init).then(response => {
       if (response.status === 200) {
@@ -74,27 +77,7 @@ export default class _Comment extends React.Component {
   }
 
   putComment (comment) {
-    let headers = new Headers();
-    headers.append('Authorization', `Bearer ${this.props.accessToken}`);
-    headers.append('Content-Type', 'application/json');
-    let payload = {
-      comment: comment
-    };
-    let init = {
-      method: 'PUT',
-      headers: headers,
-      mode: 'cors',
-      cache: 'default',
-      body: JSON.stringify(payload)
-    };
-    return fetch(this.props.commentUri, init).then(response => {
-      console.log(response);
-      if (response.status === 200) {
-        return Promise.resolve();
-      } else {
-        throw new Error('Unable to update comment');
-      }
-    });
+    return this.commentClient.putComment(comment);
   }
 
   fetchComment (isVisible) {
@@ -102,19 +85,7 @@ export default class _Comment extends React.Component {
       visible: isVisible
     });
     if (isVisible) {
-      let headers = new Headers();
-      headers.append('Authorization', `Bearer ${this.props.accessToken}`);
-      let init = {
-        method: 'GET',
-        headers: headers,
-        mode: 'cors',
-        cache: 'default'
-      };
-      fetch(this.props.commentUri, init).then(response => {
-        if (response.status === 200) {
-          return response.json();
-        }
-      }).then(responseJson => {
+      return this.commentClient.fetchComment().then(responseJson => {
         this.setState({
           comment: responseJson.comment,
           updatedBy: responseJson.updatedBy,
@@ -126,10 +97,10 @@ export default class _Comment extends React.Component {
           ready: true
         });
         if (responseJson.updatedBy) {
-          this.fetchUserName(responseJson.updatedBy, "updatedByName");
+          this.fetchUserName(responseJson.updatedBy, 'updatedByName');
         }
         if (responseJson.createdBy) {
-          this.fetchUserName(responseJson.createdBy, "createdByName");
+          this.fetchUserName(responseJson.createdBy, 'createdByName');
         }
       }).catch(err => {
         console.log(err);
@@ -138,13 +109,14 @@ export default class _Comment extends React.Component {
   }
 
   change (e) {
-    this.putComment(e.comment).then(() => this.setState({
-      comment: responseJson.comment,
-      updatedBy: responseJson.updatedBy,
-      createdBy: responseJson.createdBy,
-      createdAt: responseJson.createdAt,
-      updatedAt: responseJson.updatedAt,
-    })).catch(err => {
+    this.putComment(e.comment).then((responseJson) => this.setState({
+          comment: responseJson.comment,
+          updatedBy: responseJson.updatedBy,
+          createdBy: responseJson.createdBy,
+          createdAt: responseJson.createdAt,
+          updatedAt: responseJson.updatedAt
+        })
+    ).catch(err => {
       console.log(err);
     });
   }

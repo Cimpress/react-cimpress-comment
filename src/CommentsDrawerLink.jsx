@@ -4,27 +4,45 @@ import '../style/index.css';
 import { Drawer } from '@cimpress/react-components';
 import Comments from './Comments'
 import PropTypes from 'prop-types';
+import CommentsClient from './CommentsClient';
 
 export default class _CommentsDrawerLink extends React.Component {
 
   constructor (props) {
     super(props);
     this.commentServiceUrl = 'https://comment.staging.trdlnk.cimpress.io';
+    this.commentsClient = new CommentsClient(props.accessToken, props.resourceUri);
     this.state = {
-      commentsDrawerOpen: false
+      commentsDrawerOpen: false,
+      availableComments: 0
     };
   }
 
+  componentWillReceiveProps (newProps) {
+    this.commentsClient = new CommentsClient(newProps.accessToken, newProps.resourceUri);
+    this.reloadCommentCount();
+  }
+
+  reloadCommentCount(){
+    this.commentsClient.fetchComments().then(comments => this.setState({
+      availableComments: comments ? comments.length : 0
+    })).catch(() => this.setState({
+      availableComments: 0
+    }))
+  }
+
   render () {
+    let badge = <span className="comment-count-badge">{this.state.availableComments}</span>;
+
     return (
       <div>
-        <div className="badgeable-content">
+        <div className="comment-drawer-button">
           <a href="#">
           <span className="fa fa-comments-o"
                 onClick={() => this.setState({
                   commentsDrawerOpen: true,
                 })}/>
-            <span className="notify-badge">343</span>
+            { this.state.availableComments > 0 ? badge : null }
           </a>
         </div>
         <Drawer
@@ -37,7 +55,7 @@ export default class _CommentsDrawerLink extends React.Component {
               <i className="fa fa-times" aria-hidden="true"></i>&nbsp;Close
             </button>
           </div>}>
-          <Comments {...this.props}/>
+          <Comments {...this.props} onPost={this.reloadCommentCount.bind(this)}/>
         </Drawer>
       </div>
 
