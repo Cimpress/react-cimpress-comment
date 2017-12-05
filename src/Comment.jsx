@@ -8,9 +8,8 @@ import '../style/index.css';
 import TimeAgo from 'react-timeago';
 import CommentClient from './CommentClient';
 
-if (!global.globalNameCache) {
-  global.globalNameCache = {};
-}
+let globalCacheKey = Symbol();
+let globalCache = {};
 
 export default class _Comment extends React.Component {
 
@@ -20,14 +19,18 @@ export default class _Comment extends React.Component {
     this.state = {
       comment: (props.comment) ? props.comment.comment : '',
       createdBy: (props.comment) ? props.comment.createdBy : '',
-      createdByName: (props.comment) ? global.globalNameCache[props.comment.createdBy] : null,
+      createdByName: (props.comment) ? this[globalCacheKey][props.comment.createdBy] : null,
       createdAt: (props.comment) ? props.comment.createdAt : '',
       updatedBy: (props.comment) ? props.comment.updatedBy : '',
-      updatedByName: (props.comment) ? global.globalNameCache[props.comment.updatedBy] : null,
+      updatedByName: (props.comment) ? this[globalCacheKey][props.comment.updatedBy] : null,
       updatedAt: (props.comment) ? props.comment.updatedAt : '',
       visible: false,
       ready: props.comment != null
     };
+  }
+
+  get [globalCacheKey]() {
+    return globalCache;
   }
 
   componentWillReceiveProps (newProps) {
@@ -39,8 +42,8 @@ export default class _Comment extends React.Component {
         createdAt: (newProps.comment) ? newProps.comment.createdAt : '',
         updatedBy: (newProps.comment) ? newProps.comment.updatedBy : '',
         updatedAt: (newProps.comment) ? newProps.comment.updatedAt : '',
-        updatedByName: (newProps.comment) ? global.globalNameCache[newProps.comment.updatedBy] : null,
-        createdByName: (newProps.comment) ? global.globalNameCache[newProps.comment.createdBy] : null,
+        updatedByName: (newProps.comment) ? this[globalCacheKey][newProps.comment.updatedBy] : null,
+        createdByName: (newProps.comment) ? this[globalCacheKey][newProps.comment.createdBy] : null,
         ready: newProps.comment != null
       }, () => this.fetchComment(this.state.visible));
     }
@@ -56,9 +59,9 @@ export default class _Comment extends React.Component {
       mode: 'cors',
       cache: 'default'
     };
-    if (global.globalNameCache[userId]) {
+    if (this[globalCacheKey][userId]) {
       this.setState({
-        [stateToUpdate]: global.globalNameCache[userId]
+        [stateToUpdate]: this[globalCacheKey][userId]
       });
     }
     return fetch(url, init).then(response => {
@@ -67,7 +70,7 @@ export default class _Comment extends React.Component {
       }
       throw new Error(response.status);
     }).then((responseJson) => {
-      globalNameCache[userId] = responseJson.profile.name;
+      this[globalCacheKey][userId] = responseJson.profile.name;
       this.setState({
         [stateToUpdate]: responseJson.profile.name
       });
@@ -92,8 +95,8 @@ export default class _Comment extends React.Component {
           createdBy: responseJson.createdBy,
           createdAt: responseJson.createdAt,
           updatedAt: responseJson.updatedAt,
-          updatedByName: global.globalNameCache[responseJson.updatedBy],
-          createdByName: global.globalNameCache[responseJson.createdBy],
+          updatedByName: this[globalCacheKey][responseJson.updatedBy],
+          createdByName: this[globalCacheKey][responseJson.createdBy],
           ready: true
         });
         if (responseJson.updatedBy) {
