@@ -40,3 +40,22 @@
     vertical-align: middle;
     padding: 2px;
 }
+
+.notify-badge{
+    position: absolute;
+    right:-7px;
+    top:7px;
+    background:red;
+    text-align: center;
+    border-radius: 30px 30px 30px 30px;
+    color:white;
+    padding:2px 4px;
+    font-size:7px;
+}
+
+.badgeable-content {
+    font-size:2em;
+    position:relative;
+    padding-top:5px;
+    display:inline-block;
+}

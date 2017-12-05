@@ -5,17 +5,19 @@ import PropTypes from 'prop-types';
 import Comment from './Comment';
 import '../style/index.css';
 import { TextField, shapes } from '@cimpress/react-components';
-let { Spinner } = shapes;
 
-export default class Comments extends React.Component {
+let {Spinner} = shapes;
+
+export default class _Comments extends React.Component {
 
   constructor (props) {
     super(props);
-    this.commentServiceUrl = "https://comment.staging.trdlnk.cimpress.io";
+    this.commentServiceUrl = 'https://comment.staging.trdlnk.cimpress.io';
     this.state = {
       visible: false,
       loading: false,
-      comments: [],
+      commentsIds: [],
+      commentObjects: {},
       commentToAdd: '',
       failed: false
     };
@@ -24,7 +26,8 @@ export default class Comments extends React.Component {
   componentWillReceiveProps (newProps) {
     if (newProps.resourceUri !== this.props.resourceUri) {
       this.setState({
-        ready: true,
+        failed: false,
+        commentsIds: []
       }, () => this.fetchComments(this.state.visible));
     }
   }
@@ -33,10 +36,18 @@ export default class Comments extends React.Component {
     this.setState({commentToAdd: e.target.value});
   }
 
-  addComment () {
-    this.postComment(this.state.commentToAdd).then(() => {
-      this.setState({commentToAdd: ''});
-    });
+  addComment (e) {
+    if (e.keyCode) {
+      if (e.keyCode === 13) {
+        this.postComment(this.state.commentToAdd).then(() => {
+          this.setState({commentToAdd: ''});
+        });
+      }
+    } else {
+      this.postComment(this.state.commentToAdd).then(() => {
+        this.setState({commentToAdd: ''});
+      });
+    }
   }
 
   fetchComments (isVisible) {
@@ -69,14 +80,19 @@ export default class Comments extends React.Component {
           throw new Error('Unable to fetch comments');
         }
       }).then(responseJson => {
+
         this.setState({
-          comments: responseJson.comments.sort((a, b) => {
+          commentsIds: responseJson.comments.sort((a, b) => {
             if (this.props.newestFirst === true) {
               return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
             } else {
               return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
             }
-          }).map(c => c.id)
+          }).map(c => c.id),
+          commentObjects: responseJson.comments.reduce((acc, curr) => {
+            acc[curr.id] = curr;
+            return acc;
+          }, {})
         });
       }).catch(err => {
         this.setState({
@@ -95,7 +111,7 @@ export default class Comments extends React.Component {
     headers.append('Content-Type', 'application/json');
     let payload = {
       URI: this.props.resourceUri,
-      comments: []
+      commentsIds: []
     };
     let init = {
       method: 'POST',
@@ -132,11 +148,27 @@ export default class Comments extends React.Component {
       cache: 'default',
       body: JSON.stringify(payload)
     };
+    let tempId = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
+    if (this.props.newestFirst) {
+      this.state.commentsIds.unshift(tempId);
+    } else {
+      this.state.commentsIds.push(tempId);
+    }
+    this.setState({
+      commentToAdd: '',
+      commentsIds: this.state.commentsIds.slice(0),
+      commentsObjects: Object.assign({ [tempId]: { comment } },this.state.commentObjects)
+    });
     return fetch(url, init).then(response => {
       if (response.status === 200) {
         return response.json();
-      } else if (response.status === 404) {
-
+      } else {
+        delete this.state.commentObjects[tempId];
+        this.setState({
+          commentToAdd: comment,
+          commentsIds: this.state.commentsIds.filter(c => c !== tempId),
+          commentsObjects: Object.assign(this.state.commentObjects)
+        });
       }
     }).then(() => {
       return this.fetchComments(this.state.visible);
@@ -153,12 +185,15 @@ export default class Comments extends React.Component {
 
     if (!this.props.resourceUri) {
       comments = <p>Incorrect component setup.</p>;
-    } else if (this.state.comments.length > 0) {
-      comments = this.state.comments.map(
+    } else if (this.state.commentsIds.length > 0) {
+      comments = this.state.commentsIds.map(
         (id, index) => <Comment className={'comment ' + ((index % 2 === 0) ? 'comment-even' : 'comment-odd')} key={id} accessToken={this.props.accessToken}
-                                commentUri={url + id} editComments={this.props.editComments}/>);
+                                commentUri={url + id} comment={this.state.commentObjects[id]} editComments={this.props.editComments}/>);
     } else if (this.state.loading) {
-      comments = <div><div className="inline-spinner"><Spinner size={20}/></div><div className="inline-spinner">Retrieving comments.</div></div>;
+      comments = <div>
+        <div className="inline-spinner"><Spinner size={20}/></div>
+        <div className="inline-spinner">Retrieving comments.</div>
+      </div>;
     } else if (this.state.failed) {
       comments = <p>Unable to retrieve comments.</p>;
     } else {
@@ -171,6 +206,7 @@ export default class Comments extends React.Component {
       value={this.state.commentToAdd}
       autoFocus
       onChange={this.onInputChange.bind(this)}
+      onKeyDown={this.addComment.bind(this)}
       rightAddon={
         <button disabled={!this.props.resourceUri} onClick={this.addComment.bind(this)} className="btn btn-default">
           publish
@@ -192,7 +228,7 @@ export default class Comments extends React.Component {
   }
 }
 
-Comments.propTypes = {
+_Comments.propTypes = {
   accessToken: PropTypes.string.isRequired,
   resourceUri: PropTypes.string.isRequired,
   newestFirst: PropTypes.bool,
