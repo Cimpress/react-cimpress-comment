@@ -5,26 +5,32 @@ import PropTypes from 'prop-types';
 import Comment from './Comment';
 import '../style/index.css';
 import { TextField, shapes } from '@cimpress/react-components';
-let { Spinner } = shapes;
+import CommentsClient from './CommentsClient';
 
-export default class Comments extends React.Component {
+let {Spinner} = shapes;
+
+export default class _Comments extends React.Component {
 
   constructor (props) {
     super(props);
-    this.commentServiceUrl = "https://comment.staging.trdlnk.cimpress.io";
+    this.commentServiceUrl = 'https://comment.staging.trdlnk.cimpress.io';
+    this.commentsClient = new CommentsClient(props.accessToken, props.resourceUri);
     this.state = {
       visible: false,
       loading: false,
-      comments: [],
+      commentsIds: [],
+      commentObjects: {},
       commentToAdd: '',
       failed: false
     };
   }
 
   componentWillReceiveProps (newProps) {
+    this.commentsClient = new CommentsClient(newProps.accessToken, newProps.resourceUri);
     if (newProps.resourceUri !== this.props.resourceUri) {
       this.setState({
-        ready: true,
+        failed: false,
+        commentsIds: []
       }, () => this.fetchComments(this.state.visible));
     }
   }
@@ -33,10 +39,14 @@ export default class Comments extends React.Component {
     this.setState({commentToAdd: e.target.value});
   }
 
-  addComment () {
-    this.postComment(this.state.commentToAdd).then(() => {
-      this.setState({commentToAdd: ''});
-    });
+  addComment (e) {
+    if (e.keyCode) {
+      if (e.keyCode === 13) {
+        this.postComment(this.state.commentToAdd);
+      }
+    } else {
+      this.postComment(this.state.commentToAdd);
+    }
   }
 
   fetchComments (isVisible) {
@@ -47,36 +57,22 @@ export default class Comments extends React.Component {
       this.setState({
         loading: true
       });
-      let encodedUri = encodeURIComponent(this.props.resourceUri);
-      let url = `${this.commentServiceUrl}/v0/resources/${encodedUri}`;
-      let headers = new Headers();
-      headers.append('Authorization', `Bearer ${this.props.accessToken}`);
-      let init = {
-        method: 'GET',
-        headers: headers,
-        mode: 'cors',
-        cache: 'default'
-      };
-      fetch(url, init).then(response => {
+      this.commentsClient.fetchComments().then(responseJson => {
         this.setState({
           loading: false
         });
-        if (response.status === 200) {
-          return response.json();
-        } else if (response.status === 404) {
-          return this.createResource().then(responseJson => responseJson.comments);
-        } else {
-          throw new Error('Unable to fetch comments');
-        }
-      }).then(responseJson => {
         this.setState({
-          comments: responseJson.comments.sort((a, b) => {
+          commentsIds: responseJson.sort((a, b) => {
             if (this.props.newestFirst === true) {
               return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
             } else {
               return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
             }
-          }).map(c => c.id)
+          }).map(c => c.id),
+          commentObjects: responseJson.reduce((acc, curr) => {
+            acc[curr.id] = curr;
+            return acc;
+          }, {})
         });
       }).catch(err => {
         this.setState({
@@ -88,61 +84,23 @@ export default class Comments extends React.Component {
     }
   }
 
-  createResource () {
-    let url = `${this.commentServiceUrl}/v0/resources`;
-    let headers = new Headers();
-    headers.append('Authorization', `Bearer ${this.props.accessToken}`);
-    headers.append('Content-Type', 'application/json');
-    let payload = {
-      URI: this.props.resourceUri,
-      comments: []
-    };
-    let init = {
-      method: 'POST',
-      headers: headers,
-      mode: 'cors',
-      cache: 'default',
-      body: JSON.stringify(payload)
-    };
-    return fetch(url, init).then(response => {
-      if (response.status === 201) {
-        return response.json();
-      } else {
-        throw new Error('Unable to create resource');
-      }
-    }).catch(err => {
-      console.log(err);
-    });
-  }
-
   postComment (comment) {
-    let encodedUri = encodeURIComponent(this.props.resourceUri);
-    let url = `${this.commentServiceUrl}/v0/resources/${encodedUri}/comments`;
-    let headers = new Headers();
-    headers.append('Authorization', `Bearer ${this.props.accessToken}`);
-    headers.append('Content-Type', 'application/json');
-    let payload = {
-      comment: comment,
-      URI: this.props.resourceUri
-    };
-    let init = {
-      method: 'POST',
-      headers: headers,
-      mode: 'cors',
-      cache: 'default',
-      body: JSON.stringify(payload)
-    };
-    return fetch(url, init).then(response => {
-      if (response.status === 200) {
-        return response.json();
-      } else if (response.status === 404) {
-
-      }
-    }).then(() => {
-      return this.fetchComments(this.state.visible);
-    }).catch(err => {
-      console.log(err);
+    let tempId = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
+    if (this.props.newestFirst) {
+      this.state.commentsIds.unshift(tempId);
+    } else {
+      this.state.commentsIds.push(tempId);
+    }
+    this.setState({
+      commentToAdd: '',
+      commentsIds: this.state.commentsIds.slice(0),
+      commentsObjects: Object.assign({[tempId]: {comment}}, this.state.commentObjects)
     });
+    return this.commentsClient.postComment(comment).then(() => this.fetchComments(this.state.visible)).then(() => {
+      if (this.props.onPost) {
+        this.props.onPost(this.state.commentsIds.length);
+      }
+    })
   }
 
   render () {
@@ -153,12 +111,15 @@ export default class Comments extends React.Component {
 
     if (!this.props.resourceUri) {
       comments = <p>Incorrect component setup.</p>;
-    } else if (this.state.comments.length > 0) {
-      comments = this.state.comments.map(
+    } else if (this.state.commentsIds.length > 0) {
+      comments = this.state.commentsIds.map(
         (id, index) => <Comment className={'comment ' + ((index % 2 === 0) ? 'comment-even' : 'comment-odd')} key={id} accessToken={this.props.accessToken}
-                                commentUri={url + id} editComments={this.props.editComments}/>);
+                                commentUri={url + id} comment={this.state.commentObjects[id]} editComments={this.props.editComments}/>);
     } else if (this.state.loading) {
-      comments = <div><div className="inline-spinner"><Spinner size={20}/></div><div className="inline-spinner">Retrieving comments.</div></div>;
+      comments = <div>
+        <div className="inline-spinner"><Spinner size={20}/></div>
+        <div className="inline-spinner">Retrieving comments.</div>
+      </div>;
     } else if (this.state.failed) {
       comments = <p>Unable to retrieve comments.</p>;
     } else {
@@ -171,6 +132,7 @@ export default class Comments extends React.Component {
       value={this.state.commentToAdd}
       autoFocus
       onChange={this.onInputChange.bind(this)}
+      onKeyDown={this.addComment.bind(this)}
       rightAddon={
         <button disabled={!this.props.resourceUri} onClick={this.addComment.bind(this)} className="btn btn-default">
           publish
@@ -192,9 +154,10 @@ export default class Comments extends React.Component {
   }
 }
 
-Comments.propTypes = {
+_Comments.propTypes = {
   accessToken: PropTypes.string.isRequired,
   resourceUri: PropTypes.string.isRequired,
   newestFirst: PropTypes.bool,
-  editComments: PropTypes.bool
+  editComments: PropTypes.bool,
+  onPost: PropTypes.func
 };
