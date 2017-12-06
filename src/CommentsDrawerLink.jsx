@@ -16,6 +16,7 @@ export default class _CommentsDrawerLink extends React.Component {
       commentsDrawerOpen: false,
       availableComments: 0
     };
+    this.reloadCommentCount();
   }
 
   componentWillReceiveProps (newProps) {
