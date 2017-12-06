@@ -35,8 +35,7 @@ export default class CommentsClient {
     headers.append('Authorization', `Bearer ${this.accessToken}`);
     headers.append('Content-Type', 'application/json');
     let payload = {
-      URI: this.resourceUri,
-      comments: []
+      URI: this.resourceUri
     };
     let init = {
       method: 'PUT',
