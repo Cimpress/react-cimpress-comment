@@ -45,7 +45,7 @@ export default class CommentsClient {
       body: JSON.stringify(payload)
     };
     return fetch(url, init).then(response => {
-      if (response.status >== 200 && response.status < 300) {
+      if (response.status >= 200 && response.status < 300) {
         return response.json();
       } else {
         throw new Error('Unable to create resource');
