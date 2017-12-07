@@ -9,6 +9,4 @@ export class CommentsDrawerLink extends _CommentsDrawerLink {
 
 }
 
-export default class CommentsDrawerLink extends _CommentsDrawerLink {
-
-}
+export default CommentsDrawerLink;
