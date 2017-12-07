@@ -4,46 +4,42 @@ import '../style/index.css';
 import { Drawer } from '@cimpress/react-components';
 import Comments from './Comments';
 import PropTypes from 'prop-types';
-import CommentsClient from './CommentsClient';
 
 export default class _CommentsDrawerLink extends React.Component {
 
   constructor (props) {
     super(props);
     this.commentServiceUrl = 'https://comment.staging.trdlnk.cimpress.io';
-    this.commentsClient = new CommentsClient(props.accessToken, props.resourceUri);
     this.state = {
       commentsDrawerOpen: false,
-      availableComments: 0
+      availableComments: 0,
+      opacity: 0
     };
-    this.reloadCommentCount();
   }
 
-  componentWillReceiveProps (newProps) {
-    this.commentsClient = new CommentsClient(newProps.accessToken, newProps.resourceUri);
-    this.reloadCommentCount();
+  componentWillReceiveProps () {
+    this.setState({
+      opacity: 0
+    });
   }
 
-  reloadCommentCount () {
-    this.commentsClient.fetchComments().then(comments => this.setState({
-      availableComments: comments ? comments.length : 0
-    })).catch(() => this.setState({
-      availableComments: 0
-    }));
+  updateCommentCount (commentCount) {
+    this.setState({
+      availableComments: commentCount,
+      opacity: commentCount === 0 ? 0 : 1
+    });
   }
 
   render () {
-    let badge = <span className="comment-count-badge">{this.state.availableComments}</span>;
-
     return (
       <span>
         <div className="comment-drawer-button">
           <a href="#">
-          <span className="fa fa-comments-o"
-                onClick={() => this.setState({
-                  commentsDrawerOpen: true
-                })}/>
-            {this.state.availableComments > 0 ? badge : null}
+            <span className="fa fa-comments-o"
+                  onClick={() => this.setState({
+                    commentsDrawerOpen: true
+                  })}/>
+            <span key="test" className="comment-count-badge" style={{opacity: this.state.opacity}}>{this.state.availableComments}</span>
           </a>
         </div>
         <Drawer
@@ -56,7 +52,7 @@ export default class _CommentsDrawerLink extends React.Component {
               <i className="fa fa-times" aria-hidden="true"></i>&nbsp;Close
             </button>
           </div>}>
-        <Comments {...this.props} onPost={this.reloadCommentCount.bind(this)}/>
+        <Comments {...this.props} commentCountRefreshed={this.updateCommentCount.bind(this)}/>
         </Drawer>
       </span>
     );

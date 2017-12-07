@@ -31,7 +31,7 @@ export default class _Comments extends React.Component {
       this.setState({
         failed: false,
         commentsIds: []
-      }, () => this.fetchComments(this.state.visible));
+      }, () => this.forceFetchComments(this.state.visible));
     }
   }
 
@@ -54,34 +54,40 @@ export default class _Comments extends React.Component {
       visible: isVisible
     });
     if (isVisible && this.props.resourceUri) {
-      this.setState({
-        loading: true
-      });
-      this.commentsClient.fetchComments().then(responseJson => {
-        this.setState({
-          loading: false
-        });
-        this.setState({
-          commentsIds: responseJson.sort((a, b) => {
-            if (this.props.newestFirst === true) {
-              return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-            } else {
-              return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-            }
-          }).map(c => c.id),
-          commentObjects: responseJson.reduce((acc, curr) => {
-            acc[curr.id] = curr;
-            return acc;
-          }, {})
-        });
-      }).catch(err => {
-        this.setState({
-          loading: false,
-          failed: true
-        });
-        console.log(err);
-      });
+      this.forceFetchComments();
     }
+  }
+
+  forceFetchComments () {
+    this.setState({
+      loading: true
+    });
+    this.commentsClient.fetchComments().then(responseJson => {
+      this.setState({
+        loading: false
+      });
+      this.setState({
+        commentsIds: responseJson.sort((a, b) => {
+          if (this.props.newestFirst === true) {
+            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+          } else {
+            return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+          }
+        }).map(c => c.id),
+        commentObjects: responseJson.reduce((acc, curr) => {
+          acc[curr.id] = curr;
+          return acc;
+        }, {})
+      });
+    }).catch(err => {
+      this.setState({
+        loading: false,
+        failed: true
+      });
+      console.log(err);
+    }).then(() => {
+      this.reportCommentCount();
+    });
   }
 
   postComment (comment) {
@@ -96,11 +102,16 @@ export default class _Comments extends React.Component {
       commentsIds: this.state.commentsIds.slice(0),
       commentsObjects: Object.assign({[tempId]: {comment}}, this.state.commentObjects)
     });
-    return this.commentsClient.postComment(comment).then(() => this.fetchComments(this.state.visible)).then(() => {
-      if (this.props.onPost) {
-        this.props.onPost(this.state.commentsIds.length);
-      }
+    return this.commentsClient.postComment(comment).then(() => this.fetchComments(this.state.visible)).then(()=>
+    {
+      this.reportCommentCount();
     })
+  }
+
+  reportCommentCount () {
+    if (this.props.commentCountRefreshed) {
+      this.props.commentCountRefreshed(this.state.commentsIds.length);
+    }
   }
 
   render () {
@@ -159,5 +170,5 @@ _Comments.propTypes = {
   resourceUri: PropTypes.string.isRequired,
   newestFirst: PropTypes.bool,
   editComments: PropTypes.bool,
-  onPost: PropTypes.func
+  commentCountRefreshed: PropTypes.func
 };

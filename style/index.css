@@ -53,6 +53,7 @@
     padding:2px 4px 1px 3px;
     font-size:7px;
     line-height: normal;
+    transition:opacity 1s ease-in-out;
 }
 
 .comment-drawer-button {
