@@ -25,6 +25,10 @@ export default class _Comments extends React.Component {
     };
   }
 
+  componentWillMount(){
+    this.forceFetchComments(this.state.visible);
+  }
+
   componentWillReceiveProps (newProps) {
     this.commentsClient = new CommentsClient(newProps.accessToken, newProps.resourceUri);
     if (newProps.resourceUri !== this.props.resourceUri) {
