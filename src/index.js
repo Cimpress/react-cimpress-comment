@@ -1,7 +1,7 @@
 import _Comments from './Comments';
 import _CommentsDrawerLink from './CommentsDrawerLink';
 
-export class Comments extends _Comments {
+export default class Comments extends _Comments {
 
 }
 

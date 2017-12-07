@@ -36,7 +36,6 @@ export default class _CommentsDrawerLink extends React.Component {
     let badge = <span className="comment-count-badge">{this.state.availableComments}</span>;
 
     return (
-      <div>
         <div className="comment-drawer-button">
           <a href="#">
           <span className="fa fa-comments-o"
@@ -45,21 +44,19 @@ export default class _CommentsDrawerLink extends React.Component {
                 })}/>
             { this.state.availableComments > 0 ? badge : null }
           </a>
+          <Drawer
+            show={this.state.commentsDrawerOpen}
+            onRequestHide={() => this.setState({commentsDrawerOpen: false})}
+            header="Comments"
+            closeOnClickOutside={true}
+            footer={<div className="text-right">
+              <button className="btn btn-default" onClick={() => this.setState({commentsDrawerOpen: false})}>
+                <i className="fa fa-times" aria-hidden="true"></i>&nbsp;Close
+              </button>
+            </div>}>
+            <Comments {...this.props} onPost={this.reloadCommentCount.bind(this)}/>
+          </Drawer>
         </div>
-        <Drawer
-          show={this.state.commentsDrawerOpen}
-          onRequestHide={() => this.setState({commentsDrawerOpen: false})}
-          header="Comments"
-          closeOnClickOutside={true}
-          footer={<div className="text-right">
-            <button className="btn btn-default" onClick={() => this.setState({commentsDrawerOpen: false})}>
-              <i className="fa fa-times" aria-hidden="true"></i>&nbsp;Close
-            </button>
-          </div>}>
-          <Comments {...this.props} onPost={this.reloadCommentCount.bind(this)}/>
-        </Drawer>
-      </div>
-
     );
   }
 }
