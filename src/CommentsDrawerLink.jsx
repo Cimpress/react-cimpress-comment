@@ -9,23 +9,24 @@ export default class _CommentsDrawerLink extends React.Component {
 
   constructor (props) {
     super(props);
-    this.commentServiceUrl = 'https://comment.staging.trdlnk.cimpress.io';
     this.state = {
       commentsDrawerOpen: false,
-      availableComments: 0,
+      availableComments: null,
       opacity: 0
     };
   }
 
-  componentWillReceiveProps () {
-    this.setState({
-      opacity: 0
-    });
+  componentWillReceiveProps (newProps) {
+    if (newProps.resourceUri !== this.props.resourceUri) {
+      this.setState({
+        opacity: 0
+      });
+    }
   }
 
   updateCommentCount (commentCount) {
     this.setState({
-      availableComments: commentCount,
+      availableComments: commentCount === 0 ? null : commentCount,
       opacity: commentCount === 0 ? 0 : 1
     });
   }
@@ -63,5 +64,6 @@ _CommentsDrawerLink.propTypes = {
   accessToken: PropTypes.string.isRequired,
   resourceUri: PropTypes.string.isRequired,
   newestFirst: PropTypes.bool,
-  editComments: PropTypes.bool
+  editComments: PropTypes.bool,
+  refreshInterval: PropTypes.number,
 };

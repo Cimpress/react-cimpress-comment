@@ -10,7 +10,7 @@ Install the npm package
 
 import the component
 
-`import Comments from 'react-cimpress-comment'`
+`import { Comments } from 'react-cimpress-comment'`
 
 and then use wherever needed
 
@@ -29,6 +29,8 @@ which will result in something like
 ![Demo](./demo.gif)
 
 There is also a variant of the component that places the comments in a drawer, and provides a button with comment count as a badge that opens the drawer.
+
+`import { CommentsDrawerLink } from 'react-cimpress-comment'`
 
     render() {
 

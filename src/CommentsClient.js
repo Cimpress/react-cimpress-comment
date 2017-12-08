@@ -1,7 +1,7 @@
 export default class CommentsClient {
 
   constructor (accessToken, resourceUri, commentServiceUrl) {
-    this.commentServiceUrl = commentServiceUrl || 'https://comment.staging.trdlnk.cimpress.io';
+    this.commentServiceUrl = commentServiceUrl || 'https://comment.trdlnk.cimpress.io';
     this.resourceUri = resourceUri;
     this.accessToken = accessToken;
   }

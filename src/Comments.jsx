@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+  import React, { Component } from 'react';
 import VisibilitySensor from 'react-visibility-sensor';
 import 'react-placeholder/lib/reactPlaceholder.css';
 import PropTypes from 'prop-types';
@@ -13,7 +13,7 @@ export default class _Comments extends React.Component {
 
   constructor (props) {
     super(props);
-    this.commentServiceUrl = 'https://comment.staging.trdlnk.cimpress.io';
+    this.commentServiceUrl = 'https://comment.trdlnk.cimpress.io';
     this.commentsClient = new CommentsClient(props.accessToken, props.resourceUri);
     this.state = {
       visible: false,
@@ -25,17 +25,24 @@ export default class _Comments extends React.Component {
     };
   }
 
+  componentWillUnmount() {
+    clearInterval(this.refreshInterval);
+  }
+
   componentWillMount(){
-    this.forceFetchComments(this.state.visible);
+    this.forceFetchComments();
   }
 
   componentWillReceiveProps (newProps) {
+    clearInterval(this.refreshInterval);
+    this.refreshInterval = setInterval(() => this.forceFetchComments(), Math.max((this.props.refreshInterval || 60) * 1000, 5000));
+
     this.commentsClient = new CommentsClient(newProps.accessToken, newProps.resourceUri);
     if (newProps.resourceUri !== this.props.resourceUri) {
       this.setState({
         failed: false,
         commentsIds: []
-      }, () => this.forceFetchComments(this.state.visible));
+      }, () => this.forceFetchComments());
     }
   }
 
@@ -64,30 +71,35 @@ export default class _Comments extends React.Component {
 
   forceFetchComments () {
     this.setState({
-      loading: true
+      loading: true,
+      failed: false
     });
-    this.commentsClient.fetchComments().then(responseJson => {
-      this.setState({
-        loading: false
-      });
-      this.setState({
-        commentsIds: responseJson.sort((a, b) => {
-          if (this.props.newestFirst === true) {
-            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-          } else {
-            return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-          }
-        }).map(c => c.id),
-        commentObjects: responseJson.reduce((acc, curr) => {
-          acc[curr.id] = curr;
-          return acc;
-        }, {})
-      });
+    let currentClient = this.commentsClient;
+    currentClient.fetchComments().then(responseJson => {
+      if (currentClient.resourceUri === this.props.resourceUri) {
+        this.setState({
+          loading: false,
+          failed: false,
+          commentsIds: responseJson.sort((a, b) => {
+            if (this.props.newestFirst === true) {
+              return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+            } else {
+              return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+            }
+          }).map(c => c.id),
+          commentObjects: responseJson.reduce((acc, curr) => {
+            acc[curr.id] = curr;
+            return acc;
+          }, {})
+        });
+      }
     }).catch(err => {
-      this.setState({
-        loading: false,
-        failed: true
-      });
+      if (currentClient.resourceUri === this.props.resourceUri) {
+        this.setState({
+          loading: false,
+          failed: true
+        });
+      }
       console.log(err);
     }).then(() => {
       this.reportCommentCount();
@@ -174,5 +186,6 @@ _Comments.propTypes = {
   resourceUri: PropTypes.string.isRequired,
   newestFirst: PropTypes.bool,
   editComments: PropTypes.bool,
+  refreshInterval: PropTypes.number,
   commentCountRefreshed: PropTypes.func
 };
