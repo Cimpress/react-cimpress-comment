@@ -60,8 +60,7 @@ export default class CommentsClient {
     headers.append('Authorization', `Bearer ${this.accessToken}`);
     headers.append('Content-Type', 'application/json');
     let payload = {
-      comment: comment,
-      URI: this.resourceUri
+      comment: comment
     };
     let init = {
       method: 'POST',
