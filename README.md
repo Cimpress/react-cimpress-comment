@@ -12,6 +12,13 @@ import the component
 
 `import { Comments } from 'react-cimpress-comment'`
 
+add the css dependencies
+
+```
+<link rel="stylesheet" href="https://static.ux.cimpress.io/mcp-ux-css/1.1/release/css/mcp-ux-css.min.css">
+<link rel="stylesheet" href="//cloud.typography.com/7971714/6011752/css/fonts.css"/>
+```
+
 and then use wherever needed
 
     render() {
