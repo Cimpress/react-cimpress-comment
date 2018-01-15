@@ -44,9 +44,14 @@ There is also a variant of the component that places the comments in a drawer, a
         return (
           <div>
             <CommentsDrawerLink resourceUri={"https://some_resource_server.cimpress.io/v0/resource/resourceId"}
-                      newestFirst={false} editComments={true} accessToken={"accessToken"}/>
+                      newestFirst={false} editComments={true} accessToken={"accessToken"} />
           </div>
         );
       }
 
 ![Demo](./demo-drawer.gif)
+
+Optional props:
+- `header` allows overwriting the header/title part
+- `footer` allows overwriting the footer part
+- `position`, by default "right". Can also move the drawer to the "left" side.
