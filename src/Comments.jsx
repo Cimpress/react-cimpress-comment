@@ -162,8 +162,8 @@ export default class _Comments extends React.Component {
       onChange={this.onInputChange.bind(this)}
       onKeyDown={this.addComment.bind(this)}
       rightAddon={
-        <button disabled={!this.props.resourceUri} onClick={this.addComment.bind(this)} className="btn btn-default">
-          publish
+        <button disabled={!this.props.resourceUri || this.state.commentToAdd.trim() === ''} onClick={this.addComment.bind(this)} className="btn btn-default">
+          post
         </button>
       }
     />;
