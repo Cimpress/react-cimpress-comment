@@ -1,4 +1,4 @@
-const SERVICE_URL = 'http://localhost:5000'; //'https://comment.trdlnk.cimpress.io';
+const SERVICE_URL = 'https://comment.trdlnk.cimpress.io';
 
 
 export {
