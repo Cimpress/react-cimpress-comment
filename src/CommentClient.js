@@ -40,18 +40,8 @@ export default class CommentClient {
 
     return fetch(this.commentUri, init).then(response => {
       if (response.status === 200) {
-        let init = {
-          method: 'GET',
-          headers: headers,
-          mode: 'cors',
-          cache: 'default'
-        };
-        return fetch(this.commentUri, init).then(response => {
-          if (response.status === 200) {
-            return response.json();
-          } else {
-            throw new Error('Error retrieving the comment after putting it');
-          }
+        this.fetchComment().catch(() => {
+          throw new Error('Error retrieving the comment after putting it');
         });
       } else {
         throw new Error(`Unable to update comment: ${this.commentUri}`);

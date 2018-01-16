@@ -1,4 +1,4 @@
-  import React, { Component } from 'react';
+import React, { Component } from 'react';
 import VisibilitySensor from 'react-visibility-sensor';
 import 'react-placeholder/lib/reactPlaceholder.css';
 import PropTypes from 'prop-types';
@@ -6,6 +6,7 @@ import Comment from './Comment';
 import '../style/index.css';
 import { TextField, shapes } from '@cimpress/react-components';
 import CommentsClient from './CommentsClient';
+import { SERVICE_URL } from '../config';
 
 let {Spinner} = shapes;
 
@@ -13,7 +14,7 @@ export default class _Comments extends React.Component {
 
   constructor (props) {
     super(props);
-    this.commentServiceUrl = 'https://comment.trdlnk.cimpress.io';
+    this.commentServiceUrl = SERVICE_URL;
     this.commentsClient = new CommentsClient(props.accessToken, props.resourceUri);
     this.state = {
       visible: false,
@@ -161,8 +162,8 @@ export default class _Comments extends React.Component {
       onChange={this.onInputChange.bind(this)}
       onKeyDown={this.addComment.bind(this)}
       rightAddon={
-        <button disabled={!this.props.resourceUri} onClick={this.addComment.bind(this)} className="btn btn-default">
-          publish
+        <button disabled={!this.props.resourceUri || this.state.commentToAdd.trim() === ''} onClick={this.addComment.bind(this)} className="btn btn-default">
+          post
         </button>
       }
     />;
