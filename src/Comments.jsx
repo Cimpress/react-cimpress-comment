@@ -7,6 +7,7 @@ import '../style/index.css';
 import { TextField, shapes } from '@cimpress/react-components';
 import CommentsClient from './CommentsClient';
 import { SERVICE_URL } from '../config';
+import { getSubFromJWT } from '../lib';
 
 let {Spinner} = shapes;
 
@@ -53,7 +54,7 @@ export default class _Comments extends React.Component {
 
   addComment (e) {
     if (e.keyCode) {
-      if (e.keyCode === 13) {
+      if (e.keyCode === 13) { // The "Enter" key was pressed.
         this.postComment(this.state.commentToAdd);
       }
     } else {
