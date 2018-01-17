@@ -1,4 +1,4 @@
-import { SERVICE_URL } from '../config';
+import { SERVICE_URL } from './config';
 
 export default class CommentsClient {
 

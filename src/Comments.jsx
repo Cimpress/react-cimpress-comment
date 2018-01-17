@@ -6,7 +6,8 @@ import Comment from './Comment';
 import '../style/index.css';
 import { TextField, shapes } from '@cimpress/react-components';
 import CommentsClient from './CommentsClient';
-import { SERVICE_URL } from '../config';
+import { SERVICE_URL } from './config';
+import { getSubFromJWT } from './helper';
 
 let {Spinner} = shapes;
 
@@ -53,7 +54,7 @@ export default class _Comments extends React.Component {
 
   addComment (e) {
     if (e.keyCode) {
-      if (e.keyCode === 13) {
+      if (e.keyCode === 13) { // The "Enter" key was pressed.
         this.postComment(this.state.commentToAdd);
       }
     } else {
@@ -142,7 +143,7 @@ export default class _Comments extends React.Component {
     } else if (this.state.commentsIds.length > 0) {
       comments = this.state.commentsIds.map(
         (id, index) => <Comment className={'comment ' + ((index % 2 === 0) ? 'comment-even' : 'comment-odd')} key={id} accessToken={this.props.accessToken}
-                                commentUri={url + id} comment={this.state.commentObjects[id]} editComments={this.props.editComments}/>);
+          commentUri={url + id} comment={this.state.commentObjects[id]} editComments={this.props.editComments}/>);
     } else if (this.state.loading) {
       comments = <div>
         <div className="inline-spinner"><Spinner size={20}/></div>

@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import '../style/index.css';
 import TimeAgo from 'react-timeago';
 import CommentClient from './CommentClient';
+import { getSubFromJWT } from './helper';
 
 let globalCacheKey = Symbol();
 let globalCache = {};
@@ -126,7 +127,8 @@ export default class _Comment extends React.Component {
 
   render () {
     let commentBody = <span>{this.state.comment}</span>;
-    if (this.props.editComments === true) {
+    let jwtSub = getSubFromJWT(this.props.accessToken);
+    if (this.props.editComments === true && (this.state.createdBy === jwtSub || this.state.updatedBy === jwtSub)) {
       commentBody = <RIETextArea
         classEditing={'comment-editing'}
         value={this.state.comment}
