@@ -6,7 +6,7 @@ import Comment from './Comment';
 import '../style/index.css';
 import { TextField, shapes } from '@cimpress/react-components';
 import CommentsClient from './CommentsClient';
-import { SERVICE_URL } from '../config';
+import { SERVICE_URL } from './config';
 import { getSubFromJWT } from './helper';
 
 let {Spinner} = shapes;
