@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import '../style/index.css';
 import TimeAgo from 'react-timeago';
 import CommentClient from './CommentClient';
-import { getSubFromJWT } from '../lib';
+import { getSubFromJWT } from './helper';
 
 let globalCacheKey = Symbol();
 let globalCache = {};
