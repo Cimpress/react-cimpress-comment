@@ -55,3 +55,13 @@ Optional props:
 - `header` allows overwriting the header/title part
 - `footer` allows overwriting the footer part
 - `position`, by default "right". Can also move the drawer to the "left" side.
+
+## Publishing a new version to NPM
+
+New patch version: $ npm version patch [ && npm publish ] // minor changes
+
+New minor version: $ npm version minor [ && npm publish ] // backwards compatible
+
+New major version: $ npm version major [ && npm publish ] // breaking changes
+
+Publish a module: $ npm publish
