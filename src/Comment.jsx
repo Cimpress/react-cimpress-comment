@@ -130,10 +130,13 @@ export default class _Comment extends React.Component {
     let jwtSub = getSubFromJWT(this.props.accessToken);
     if (this.props.editComments === true && (this.state.createdBy === jwtSub || this.state.updatedBy === jwtSub)) {
       commentBody = <RIETextArea
+        editProps={{ onKeyDown: function (e) { if (e.key === "Enter" && e.shiftKey === false) e.target.blur() }}}
         classEditing={'comment-editing'}
         value={this.state.comment}
         change={this.change.bind(this)}
-        propName={'comment'}/>;
+        propName={'comment'}
+        className={"comment-editable"}
+      />;
     }
 
     let modified = <span>, modified {(this.state.updatedBy !== this.state.createdBy) ? `by ${this.state.updatedByName || this.state.updatedBy}` : null} <TimeAgo

@@ -2,6 +2,10 @@
     padding: 5px;
 }
 
+.comment-editable {
+    cursor: pointer;
+}
+
 .comment-even {
     background-color: white;
     border-bottom: 1px solid #c4cdd6;
@@ -62,3 +66,4 @@
     padding-top:5px;
     display:inline-block;
 }
+
