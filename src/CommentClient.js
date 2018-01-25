@@ -40,7 +40,7 @@ export default class CommentClient {
 
     return fetch(this.commentUri, init).then(response => {
       if (response.status === 200) {
-        this.fetchComment().catch(() => {
+        return this.fetchComment().catch(() => {
           throw new Error('Error retrieving the comment after putting it');
         });
       } else {
