@@ -7,7 +7,7 @@ import '../style/index.css';
 import { TextField, shapes } from '@cimpress/react-components';
 import CommentsClient from './CommentsClient';
 import { SERVICE_URL } from './config';
-import { getSubFromJWT } from './helper';
+import SuggestionBox from './SuggestionBox';
 
 let {Spinner} = shapes;
 
@@ -155,7 +155,7 @@ export default class _Comments extends React.Component {
       comments = <p>No comments here yet.</p>;
     }
 
-    let addCommentBox = <TextField
+    let addCommentBox = <div><TextField
       name="autoFocus"
       placeholder="Put your comment here, and ..."
       value={this.state.commentToAdd}
@@ -167,7 +167,9 @@ export default class _Comments extends React.Component {
           post
         </button>
       }
-    />;
+    />
+      <SuggestionBox addComment={this.addComment}/>
+    </div>;
 
     return (
       <VisibilitySensor partialVisibility={true} scrollCheck={true} onChange={this.fetchComments.bind(this)}>
