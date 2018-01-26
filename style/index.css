@@ -28,13 +28,16 @@
 }
 
 .comment-creator {
+    margin-left: 1px;
     font-size: 10px;
-    margin-bottom: 6px;
-    margin-top: 6px;
     max-width: 500px;
     color: #c4cdd6
 }
 
+.comment-creator-inner {
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
 .comment-editing {
     width: 100%
 }
@@ -107,19 +110,15 @@
 }
 
 .disabled textarea {
+    margin: 1px;
     pointer-events: none;
     border: none;
     outline: none;
     box-shadow: none;
 }
 
-.mentions__input {
-    width: 100%;
-}
-
-.mentions--multiLine {
-    width: 100%;
-    display: block;
+textarea {
+    resize: vertical;
 }
 
 .mentions__input:focus {
@@ -171,6 +170,7 @@
     font-size: 18px;
     top: 3px;
     right: 20px;
+    padding-left: 5px;
 }
 
 .mentions-cancel {
