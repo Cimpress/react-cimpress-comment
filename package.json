@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@cimpress/react-components": "^1.2.1",
-    "react-autosuggest": "^9.3.2",
+    "react-mentions": "^1.2.2",
     "react-placeholder": "^1.0.8",
     "react-timeago": "^3.4.3",
     "react-visibility-sensor": "^3.10.1",
