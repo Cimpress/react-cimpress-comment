@@ -52,7 +52,7 @@ export default class CommentsClient {
       } else {
         throw new Error('Unable to create resource');
       }
-    })
+    });
   }
 
   postComment (comment) {
@@ -75,7 +75,7 @@ export default class CommentsClient {
       if (response.status === 201) {
         return response.json();
       } else {
-        throw new Error(`Unable to create comment for: ${this.resourceUri}`)
+        throw new Error(`Unable to create comment for: ${this.resourceUri}`);
       }
     });
   }

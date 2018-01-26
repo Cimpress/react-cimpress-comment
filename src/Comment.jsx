@@ -10,7 +10,7 @@ import { getSubFromJWT } from './helper';
 import { MentionsInput, Mention } from 'react-mentions';
 import MentionsClient from './MentionsClient';
 import { shapes } from '@cimpress/react-components';
-import {TextBlock, MediaBlock, TextRow, RectShape, RoundShape} from 'react-placeholder/lib/placeholders';
+import { TextBlock, MediaBlock, TextRow, RectShape, RoundShape } from 'react-placeholder/lib/placeholders';
 
 let {Spinner} = shapes;
 
@@ -164,13 +164,13 @@ export default class _Comment extends React.Component {
 
   authorPlaceholder = (
     <div>
-      <TextBlock rows={1} color='lightgray' style={{width: 30, height: 5, marginTop: 10, marginBottom: 10}} />
+      <TextBlock rows={1} color='lightgray' style={{width: 30, height: 5, marginTop: 10, marginBottom: 10}}/>
     </div>
   );
 
   commentPlaceholder = (
     <div>
-      <TextBlock rows={2} color='gray' lineSpacing={4} style={{width: 30, height: 30}} />
+      <TextBlock rows={2} color='gray' lineSpacing={4} style={{width: 30, height: 30}}/>
     </div>
   );
 
@@ -185,9 +185,9 @@ export default class _Comment extends React.Component {
       } else if (this.state.editMode) {
         classes = 'mentions';
         let completeEdit = <div onClick={this.completeEditing.bind(this)} className={'fa fa-check mentions-ok'}/>;
-        let cancelEdit = <div onClick={this.cancelEditing.bind(this)} className={'fa fa-close mentions-cancel'}/>
+        let cancelEdit = <div onClick={this.cancelEditing.bind(this)} className={'fa fa-close mentions-cancel'}/>;
         editMenu = (<div>
-          { (this.state.editedComment !== null && this.state.editedComment !== this.state.comment) ? completeEdit : null }
+          {(this.state.editedComment !== null && this.state.editedComment !== this.state.comment) ? completeEdit : null}
           {cancelEdit}
         </div>);
       } else {
@@ -196,9 +196,9 @@ export default class _Comment extends React.Component {
     }
 
     let commentBody = (
-      <div style={{ position: "relative" }}>
+      <div style={{position: 'relative'}}>
         <MentionsInput className={classes} value={this.state.editedComment || this.state.comment} onChange={this.change.bind(this)}
-                       displayTransform={(id, display, type) => `@${display} `}>
+                       displayTransform={(id, display, type) => `@${display} `} allowSpaceInQuery={true}>
           <Mention trigger="@"
                    data={(search, callback) => { this.mentionsClient.fetchMatchingMentions(search).then(callback); }}
                    appendSpaceOnAdd={true}
@@ -207,20 +207,18 @@ export default class _Comment extends React.Component {
         {editMenu}
       </div>);
 
-
-
     let modified = <span>, modified {(this.state.updatedBy !== this.state.createdBy) ? `by ${this.state.updatedByName || this.state.updatedBy}` : null} <TimeAgo
       date={this.state.updatedAt}/></span>;
     return (
       <VisibilitySensor partialVisibility={true} scrollCheck={true} onChange={this.fetchComment.bind(this)}>
         <div className={this.props.className || 'comment'}>
-            <ReactPlaceholder showLoadingAnimation customPlaceholder={this.authorPlaceholder} ready={this.state.ready}>
-              <div className={"comment-creator"}>
-                {this.state.createdBy ? `${this.state.createdByName || this.state.createdBy}, ` : null}
-                <TimeAgo date={this.state.createdAt}/>{this.state.createdAt !== this.state.updatedAt ? modified : null}
-              </div>
-            </ReactPlaceholder>
-          <div style={{marginTop: "4px", marginBottom: "4px"}}>
+          <ReactPlaceholder showLoadingAnimation customPlaceholder={this.authorPlaceholder} ready={this.state.ready}>
+            <div className={'comment-creator'}>
+              {this.state.createdBy ? `${this.state.createdByName || this.state.createdBy}, ` : null}
+              <TimeAgo date={this.state.createdAt}/>{this.state.createdAt !== this.state.updatedAt ? modified : null}
+            </div>
+          </ReactPlaceholder>
+          <div>
             <ReactPlaceholder showLoadingAnimation customPlaceholder={this.commentPlaceholder} ready={this.state.ready}>
               {commentBody}
             </ReactPlaceholder>

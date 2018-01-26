@@ -31,10 +31,9 @@ export default class _Comments extends React.Component {
     };
   }
 
-  componentWillMount() {
+  componentWillMount () {
     this.forceFetchComments();
   }
-
 
   componentWillReceiveProps (newProps) {
     clearInterval(this.refreshInterval);
@@ -155,9 +154,9 @@ export default class _Comments extends React.Component {
       comments = <p>No comments here yet.</p>;
     }
 
-    let addCommentBox = <div className={'form-group input-group'} style={{display: 'table'}}>
-      <MentionsInput className="mentions" value={this.state.commentToAdd} onChange={this.onInputChange.bind(this)}
-                     displayTransform={(id, display, type) => `@${display}`} allowSpaceInQuery={true}>
+    let addCommentBox = <div style={{display: 'table'}}>
+      <MentionsInput className="mentions mentions-min-height" value={this.state.commentToAdd} onChange={this.onInputChange.bind(this)}
+                     displayTransform={(id, display, type) => `@${display} `} allowSpaceInQuery={true}>
         <Mention trigger="@"
                  data={(search, callback) => { this.mentionsClient.fetchMatchingMentions(search).then(callback); }}
                  appendSpaceOnAdd={true}
