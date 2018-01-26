@@ -4,12 +4,14 @@ import 'react-placeholder/lib/reactPlaceholder.css';
 import PropTypes from 'prop-types';
 import Comment from './Comment';
 import '../style/index.css';
-import { TextField, shapes } from '@cimpress/react-components';
-import CommentsClient from './CommentsClient';
-import { SERVICE_URL } from './config';
-import { getSubFromJWT } from './helper';
+import { shapes } from '@cimpress/react-components';
 
 let {Spinner} = shapes;
+
+import CommentsClient from './CommentsClient';
+import { SERVICE_URL } from './config';
+import { MentionsInput, Mention } from 'react-mentions';
+import MentionsClient from './MentionsClient';
 
 export default class _Comments extends React.Component {
 
@@ -17,7 +19,9 @@ export default class _Comments extends React.Component {
     super(props);
     this.commentServiceUrl = SERVICE_URL;
     this.commentsClient = new CommentsClient(props.accessToken, props.resourceUri);
+    this.mentionsClient = new MentionsClient(props.accessToken);
     this.state = {
+      blockEnter: false,
       visible: false,
       loading: false,
       commentsIds: [],
@@ -27,18 +31,13 @@ export default class _Comments extends React.Component {
     };
   }
 
-  componentWillUnmount() {
-    clearInterval(this.refreshInterval);
-  }
-
-  componentWillMount(){
+  componentWillMount () {
     this.forceFetchComments();
   }
 
   componentWillReceiveProps (newProps) {
     clearInterval(this.refreshInterval);
     this.refreshInterval = setInterval(() => this.forceFetchComments(), Math.max((this.props.refreshInterval || 60) * 1000, 5000));
-
     this.commentsClient = new CommentsClient(newProps.accessToken, newProps.resourceUri);
     if (newProps.resourceUri !== this.props.resourceUri) {
       this.setState({
@@ -48,18 +47,16 @@ export default class _Comments extends React.Component {
     }
   }
 
-  onInputChange (e) {
-    this.setState({commentToAdd: e.target.value});
+  onInputChange (event, newValue, newPlainTextValue, mentions) {
+    if (event.keyCode && event.keyCode === 13) {
+      // The "Enter" key was pressed.
+      this.postComment(this.state.commentToAdd);
+    }
+    this.setState({commentToAdd: event.target.value});
   }
 
   addComment (e) {
-    if (e.keyCode) {
-      if (e.keyCode === 13) { // The "Enter" key was pressed.
-        this.postComment(this.state.commentToAdd);
-      }
-    } else {
-      this.postComment(this.state.commentToAdd);
-    }
+    this.postComment(this.state.commentToAdd);
   }
 
   fetchComments (isVisible) {
@@ -102,13 +99,16 @@ export default class _Comments extends React.Component {
           failed: true
         });
       }
-      console.log(err);
+      console.error(err);
     }).then(() => {
       this.reportCommentCount();
     });
   }
 
   postComment (comment) {
+    if (!comment || comment.length === 0) {
+      return;
+    }
     let tempId = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
     if (this.props.newestFirst) {
       this.state.commentsIds.unshift(tempId);
@@ -120,10 +120,9 @@ export default class _Comments extends React.Component {
       commentsIds: this.state.commentsIds.slice(0),
       commentsObjects: Object.assign({[tempId]: {comment}}, this.state.commentObjects)
     });
-    return this.commentsClient.postComment(comment).then(() => this.fetchComments(this.state.visible)).then(()=>
-    {
+    return this.commentsClient.postComment(comment).then(() => this.fetchComments(this.state.visible)).then(() => {
       this.reportCommentCount();
-    })
+    });
   }
 
   reportCommentCount () {
@@ -143,7 +142,7 @@ export default class _Comments extends React.Component {
     } else if (this.state.commentsIds.length > 0) {
       comments = this.state.commentsIds.map(
         (id, index) => <Comment className={'comment ' + ((index % 2 === 0) ? 'comment-even' : 'comment-odd')} key={id} accessToken={this.props.accessToken}
-          commentUri={url + id} comment={this.state.commentObjects[id]} editComments={this.props.editComments}/>);
+                                commentUri={url + id} comment={this.state.commentObjects[id]} editComments={this.props.editComments}/>);
     } else if (this.state.loading) {
       comments = <div>
         <div className="inline-spinner"><Spinner size={20}/></div>
@@ -155,19 +154,20 @@ export default class _Comments extends React.Component {
       comments = <p>No comments here yet.</p>;
     }
 
-    let addCommentBox = <TextField
-      name="autoFocus"
-      placeholder="Put your comment here, and ..."
-      value={this.state.commentToAdd}
-      autoFocus
-      onChange={this.onInputChange.bind(this)}
-      onKeyDown={this.addComment.bind(this)}
-      rightAddon={
-        <button disabled={!this.props.resourceUri || this.state.commentToAdd.trim() === ''} onClick={this.addComment.bind(this)} className="btn btn-default">
-          post
-        </button>
-      }
-    />;
+    let addCommentBox = <div style={{display: 'table'}}>
+      <MentionsInput className="mentions mentions-min-height" value={this.state.commentToAdd} onChange={this.onInputChange.bind(this)}
+                     displayTransform={(id, display, type) => `@${display} `} allowSpaceInQuery={true}>
+        <Mention trigger="@"
+                 data={(search, callback) => { this.mentionsClient.fetchMatchingMentions(search).then(callback); }}
+                 appendSpaceOnAdd={true}
+        />
+      </MentionsInput>
+      <span className="input-group-btn" style={{display: 'table-cell'}}>
+          <button disabled={!this.props.resourceUri || this.state.commentToAdd.trim() === ''} onClick={this.addComment.bind(this)} className="btn btn-default">
+            post
+          </button>
+        </span>
+    </div>;
 
     return (
       <VisibilitySensor partialVisibility={true} scrollCheck={true} onChange={this.fetchComments.bind(this)}>

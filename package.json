@@ -1,6 +1,6 @@
 {
   "name": "react-cimpress-comment",
-  "version": "0.1.11",
+  "version": "0.2.0",
   "description": "Visualizes comment(s) for a particular platform resource",
   "main": "./lib/index.js",
   "scripts": {
@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "@cimpress/react-components": "^1.2.1",
+    "react-mentions": "^1.2.2",
     "react-placeholder": "^1.0.8",
     "react-timeago": "^3.4.3",
     "react-visibility-sensor": "^3.10.1",

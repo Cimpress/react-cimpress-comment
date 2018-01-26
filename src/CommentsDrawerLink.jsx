@@ -32,11 +32,11 @@ export default class _CommentsDrawerLink extends React.Component {
   }
 
   render () {
-    let footer = ( <div className="text-right">
+    let footer = (<div className="text-right">
       <button className="btn btn-default" onClick={() => this.setState({commentsDrawerOpen: false})}>
         <i className="fa fa-times" aria-hidden="true"></i>&nbsp;Close
       </button>
-    </div> );
+    </div>);
 
     return (
       <span>
@@ -52,8 +52,8 @@ export default class _CommentsDrawerLink extends React.Component {
         <Drawer
           show={this.state.commentsDrawerOpen}
           onRequestHide={() => this.setState({commentsDrawerOpen: false})}
-          header={this.props.header ? this.props.header : "Comments"}
-          position={this.props.position === "left" ? "left" : "right"}
+          header={this.props.header ? this.props.header : 'Comments'}
+          position={this.props.position === 'left' ? 'left' : 'right'}
           closeOnClickOutside={true}
           footer={this.props.footer ? this.props.footer : footer}>
         <Comments {...this.props} commentCountRefreshed={this.updateCommentCount.bind(this)}/>
@@ -71,5 +71,5 @@ _CommentsDrawerLink.propTypes = {
   refreshInterval: PropTypes.number,
   position: PropTypes.string,
   header: PropTypes.node,
-  footer: PropTypes.node,
+  footer: PropTypes.node
 };

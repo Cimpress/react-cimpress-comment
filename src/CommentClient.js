@@ -37,7 +37,6 @@ export default class CommentClient {
       cache: 'default',
       body: JSON.stringify(payload)
     };
-
     return fetch(this.commentUri, init).then(response => {
       if (response.status === 200) {
         return this.fetchComment().catch(() => {
