@@ -10,6 +10,8 @@ import { getSubFromJWT } from './helper';
 import { MentionsInput, Mention } from 'react-mentions';
 import MentionsClient from './MentionsClient';
 import { shapes } from '@cimpress/react-components';
+import {TextBlock, MediaBlock, TextRow, RectShape, RoundShape} from 'react-placeholder/lib/placeholders';
+
 let {Spinner} = shapes;
 
 let globalCacheKey = Symbol();
@@ -128,7 +130,7 @@ export default class _Comment extends React.Component {
 
   completeEditing () {
     this.setState({
-      savingComment: true,
+      savingComment: true
     });
     if (this.state.editedComment !== null && this.state.editedComment !== this.state.comment) {
       this.putComment(this.state.editedComment.trim()).then((responseJson) => {
@@ -147,7 +149,7 @@ export default class _Comment extends React.Component {
       this.setState({
         editedComment: null,
         editMode: false,
-        savingComment: false,
+        savingComment: false
       });
     }
   }
@@ -160,45 +162,66 @@ export default class _Comment extends React.Component {
     this.fetchComment(this.state.isVisible);
   }
 
+  authorPlaceholder = (
+    <div>
+      <TextBlock rows={1} color='lightgray' style={{width: 30, height: 5, marginTop: 10, marginBottom: 10}} />
+    </div>
+  );
+
+  commentPlaceholder = (
+    <div>
+      <TextBlock rows={2} color='gray' lineSpacing={4} style={{width: 30, height: 30}} />
+    </div>
+  );
+
   render () {
     let jwtSub = getSubFromJWT(this.props.accessToken);
-    let classes = "mentions disabled";
-    let edit = null;
+    let classes = 'mentions disabled';
+    let editMenu = null;
     if (this.props.editComments === true && (this.state.createdBy === jwtSub || this.state.updatedBy === jwtSub)) {
       if (this.state.savingComment === true) {
-        classes = "mentions disabled";
-        edit = <div className={"mentions-edit"}><Spinner size={20}/></div>
+        classes = 'mentions disabled';
+        editMenu = <div className={'mentions-edit'}><Spinner size={20}/></div>;
       } else if (this.state.editMode) {
-        classes = "mentions";
-        edit = <div><div onClick={this.completeEditing.bind(this)} className={"fa fa-check mentions-ok"} /><div onClick={this.cancelEditing.bind(this)} className={"fa fa-close mentions-cancel"} /></div>
+        classes = 'mentions';
+        let completeEdit = <div onClick={this.completeEditing.bind(this)} className={'fa fa-check mentions-ok'}/>;
+        let cancelEdit = <div onClick={this.cancelEditing.bind(this)} className={'fa fa-close mentions-cancel'}/>
+        editMenu = (<div>
+          { (this.state.editedComment !== null && this.state.editedComment !== this.state.comment) ? completeEdit : null }
+          {cancelEdit}
+        </div>);
       } else {
-        edit = <div onClick={() => { this.setState({ editMode: true })} } className={"mentions-edit fa fa-edit"} />
+        editMenu = <div onClick={() => { this.setState({editMode: true});}} className={'mentions-edit fa fa-edit'}/>;
       }
     }
 
     let commentBody = (
-      <div style={{ position: "relative", verticalAlign: "center" }}>
-      <MentionsInput className={classes} value={this.state.editedComment || this.state.comment} onChange={this.change.bind(this)} displayTransform={(id, display, type) => `@${display}`}>
-        <Mention trigger="@"
-                 data={(search, callback) => { this.mentionsClient.fetchMatchingMentions(search).then(callback); }}
-        />
-      </MentionsInput>
-        {edit}
+      <div style={{ position: "relative" }}>
+        <MentionsInput className={classes} value={this.state.editedComment || this.state.comment} onChange={this.change.bind(this)}
+                       displayTransform={(id, display, type) => `@${display} `}>
+          <Mention trigger="@"
+                   data={(search, callback) => { this.mentionsClient.fetchMatchingMentions(search).then(callback); }}
+                   appendSpaceOnAdd={true}
+          />
+        </MentionsInput>
+        {editMenu}
       </div>);
+
+
 
     let modified = <span>, modified {(this.state.updatedBy !== this.state.createdBy) ? `by ${this.state.updatedByName || this.state.updatedBy}` : null} <TimeAgo
       date={this.state.updatedAt}/></span>;
     return (
       <VisibilitySensor partialVisibility={true} scrollCheck={true} onChange={this.fetchComment.bind(this)}>
         <div className={this.props.className || 'comment'}>
-          <div className="comment-creator">
-            <ReactPlaceholder showLoadingAnimation type='textRow' ready={this.state.ready}>
-              <div>{this.state.createdBy ? `${this.state.createdByName || this.state.createdBy}, ` : null}<TimeAgo
-                date={this.state.createdAt}/>{this.state.createdAt !== this.state.updatedAt ? modified : null}</div>
+            <ReactPlaceholder showLoadingAnimation customPlaceholder={this.authorPlaceholder} ready={this.state.ready}>
+              <div className={"comment-creator"}>
+                {this.state.createdBy ? `${this.state.createdByName || this.state.createdBy}, ` : null}
+                <TimeAgo date={this.state.createdAt}/>{this.state.createdAt !== this.state.updatedAt ? modified : null}
+              </div>
             </ReactPlaceholder>
-          </div>
-          <div>
-            <ReactPlaceholder showLoadingAnimation type='text' rows={1} ready={this.state.ready}>
+          <div style={{marginTop: "4px", marginBottom: "4px"}}>
+            <ReactPlaceholder showLoadingAnimation customPlaceholder={this.commentPlaceholder} ready={this.state.ready}>
               {commentBody}
             </ReactPlaceholder>
           </div>

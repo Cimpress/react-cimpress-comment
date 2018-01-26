@@ -156,7 +156,7 @@ export default class _Comments extends React.Component {
     }
 
     let addCommentBox = <div className={'form-group input-group'} style={{display: 'table'}}>
-      <MentionsInput className="mentions" value={this.state.commentToAdd} onChange={this.onInputChange.bind(this)} singleLine={true}
+      <MentionsInput className="mentions" value={this.state.commentToAdd} onChange={this.onInputChange.bind(this)}
                      displayTransform={(id, display, type) => `@${display}`} allowSpaceInQuery={true}>
         <Mention trigger="@"
                  data={(search, callback) => { this.mentionsClient.fetchMatchingMentions(search).then(callback); }}
