@@ -1,8 +1,10 @@
+import { AUTH_SERVICE_URL } from './config';
+
 export default class MentionsClient {
 
   constructor (accessToken) {
     this.accessToken = accessToken;
-    this.principalUri = 'https://api.cimpress.io/auth/access-management/v1/principals';
+    this.principalUri = `${AUTH_SERVICE_URL}/auth/access-management/v1/principals`;
   }
 
   fetchMatchingMentions (query) {

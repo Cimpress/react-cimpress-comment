@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Access-Control-Allow-Origin: *
+
+{
+    "createdAt": "2018-01-25T12:15:55.531Z",
+    "comment": "Second comment @[John Doe](b636a568-b51e-4653-903c-01e7bd5a5086)",
+    "id": "7e6395b0-01c9-11e8-952c-85c7cdb92fcc",
+    "updatedBy": "49c087ab-3fee-4994-86e7-c63d2b47ac8b",
+    "createdBy": "49c087ab-3fee-4994-86e7-c63d2b47ac8b",
+    "updatedAt": "2018-01-25T12:55:24.973Z"
+}
