@@ -8,7 +8,7 @@ git checkout -b results
 git add ./backstop_data/bitmaps_test/* -f
 git add ./backstop_data/html_report/* -f
 git add ./backstop_data/bitmaps_reference/* -f
-git clean -n
+git clean -f
 git pull origin results -f
 git commit --message "Travis build: $TRAVIS_BUILD_NUMBER"
 git push --quiet --set-upstream origin-results results
