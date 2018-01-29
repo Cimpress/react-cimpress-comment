@@ -5,7 +5,7 @@
   "main": "./lib/index.js",
   "scripts": {
     "build": "babel src -d lib",
-    "storybook": "((kill -9 `cat mockserver.pid`; kill -9 `cat storybook.pid`) || true) && (node_modules/.bin/mockserver -p 9102 -m ./mocks/ & echo $! > mockserver.pid) && (node_modules/.bin/start-storybook -p 9001 -c .storybook & echo $! > storybook.pid)"
+    "storybook": "((kill -9 `cat mockserver.pid`; kill -9 `cat storybook.pid`) || true) && (node_modules/.bin/start-storybook -p 9001 -c .storybook & echo $! > storybook.pid) && (node_modules/.bin/mockserver -p 9102 -m ./mocks/ & echo $! > mockserver.pid)"
   },
   "repository": {
     "type": "git",
