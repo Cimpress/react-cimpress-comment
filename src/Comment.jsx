@@ -186,7 +186,7 @@ export default class _Comment extends React.Component {
       } else if (this.state.editMode) {
         classes = 'mentions';
         let completeEdit = <div onClick={this.completeEditing.bind(this)} className={'fa fa-check mentions-ok'}/>;
-        let cancelEdit = <div onClick={this.cancelEditing.bind(this)} className={'fa fa-close mentions-cancel'}/>;
+        let cancelEdit = <div onClick={this.cancelEditing.bind(this)} className={'fa fa-undo mentions-cancel'}/>;
         editMenu = (<div>
           {(this.state.editedComment !== null && this.state.editedComment !== this.state.comment) ? completeEdit : null}
           {cancelEdit}
