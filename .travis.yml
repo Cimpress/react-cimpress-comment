@@ -3,6 +3,9 @@ node_js:
 - '6'
 dist: trusty
 sudo: false
+branches:
+  except:
+    - results
 addons:
   chrome: stable
 install:
