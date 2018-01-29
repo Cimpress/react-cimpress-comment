@@ -9,8 +9,8 @@ install:
 - npm install
 script:
 - npm run storybook
-- node_modules/.bin/backstop test
 - sleep 20 && echo "done waiting"
+- node_modules/.bin/backstop test
 - npm run-script build
 deploy:
   provider: npm
