@@ -30,7 +30,7 @@
       "postInteractionWait": "",
       "selectors": [],
       "selectorExpansion": true,
-      "misMatchThreshold" : 0.1,
+      "misMatchThreshold" : 3.0,
       "requireSameDimensions": true
     }
   ],
