@@ -1,9 +1,16 @@
 language: node_js
 node_js:
   - "6"
+dist: trusty
+sudo: false
+addons:
+  chrome: stable
 install:
 - npm install
 script:
+- node_modules/.bin/mockserver -p 9002 -m ./mocks/ &
+- npm run storybook
+-
 - npm run-script build
 deploy:
   provider: npm

@@ -1,0 +1,16 @@
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Access-Control-Allow-Origin: *
+
+{
+    "principals" : [
+        {
+            "name" : "John Doe",
+            "user_id" : "b636a568-b51e-4653-903c-01e7bd5a5086"
+        },
+        {
+            "name" : "John Does",
+            "user_id" : "b636a568-b51e-4653-903c-01e71d5a5a86"
+        }
+    ]
+}

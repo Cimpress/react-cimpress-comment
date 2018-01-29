@@ -11,6 +11,7 @@ import { MentionsInput, Mention } from 'react-mentions';
 import MentionsClient from './MentionsClient';
 import { shapes } from '@cimpress/react-components';
 import { TextBlock, MediaBlock, TextRow, RectShape, RoundShape } from 'react-placeholder/lib/placeholders';
+import { AUTH_SERVICE_URL } from './config';
 
 let {Spinner} = shapes;
 
@@ -60,7 +61,7 @@ export default class _Comment extends React.Component {
   }
 
   fetchUserName (userId, stateToUpdate) {
-    let url = `https://api.cimpress.io/auth/access-management/v1/principals/${userId}`;
+    let url = `${AUTH_SERVICE_URL}/auth/access-management/v1/principals/${userId}`;
     let headers = new Headers();
     headers.append('Authorization', `Bearer ${this.props.accessToken}`);
     let init = {
