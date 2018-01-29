@@ -10,5 +10,6 @@ git add ./backstop_data/html_report/* -f
 git add ./backstop_data/bitmaps_reference/* -f
 git clean -f
 git commit --message "Travis build: $TRAVIS_BUILD_NUMBER"
-git pull origin results -f
+git merge --strategy-option ours origin/results
 git push --quiet --set-upstream origin-results results
+
