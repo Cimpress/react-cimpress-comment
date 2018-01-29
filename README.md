@@ -65,3 +65,18 @@ New minor version: `$ npm version minor [ && npm publish ]` // backwards compati
 New major version: `$ npm version major [ && npm publish ]` // breaking changes
 
 Publish a module: $ npm publish
+
+
+## Development
+
+For developping you can use [storybook](https://github.com/storybooks/storybook)
+
+    npm run storybook
+
+During and after development it is good to check or update [BackstopJS](https://github.com/garris/BackstopJS) data. Using the right commands, like
+
+    backstop test
+    backstop approve
+
+Make sure you have backstop installed `npm install -g backstopjs`
+
