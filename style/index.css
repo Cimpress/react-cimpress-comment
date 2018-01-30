@@ -65,9 +65,15 @@
 
 .comment-drawer-button {
     font-size:2em;
+    color: #0088a9;
+    cursor: pointer;
     position:relative;
     padding-top:5px;
     display:inline-block;
+}
+
+.comment-drawer-button:hover {
+    color: #00738e;
 }
 
 .mentions__highlighter, .mentions__input {
@@ -199,8 +205,8 @@ textarea {
 
 .mentions-cancel {
     position: absolute;
-    font-size: 18px;
-    top: 5px;
+    font-size: 15px;
+    top: 7px;
     right: 5px;
     color: red;
     background-color: white;
