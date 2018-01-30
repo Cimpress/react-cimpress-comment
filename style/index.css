@@ -65,9 +65,15 @@
 
 .comment-drawer-button {
     font-size:2em;
+    color: #0088a9;
+    cursor: pointer;
     position:relative;
     padding-top:5px;
     display:inline-block;
+}
+
+.comment-drawer-button:hover {
+    color: #00738e;
 }
 
 .mentions__highlighter, .mentions__input {
