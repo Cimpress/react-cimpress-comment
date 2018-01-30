@@ -73,10 +73,17 @@ For developping you can use [storybook](https://github.com/storybooks/storybook)
 
     npm run storybook
 
+will run both the mockserver and the storybook UI.
+
 During and after development it is good to check or update [BackstopJS](https://github.com/garris/BackstopJS) data. Using the right commands, like
 
     backstop test
+
+to perform the generation of the test screenshots and their diffs to references and
+
     backstop approve
 
-Make sure you have backstop installed `npm install -g backstopjs`
+to promote images to references if the breaking changes are intended.
+
+Make sure you have backstop installed `npm install -g backstopjs` or use the one in `node_modules`.
 
