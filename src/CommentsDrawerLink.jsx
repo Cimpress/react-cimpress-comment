@@ -10,7 +10,7 @@ export default class _CommentsDrawerLink extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      commentsDrawerOpen: false,
+      commentsDrawerOpen: props.opened || false,
       availableComments: null,
       opacity: 0
     };
@@ -21,6 +21,11 @@ export default class _CommentsDrawerLink extends React.Component {
       this.setState({
         opacity: 0
       });
+    }
+    if (newProps.opened !== this.props.opened) {
+      this.setState({
+        commentsDrawerOpen: newProps.opened
+      })
     }
   }
 
@@ -41,13 +46,11 @@ export default class _CommentsDrawerLink extends React.Component {
     return (
       <span>
         <div className="comment-drawer-button">
-          <a href="#">
-            <span className="fa fa-comments-o"
-                  onClick={() => this.setState({
-                    commentsDrawerOpen: true
-                  })}/>
-            <span key="test" className="comment-count-badge" style={{opacity: this.state.opacity}}>{this.state.availableComments}</span>
-          </a>
+          <span className="fa fa-comments-o"
+                onClick={() => this.setState({
+                  commentsDrawerOpen: true
+                })}/>
+          <span key="test" className="comment-count-badge" style={{opacity: this.state.opacity}}>{this.state.availableComments}</span>
         </div>
         <Drawer
           show={this.state.commentsDrawerOpen}
@@ -71,5 +74,6 @@ _CommentsDrawerLink.propTypes = {
   refreshInterval: PropTypes.number,
   position: PropTypes.string,
   header: PropTypes.node,
-  footer: PropTypes.node
+  footer: PropTypes.node,
+  opened: PropTypes.bool
 };

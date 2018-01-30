@@ -1,0 +1,34 @@
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Access-Control-Allow-Origin: *
+
+{
+    "URI": "http://eda234a4-485f-4c0c-806d-1c9748994c00.com",
+    "comments": [
+        {
+            "createdAt": "2018-01-24T14:04:59.595Z",
+            "comment": "First comment",
+            "id": "908ac1b0-010f-11e8-9aec-197d791cffc8",
+            "updatedBy": "49c087ab-3fee-4994-86e7-c63d2b47ac8b",
+            "createdBy": "49c087ab-3fee-4994-86e7-c63d2b47ac8b",
+            "updatedAt": "2018-01-24T14:04:59.595Z"
+        },
+        {
+            "createdAt": "2018-01-25T12:15:55.531Z",
+            "comment": "Second comment @[John Doe](b636a568-b51e-4653-903c-01e7bd5a5086)",
+            "id": "7e6395b0-01c9-11e8-952c-85c7cdb92fcc",
+            "updatedBy": "49c087ab-3fee-4994-86e7-c63d2b47ac8b",
+            "createdBy": "49c087ab-3fee-4994-86e7-c63d2b47ac8b",
+            "updatedAt": "2018-01-25T12:55:24.973Z"
+        },
+        {
+            "createdAt": "2018-01-25T12:16:02.496Z",
+            "comment": "Third comment",
+            "id": "828a5c00-01c9-11e8-952c-85c7cdb92fcc",
+            "updatedBy": "49c087ab-3fee-4994-86e7-c63d2b47ac8b",
+            "createdBy":"49c087ab-3fee-4994-86e7-c63d2b47ac8b",
+            "updatedAt": "2018-01-25T12:55:24.973Z"
+        }
+    ],
+    "eTag": 5
+}
