@@ -32,7 +32,15 @@ export default class _Comments extends React.Component {
   }
 
   componentWillMount () {
-    this.forceFetchComments();
+    setTimeout(() => this.forceFetchComments(), 10);
+  }
+
+  componentDidMount() {
+    this._ismounted = true;
+  }
+
+  componentWillUnmount() {
+    this._ismounted = false;
   }
 
   componentWillReceiveProps (newProps) {
@@ -69,13 +77,17 @@ export default class _Comments extends React.Component {
   }
 
   forceFetchComments () {
+    if (!this._ismounted) {
+      return;
+    }
+
     this.setState({
       loading: true,
       failed: false
     });
     let currentClient = this.commentsClient;
     currentClient.fetchComments().then(responseJson => {
-      if (currentClient.resourceUri === this.props.resourceUri) {
+      if (currentClient.resourceUri === this.props.resourceUri && this._ismounted) {
         this.setState({
           loading: false,
           failed: false,
