@@ -79,36 +79,20 @@
 .mentions__highlighter, .mentions__input {
     padding: 5px;
     font-size: 14px;
-    line-height: 1.286;
     color: #3a414c;
     background-color: #fff;
     border-radius: 2px;
     height:100% !important;
+    box-sizing: border-box !important;
     min-height: 30px !important;
+    line-height: 18px !important;
     position: relative;
     z-index: 2;
     float: left;
     width: 100%;
     margin-bottom: 0;
-    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-}
-
-.mentions__input {
-    padding: 5px;
-    font-size: 14px;
-    line-height: 1.286;
-    color: #3a414c;
-    background-color: #fff;
-    border: 1px solid #c4cdd6;
-    border-radius: 2px;
-    height:100% !important;
-    min-height: 30px !important;
-    position: relative;
-    z-index: 2;
-    float: left;
-    width: 100%;
-    margin-bottom: 0;
-    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
     transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
 
@@ -117,8 +101,8 @@
     height:100%;
     overflow-y: hidden;
 }
-
-.mentions-min-height > .mentions__control {
+.mentions-min-height > .mentions__control > .mentions__input,
+.mentions-min-height > .mentions__control > .mentions__highlighter {
     min-height: 50px !important;
 }
 
@@ -127,7 +111,6 @@
     z-index: 0;
     display: table;
     border-collapse: separate;
-    box-sizing: border-box;
     width: 100%;
     max-width: 100%;
     height:100%;

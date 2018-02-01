@@ -158,6 +158,23 @@
       "selectorExpansion": true,
       "misMatchThreshold": 1.0,
       "requireSameDimensions": true
+    },
+    {
+      "label": "mention_box_highlighter_for_mentions",
+      "cookiePath": "",
+      "url": "http://localhost:9001/iframe.html?selectedKind=Mention%20box&selectedStory=Highlighter%20for%20mentions",
+      "referenceUrl": "",
+      "readyEvent": "",
+      "readySelector": "div.comments",
+      "delay": 2000,
+      "hideSelectors": [],
+      "removeSelectors": [],
+      "hoverSelector": "",
+      "postInteractionWait": "",
+      "selectors": [],
+      "selectorExpansion": true,
+      "misMatchThreshold": 1.0,
+      "requireSameDimensions": true
     }
   ],
   "paths": {

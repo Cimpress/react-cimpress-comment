@@ -26,8 +26,8 @@ export default class _Comments extends React.Component {
       loading: false,
       commentsIds: [],
       commentObjects: {},
-      commentToAdd: '',
-      failed: false
+      commentToAdd: props.initialValue || '',
+      failed: false,
     };
   }
 
@@ -201,5 +201,6 @@ _Comments.propTypes = {
   newestFirst: PropTypes.bool,
   editComments: PropTypes.bool,
   refreshInterval: PropTypes.number,
-  commentCountRefreshed: PropTypes.func
+  commentCountRefreshed: PropTypes.func,
+  initialValue: PropTypes.string
 };
