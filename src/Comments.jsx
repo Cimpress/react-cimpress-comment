@@ -56,11 +56,7 @@ export default class _Comments extends React.Component {
   }
 
   onInputChange (event, newValue, newPlainTextValue, mentions) {
-    if (event.keyCode && event.keyCode === 13) {
-      // The "Enter" key was pressed.
-      this.postComment(this.state.commentToAdd);
-    }
-    this.setState({commentToAdd: event.target.value});
+      this.setState({commentToAdd: newPlainTextValue});
   }
 
   addComment (e) {
@@ -168,10 +164,9 @@ export default class _Comments extends React.Component {
 
     let addCommentBox = <div style={{display: 'table'}}>
       <MentionsInput className="mentions mentions-min-height" value={this.state.commentToAdd} onChange={this.onInputChange.bind(this)}
-                     displayTransform={(id, display, type) => `@${display} `} allowSpaceInQuery={true}>
+                     allowSpaceInQuery={true}>
         <Mention trigger="@"
                  data={(search, callback) => { this.mentionsClient.fetchMatchingMentions(search).then(callback); }}
-                 appendSpaceOnAdd={true}
         />
       </MentionsInput>
       <span className="input-group-btn" style={{display: 'table-cell'}}>

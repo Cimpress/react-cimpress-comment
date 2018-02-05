@@ -29,6 +29,7 @@
 
 .comment-creator {
     margin-left: 1px;
+    margin-bottom: 4px;
     font-size: 10px;
     max-width: 500px;
     color: #c4cdd6
@@ -76,8 +77,13 @@
     color: #00738e;
 }
 
+.mentions__highlighter {
+    pointer-events: none;
+    user-select: none;
+}
+
 .mentions__highlighter, .mentions__input {
-    padding: 5px;
+    padding: 5px 40px 5px 5px;
     font-size: 14px;
     color: #3a414c;
     background-color: #fff;

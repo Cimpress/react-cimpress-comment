@@ -199,10 +199,8 @@ export default class _Comment extends React.Component {
     let commentBody = (
       <div style={{position: 'relative'}}>
         <MentionsInput className={classes} value={this.state.editedComment || this.state.comment} onChange={this.change.bind(this)}
-                       displayTransform={(id, display, type) => `@${display} `} allowSpaceInQuery={true}>
-          <Mention trigger="@"
-                   data={(search, callback) => { this.mentionsClient.fetchMatchingMentions(search).then(callback); }}
-                   appendSpaceOnAdd={true}
+                       allowSpaceInQuery={true}>
+          <Mention trigger="@" data={(search, callback) => { this.mentionsClient.fetchMatchingMentions(search).then(callback); }}
           />
         </MentionsInput>
         {editMenu}
