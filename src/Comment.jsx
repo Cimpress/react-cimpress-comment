@@ -125,7 +125,7 @@ export default class _Comment extends React.Component {
 
   change (event, newValue, newPlainTextValue, mentions) {
     this.setState({
-      editedComment: newPlainTextValue
+      editedComment: newValue
     });
   }
 
@@ -199,7 +199,7 @@ export default class _Comment extends React.Component {
     let commentBody = (
       <div style={{position: 'relative'}}>
         <MentionsInput className={classes} value={this.state.editedComment || this.state.comment} onChange={this.change.bind(this)}
-                       allowSpaceInQuery={true}>
+                       displayTransform={(id, display, type) => `@${display}`} allowSpaceInQuery={true} >
           <Mention trigger="@" data={(search, callback) => { this.mentionsClient.fetchMatchingMentions(search).then(callback); }}
           />
         </MentionsInput>
