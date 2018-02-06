@@ -80,22 +80,20 @@
 .mentions__highlighter {
     pointer-events: none;
     user-select: none;
+    z-index: -10 !important;
 }
 
 .mentions__highlighter, .mentions__input {
-    padding: 5px 40px 5px 5px;
-    font-size: 14px;
+    padding: 5px 40px 5px 5px !important;
+    font-size: 14px !important;
     color: #3a414c;
-    background-color: #fff;
-    border-radius: 2px;
     height:100% !important;
     box-sizing: border-box !important;
     min-height: 30px !important;
     line-height: 18px !important;
-    position: relative;
     z-index: 2;
     float: left;
-    width: 100%;
+    width: 100% !important;
     margin-bottom: 0;
     white-space: pre-wrap !important;
     word-wrap: break-word !important;
@@ -128,16 +126,27 @@
     outline:none;
 }
 
+.disabled textarea:focus {
+    box-shadow: none;
+}
+
 .disabled textarea {
     margin: 1px;
-    pointer-events: none;
+    pointer-events: all;
     border: none;
     outline: none;
     box-shadow: none;
+    user-select: text !important;
+    color: transparent;
+    display: inline-block;
+    font-size: 2em;
+    text-shadow: 0 0 0 black;
+    width: 2em;
 }
 
 textarea {
     resize: vertical;
+    user-select: text !important;
 }
 
 .mentions__input:focus {
