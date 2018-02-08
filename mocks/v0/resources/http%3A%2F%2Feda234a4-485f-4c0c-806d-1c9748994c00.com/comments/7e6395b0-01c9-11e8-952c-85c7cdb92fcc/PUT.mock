@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Access-Control-Allow-Origin: *
+
+{
+    "createdAt": "2018-01-24T14:04:59.595Z",
+    "comment": "First comment modified",
+    "id": "908ac1b0-010f-11e8-9aec-197d791cffc8",
+    "updatedBy": "49c087ab-3fee-4994-86e7-c63d2b47ac8b",
+    "createdBy": "49c087ab-3fee-4994-86e7-c63d2b47ac8b",
+    "updatedAt": "2018-01-24T14:04:59.595Z"
+}
