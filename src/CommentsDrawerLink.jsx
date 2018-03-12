@@ -42,6 +42,10 @@ export default class _CommentsDrawerLink extends React.Component {
         <i className="fa fa-times" aria-hidden="true"></i>&nbsp;Close
       </button>
     </div>);
+    let comments
+    if(!this.props.disablePreload || this.state.commentsDrawerOpen){
+      comments = <Comments {...this.props} commentCountRefreshed={this.updateCommentCount.bind(this)}/>
+    }
 
     return (
       <span>
@@ -59,7 +63,7 @@ export default class _CommentsDrawerLink extends React.Component {
           position={this.props.position === 'left' ? 'left' : 'right'}
           closeOnClickOutside={true}
           footer={this.props.footer ? this.props.footer : footer}>
-        <Comments {...this.props} commentCountRefreshed={this.updateCommentCount.bind(this)}/>
+        {comments}
         </Drawer>
       </span>
     );
@@ -75,5 +79,6 @@ _CommentsDrawerLink.propTypes = {
   position: PropTypes.string,
   header: PropTypes.node,
   footer: PropTypes.node,
-  opened: PropTypes.bool
+  opened: PropTypes.bool,
+  disablePreload: PropTypes.bool
 };
