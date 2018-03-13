@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import VisibilitySensor from 'react-visibility-sensor';
 import 'react-placeholder/lib/reactPlaceholder.css';
 import '../style/index.css';
 import { Drawer } from '@cimpress/react-components';
@@ -12,7 +13,8 @@ export default class _CommentsDrawerLink extends React.Component {
     this.state = {
       commentsDrawerOpen: props.opened || false,
       availableComments: null,
-      opacity: 0
+      opacity: 0,
+      isVisible: false
     };
   }
 
@@ -43,29 +45,38 @@ export default class _CommentsDrawerLink extends React.Component {
       </button>
     </div>);
     let comments
-    if(!this.props.disablePreload || this.state.commentsDrawerOpen){
+    if (this.state.isVisible) {
       comments = <Comments {...this.props} commentCountRefreshed={this.updateCommentCount.bind(this)}/>
     }
 
     return (
-      <span>
-        <div className="comment-drawer-button">
-          <span className="fa fa-comments-o"
-                onClick={() => this.setState({
-                  commentsDrawerOpen: true
-                })}/>
-          <span key="test" className="comment-count-badge" style={{opacity: this.state.opacity}}>{this.state.availableComments}</span>
-        </div>
-        <Drawer
-          show={this.state.commentsDrawerOpen}
-          onRequestHide={() => this.setState({commentsDrawerOpen: false})}
-          header={this.props.header ? this.props.header : 'Comments'}
-          position={this.props.position === 'left' ? 'left' : 'right'}
-          closeOnClickOutside={true}
-          footer={this.props.footer ? this.props.footer : footer}>
-        {comments}
-        </Drawer>
-      </span>
+      <VisibilitySensor
+        onChange={(visible) => {
+          if (visible && this.state.isVisible !== visible) {
+            this.setState({ isVisible: visible })
+          }
+        }}
+        partialVisibility
+        scrollCheck>
+        <span>
+          <div className="comment-drawer-button">
+            <span className="fa fa-comments-o"
+              onClick={() => this.setState({
+                commentsDrawerOpen: true
+              })}/>
+            <span key="test" className="comment-count-badge" style={{opacity: this.state.opacity}}>{this.state.availableComments}</span>
+          </div>
+          <Drawer
+            show={this.state.commentsDrawerOpen}
+            onRequestHide={() => this.setState({commentsDrawerOpen: false})}
+            header={this.props.header ? this.props.header : 'Comments'}
+            position={this.props.position === 'left' ? 'left' : 'right'}
+            closeOnClickOutside={true}
+            footer={this.props.footer ? this.props.footer : footer}>
+            {comments}
+          </Drawer>
+        </span>
+      </ VisibilitySensor>
     );
   }
 }
@@ -79,6 +90,5 @@ _CommentsDrawerLink.propTypes = {
   position: PropTypes.string,
   header: PropTypes.node,
   footer: PropTypes.node,
-  opened: PropTypes.bool,
-  disablePreload: PropTypes.bool
+  opened: PropTypes.bool
 };
