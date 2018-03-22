@@ -40,7 +40,7 @@ export default class _Comments extends React.Component {
 
   componentDidMount() {
     this._ismounted = true
-    fetch(`${CUSTOMIZR_URL}/v1/${this.customizrResource}/settings`, {
+    fetch(`${CUSTOMIZR_URL}/v1/resources/${this.customizrResource}/settings`, {
       method: "GET",
       headers: {
         'Authorization': `Bearer ${this.props.accessToken}`,
@@ -159,7 +159,7 @@ export default class _Comments extends React.Component {
   }
 
   onAlertDismissed() {
-    fetch(`${CUSTOMIZR_URL}/v1/${this.customizrResource}/settings`, {
+    fetch(`${CUSTOMIZR_URL}/v1/resources/${this.customizrResource}/settings`, {
       method: "PUT",
       headers: {
         'Authorization': `Bearer ${this.props.accessToken}`,
