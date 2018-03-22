@@ -1,0 +1,13 @@
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Access-Control-Allow-Origin: *
+
+{
+  "resourceId": "http://comment.trdlnk.cimpress.io/",
+  "lastModified": "2018-03-20T20:23:11.792Z",
+  "data": {
+    "mentionsUsageNotification": {
+        "alertDismissed" : true
+    }
+  }
+}

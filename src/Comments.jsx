@@ -5,11 +5,12 @@ import PropTypes from 'prop-types';
 import Comment from './Comment';
 import '../style/index.css';
 import { shapes } from '@cimpress/react-components';
+import { Alert } from '@cimpress/react-components';
 
 let {Spinner} = shapes;
 
 import CommentsClient from './CommentsClient';
-import { SERVICE_URL } from './config';
+import { SERVICE_URL, CUSTOMIZR_URL } from './config';
 import { MentionsInput, Mention } from 'react-mentions';
 import MentionsClient from './MentionsClient';
 
@@ -18,6 +19,7 @@ export default class _Comments extends React.Component {
   constructor (props) {
     super(props);
     this.commentServiceUrl = SERVICE_URL;
+    this.customizrResource = `http://comment.trdlnk.cimpress.io/`
     this.commentsClient = new CommentsClient(props.accessToken, props.resourceUri);
     this.mentionsClient = new MentionsClient(props.accessToken);
     this.state = {
@@ -28,6 +30,7 @@ export default class _Comments extends React.Component {
       commentObjects: {},
       commentToAdd: props.initialValue || '',
       failed: false,
+      alertDismissed: true
     };
   }
 
@@ -37,6 +40,20 @@ export default class _Comments extends React.Component {
 
   componentDidMount() {
     this._ismounted = true;
+    fetch(`${CUSTOMIZR_URL}/v1/settings?resourceId=${this.customizrResource}`, {
+      method: "GET",
+      headers: {
+        'Authorization': `Bearer ${this.props.accessToken}`,
+      },
+    }).then(res => {
+      return res.json();
+    }).then(json => {
+      if (this._ismounted) {
+        this.setState({alertDismissed: json.data
+          && json.data.mentionsUsageNotification
+          && json.data.mentionsUsageNotification.alertDismissed === true})
+      }
+    })
   }
 
   componentWillUnmount() {
@@ -139,6 +156,23 @@ export default class _Comments extends React.Component {
     }
   }
 
+  onAlertDismissed() {
+    fetch(`${CUSTOMIZR_URL}/v1/settings`, {
+      method: "POST",
+      headers: {
+        'Authorization': `Bearer ${this.props.accessToken}`,
+      },
+      data: {
+        resourceId: this.customizrResource,
+        data: {
+          mentionsUsageNotification: {
+            alertDismissed: true
+          }
+        }
+      }
+    })
+  }
+
   render () {
 
     let encodedUri = encodeURIComponent(this.props.resourceUri);
@@ -162,7 +196,18 @@ export default class _Comments extends React.Component {
       comments = <p>No comments here yet.</p>;
     }
 
-    let addCommentBox = <div style={{display: 'table'}}>
+    let addCommentBox = <div>
+      <div
+        className={'comments_alert'}>
+        <Alert
+          type={"info"}
+          message={<p>Use <strong>@</strong> character to mention people. We will notify them via email about this comment thread.</p>}
+          dismissible={true}
+          dismissed={this.state.alertDismissed}
+          onDismiss={this.onAlertDismissed.bind(this)}
+        />
+      </div>
+      <div style={{display: 'table'}}>
       <MentionsInput className="mentions mentions-min-height" value={this.state.commentToAdd} onChange={this.onInputChange.bind(this)}
                      displayTransform={(id, display, type) => `@${display}`} allowSpaceInQuery={true}>
         <Mention trigger="@"
@@ -173,8 +218,9 @@ export default class _Comments extends React.Component {
           <button disabled={!this.props.resourceUri || this.state.commentToAdd.trim() === ''} onClick={this.addComment.bind(this)} className="btn btn-default">
             post
           </button>
-        </span>
-    </div>;
+      </span>
+      </div>
+    </div>
 
     return (
       <VisibilitySensor partialVisibility={true} scrollCheck={true} onChange={this.fetchComments.bind(this)}>
