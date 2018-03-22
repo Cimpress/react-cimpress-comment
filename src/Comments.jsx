@@ -19,6 +19,7 @@ export default class _Comments extends React.Component {
   constructor (props) {
     super(props);
     this.commentServiceUrl = SERVICE_URL;
+    this.customizrResource = `http://comment.trdlnk.cimpress.io/`
     this.commentsClient = new CommentsClient(props.accessToken, props.resourceUri);
     this.mentionsClient = new MentionsClient(props.accessToken);
     this.state = {
@@ -39,7 +40,7 @@ export default class _Comments extends React.Component {
 
   componentDidMount() {
     this._ismounted = true;
-    fetch(`${CUSTOMIZR_URL}/v1/settings?resourceId=http://comment.trdlnk.cimpress.io/`, {
+    fetch(`${CUSTOMIZR_URL}/v1/settings?resourceId=${this.customizrResource}`, {
       method: "GET",
       headers: {
         'Authorization': `Bearer ${this.props.accessToken}`,
@@ -162,7 +163,7 @@ export default class _Comments extends React.Component {
         'Authorization': `Bearer ${this.props.accessToken}`,
       },
       data: {
-        resourceId: 'http://comment.trdlnk.cimpress.io/',
+        resourceId: this.customizrResource,
         data: {
           mentionsUsageNotification: {
             alertDismissed: true
