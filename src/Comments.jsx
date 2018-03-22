@@ -163,12 +163,13 @@ export default class _Comments extends React.Component {
       method: "PUT",
       headers: {
         'Authorization': `Bearer ${this.props.accessToken}`,
+        'Content-Type': 'application/json'
       },
-      data: {
+      body: JSON.stringify({
         mentionsUsageNotification: {
           alertDismissed: true
         }
-      }
+      })
     })
   }
 
