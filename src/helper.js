@@ -1,4 +1,6 @@
-function getSubFromJWT (jwt) {
+const atob = require('atob');
+
+function getSubFromJWT(jwt) {
   try {
     return JSON.parse(atob(jwt.split('.')[1])).sub;
   } catch (e) {
