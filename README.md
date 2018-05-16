@@ -14,22 +14,24 @@ import the component
 
 add the css dependencies
 
-```
+```html
 <link rel="stylesheet" href="https://static.ux.cimpress.io/mcp-ux-css/1.1/release/css/mcp-ux-css.min.css"/>
 <link rel="stylesheet" href="//cloud.typography.com/7971714/6011752/css/fonts.css"/>
 ```
 
 and then use wherever needed
 
-    render() {
+```javascript
+render() {
 
-        return (
-          <div>
-            <Comments resourceUri={"https://some_resource_server.cimpress.io/v0/resource/resourceId"}
-                      newestFirst={false} editComments={true} accessToken={"accessToken"}/>
-          </div>
-        );
-      }
+    return (
+      <div>
+        <Comments resourceUri={"https://some_resource_server.cimpress.io/v0/resource/resourceId"}
+                  newestFirst={false} editComments={true} accessToken={"accessToken"}/>
+      </div>
+    );
+  }
+```
 
 which will result in something like
 
@@ -64,8 +66,9 @@ New minor version: `$ npm version minor [ && npm publish ]` // backwards compati
 
 New major version: `$ npm version major [ && npm publish ]` // breaking changes
 
-Publish a module: $ npm publish
+Publish a module: `$ npm publish`
 
+**Note:** The way we publish new versions is by using the command line tools.
 
 ## Development
 
@@ -86,4 +89,3 @@ to perform the generation of the test screenshots and their diffs to references 
 to promote images to references if the breaking changes are intended.
 
 Make sure you have backstop installed `npm install -g backstopjs` or use the one in `node_modules`.
-
