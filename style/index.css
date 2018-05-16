@@ -24,7 +24,8 @@
     padding: 2px;
     border: 0px solid #c4cdd6;
     border-radius: 0px;
-    margin: 2px
+    margin: 2px;
+    display: grid;
 }
 
 .comment-creator {
