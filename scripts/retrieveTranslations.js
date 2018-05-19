@@ -6,7 +6,7 @@ const iso639 = require('iso-639').iso_639_2;
 
 const SERVICE_ID = '60eff5ed-9ddf-483e-b60a-3135c3c87435';
 const CLIENT_ID = 'C9twFCynWeNXTu74hxGMzlId745Togdb';
-const ENCRYPTED_CLIENT_SECRET = 'AQECAHgPvC4p26eHImEv+Cm3nU1nSoO1Mca9Hldw/zbnVdYjtQAAAKIwgZ8GCSqGSIb3DQEHBqCBkTCBjgIBADCBiAYJKoZIhvcNAQcBMB4GCWCGSAFlAwQBLjARBAxNPmCBj+vSauoVQxUCARCAWwA74kzSlZn7psPFtAS/yn5AzqvxdPzuiHzlMWXAI8yheQC2NDPacwQgmyst0zeViWEjSzhXmsRXA47O1qTux92Go15G6vnvEbVJvEGS0KVOQWNhD8Iv5shlYrE=';
+const ENCRYPTED_CLIENT_SECRET = '';
 const TRANSLATIONS_PATH = __dirname + '/../src/locales';
 
 async function retrieveTranslations() {

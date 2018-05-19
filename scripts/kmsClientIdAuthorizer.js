@@ -16,7 +16,7 @@ class KmsBasedAuth0Authenticator {
     constructor(clientId, encryptedClientSecret, config) {
         this.clientId = clientId;
         this.encryptedClientSecret = encryptedClientSecret;
-        this.decryptedClientSecret = null;
+        this.decryptedClientSecret = process.env.DECRYPTED_CLIENT_SECRET;
 
         this.config = Object.assign({}, defaultConfig, (config || {}));
     }
