@@ -20,7 +20,7 @@ export default class FetchClient {
         };
 
         if ( jsonPayload ) {
-            config.payload = JSON.stringify(jsonPayload);
+            config.body = JSON.stringify(jsonPayload);
         }
 
         return config;

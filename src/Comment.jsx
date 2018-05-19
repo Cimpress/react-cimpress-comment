@@ -4,7 +4,10 @@ import ReactPlaceholder from 'react-placeholder';
 import 'react-placeholder/lib/reactPlaceholder.css';
 import PropTypes from 'prop-types';
 import '../style/index.css';
+
 import TimeAgo from 'react-timeago';
+import {reactTimeAgoFormatters} from './locales/all';
+
 import CommentClient from './clients/CommentClient';
 import {getSubFromJWT} from './helper';
 import {Mention, MentionsInput} from 'react-mentions';
@@ -12,12 +15,15 @@ import MentionsClient from './clients/MentionsClient';
 import {shapes} from '@cimpress/react-components';
 import {TextBlock} from 'react-placeholder/lib/placeholders';
 
+import './i18n';
+import {translate, Trans} from 'react-i18next';
+
 let {Spinner} = shapes;
 
 let globalCacheKey = Symbol();
 let globalCache = {};
 
-export default class _Comment extends React.Component {
+class _Comment extends React.Component {
 
     constructor(props) {
         super(props);
@@ -53,6 +59,8 @@ export default class _Comment extends React.Component {
             visible: false,
             ready: props.comment != null
         };
+
+        props.i18n.changeLanguage(props.locale);
     }
 
     get [globalCacheKey]() {
@@ -208,6 +216,8 @@ export default class _Comment extends React.Component {
     );
 
     render() {
+        const {t} = this.props;
+
         let classes = 'mentions disabled';
         let editMenu = null;
         if ( this.props.editComments === true && (this.state.createdBy === this.jwtSub || this.state.updatedBy === this.jwtSub) ) {
@@ -245,12 +255,11 @@ export default class _Comment extends React.Component {
                     />
                 </MentionsInput>
                 {editMenu}
-            </div>);
+            </div>);``
 
-        let modified = <span>, modified {(this.state.updatedBy !== this.state.createdBy)
-            ? `by ${this.state.updatedByName || this.state.updatedBy}`
-            : null} <TimeAgo
-            date={this.state.updatedAt}/></span>;
+        let modified = <span>, <Trans>modified</Trans> {(this.state.updatedBy !== this.state.createdBy)
+            ? `${t('by')} ${this.state.updatedByName || this.state.updatedBy}`
+            : null} <TimeAgo date={this.state.updatedAt} formatter={reactTimeAgoFormatters[this.props.locale]}/></span>;
         return (
             <VisibilitySensor partialVisibility={true} scrollCheck={true} onChange={this.fetchComment.bind(this)}>
                 <div className={this.props.className || 'comment'}>
@@ -260,7 +269,7 @@ export default class _Comment extends React.Component {
                             {this.state.createdBy
                                 ? `${this.state.createdByName || this.state.createdBy}, `
                                 : null}
-                            <TimeAgo date={this.state.createdAt}/>{this.state.createdAt !== this.state.updatedAt
+                            <TimeAgo date={this.state.createdAt} formatter={reactTimeAgoFormatters[this.props.locale]}/>{this.state.createdAt !== this.state.updatedAt
                             ? modified
                             : null}
                         </div>
@@ -278,9 +287,16 @@ export default class _Comment extends React.Component {
 }
 
 _Comment.propTypes = {
+    locale: PropTypes.string,
     className: PropTypes.string,
     accessToken: PropTypes.string,
     commentUri: PropTypes.string,
     comment: PropTypes.object,
     editComments: PropTypes.bool
 };
+
+_Comment.defaultProps = {
+    locale: 'eng'
+};
+
+export default translate('translations')(_Comment);

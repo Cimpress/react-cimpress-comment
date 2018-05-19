@@ -11,6 +11,7 @@ addons:
 install:
 - npm install
 script:
+- node scripts/retrieveTranslations.js
 - npm run storybook
 - sleep 20 && echo "done waiting"
 - node_modules/.bin/backstop test

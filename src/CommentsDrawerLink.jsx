@@ -6,7 +6,10 @@ import {Drawer} from '@cimpress/react-components';
 import Comments from './Comments';
 import PropTypes from 'prop-types';
 
-export default class _CommentsDrawerLink extends React.Component {
+import './i18n';
+import {Trans, translate} from 'react-i18next';
+
+class _CommentsDrawerLink extends React.Component {
 
     constructor(props) {
         super(props);
@@ -42,13 +45,20 @@ export default class _CommentsDrawerLink extends React.Component {
         });
     }
 
-    render() {
-        let footer = (<div className="text-right">
+    defaultFooter() {
+        return <div className="text-right">
             <button className="btn btn-default" onClick={() => this.setState({commentsDrawerOpen: false})}>
-                <i className="fa fa-times" aria-hidden="true"></i>&nbsp;Close
+                <i className="fa fa-times" aria-hidden="true"></i>&nbsp;<Trans>btn_close</Trans>
             </button>
-        </div>);
-        let comments
+        </div>;
+    }
+
+    defaultHeader() {
+        return <Trans>header_comments</Trans>;
+    }
+
+    render() {
+        let comments;
         if ( this.state.isVisible ) {
             comments = <Comments {...this.props} commentCountRefreshed={this.updateCommentCount.bind(this)}/>
         }
@@ -74,16 +84,10 @@ export default class _CommentsDrawerLink extends React.Component {
           <Drawer
               show={this.state.commentsDrawerOpen}
               onRequestHide={() => this.setState({commentsDrawerOpen: false})}
-              header={this.props.header
-                  ? this.props.header
-                  : 'Comments'}
-              position={this.props.position === 'left'
-                  ? 'left'
-                  : 'right'}
+              header={this.props.header || this.defaultHeader()}
+              position={this.props.position}
               closeOnClickOutside={true}
-              footer={this.props.footer
-                  ? this.props.footer
-                  : footer}>
+              footer={this.props.footer || this.defaultFooter()}>
             {comments}
           </Drawer>
         </span>
@@ -93,13 +97,27 @@ export default class _CommentsDrawerLink extends React.Component {
 }
 
 _CommentsDrawerLink.propTypes = {
+    locale: PropTypes.string,
     accessToken: PropTypes.string.isRequired,
     resourceUri: PropTypes.string.isRequired,
     newestFirst: PropTypes.bool,
     editComments: PropTypes.bool,
     refreshInterval: PropTypes.number,
-    position: PropTypes.string,
+    position: PropTypes.oneOf(['left', 'right']),
     header: PropTypes.node,
     footer: PropTypes.node,
     opened: PropTypes.bool
 };
+
+_CommentsDrawerLink.defaultProps = {
+    position: 'left',
+    newestFirst: true,
+    editComments: false,
+    opened: false
+};
+
+_CommentsDrawerLink.defaultProps = {
+    locale: 'eng'
+};
+
+export default translate('translations')(_CommentsDrawerLink);

@@ -8,11 +8,14 @@ import {Alert, shapes} from '@cimpress/react-components'
 import CommentsClient from './clients/CommentsClient'
 import {Mention, MentionsInput} from 'react-mentions'
 import MentionsClient from './clients/MentionsClient'
-import CustomizrClient from './clients/CustomizrClient';
+import CustomizrClient from './clients/CustomizrClient'
+
+import './i18n';
+import {Trans, translate} from 'react-i18next';
 
 let {Spinner} = shapes;
 
-export default class _Comments extends React.Component {
+class _Comments extends React.Component {
 
     constructor(props) {
         super(props);
@@ -178,48 +181,51 @@ export default class _Comments extends React.Component {
     renderLoading() {
         return <div>
             <div className="inline-spinner"><Spinner size={20}/></div>
-            <div className="inline-spinner">Retrieving comments.</div>
+            <div className="inline-spinner"><Trans>retrieving_comments</Trans></div>
         </div>
+    }
+
+    renderComments(commentIds) {
+        let uri = this.commentsClient.getResourceUri();
+
+        return commentIds.map((commentId, index) => (
+            <Comment key={commentId}
+                     className={'comment ' + ((index % 2 === 0)
+                         ? 'comment-even'
+                         : 'comment-odd')}
+                     accessToken={this.props.accessToken}
+                     commentUri={`${uri}/${commentId}`} comment={this.state.commentObjects[commentId]}
+                     editComments={this.props.editComments}/>));
     }
 
     render() {
 
-        let url = this.commentsClient.getResourceUri();
         let comments = null;
 
         if ( !this.props.resourceUri ) {
-            comments = <p>Incorrect component setup.</p>
+            comments = <p><Trans>incorrect_component_setup</Trans></p>
         } else if ( this.state.commentsIds.length > 0 ) {
-            comments = this.state.commentsIds.map(
-                (id, index) => <Comment className={'comment ' + ((index % 2 === 0)
-                    ? 'comment-even'
-                    : 'comment-odd')} key={id}
-                                        accessToken={this.props.accessToken}
-                                        commentUri={url + '/' + id} comment={this.state.commentObjects[id]}
-                                        editComments={this.props.editComments}/>)
+            comments = this.renderComments(this.state.commentsIds);
         } else if ( this.state.loading ) {
             comments = this.renderLoading();
         } else if ( this.state.failed ) {
-            comments = <p>Unable to retrieve comments.</p>
+            comments = <p><Trans>unable_to_retrieve_comments</Trans></p>
         } else {
-            comments = <p>No comments here yet.</p>
+            comments = <p><Trans>no_comments_exist</Trans></p>
         }
 
         let addCommentBox = <div>
-            <div
-                className={'comments_alert'}>
-                <Alert
-                    type={"info"}
-                    message={<p>Use <strong>@</strong> character to mention people. We will notify them via email about
-                        this
-                        comment thread.</p>}
-                    dismissible={true}
-                    dismissed={this.state.alertDismissed}
-                    onDismiss={this.onAlertDismissed.bind(this)}
+            <div className={'comments_alert'}>
+                <Alert type={"info"}
+                       message={<p><Trans>use_at_char_for_mentions</Trans></p>}
+                       dismissible={true}
+                       dismissed={this.state.alertDismissed}
+                       onDismiss={this.onAlertDismissed.bind(this)}
                 />
             </div>
             <div style={{display: 'table'}}>
-                <MentionsInput className="mentions mentions-min-height" value={this.state.commentToAdd}
+                <MentionsInput className="mentions mentions-min-height"
+                               value={this.state.commentToAdd}
                                onChange={this.onInputChange.bind(this)}
                                displayTransform={(id, display, type) => `@${display}`} allowSpaceInQuery={true}>
                     <Mention trigger="@"
@@ -229,13 +235,13 @@ export default class _Comments extends React.Component {
                     />
                 </MentionsInput>
                 <span className="input-group-btn" style={{display: 'table-cell'}}>
-          <button disabled={!this.props.resourceUri || this.state.commentToAdd.trim() === ''}
-                  onClick={this.addComment.bind(this)} className="btn btn-default">
-            post
-          </button>
-      </span>
+                      <button disabled={!this.props.resourceUri || this.state.commentToAdd.trim() === ''}
+                              onClick={this.addComment.bind(this)} className="btn btn-default">
+                        <Trans>btn_post</Trans>
+                      </button>
+                  </span>
             </div>
-        </div>
+        </div>;
 
         return (
             <VisibilitySensor partialVisibility={true} scrollCheck={true} onChange={this.fetchComments.bind(this)}>
@@ -256,6 +262,7 @@ export default class _Comments extends React.Component {
 }
 
 _Comments.propTypes = {
+    locale: PropTypes.string,
     accessToken: PropTypes.string.isRequired,
     resourceUri: PropTypes.string.isRequired,
     newestFirst: PropTypes.bool,
@@ -263,4 +270,10 @@ _Comments.propTypes = {
     refreshInterval: PropTypes.number,
     commentCountRefreshed: PropTypes.func,
     initialValue: PropTypes.string
-}
+};
+
+_Comments.defaultProps = {
+    locale: 'eng'
+};
+
+export default translate("translations")(_Comments);
