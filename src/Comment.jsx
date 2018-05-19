@@ -255,7 +255,7 @@ class _Comment extends React.Component {
                     />
                 </MentionsInput>
                 {editMenu}
-            </div>);``
+            </div>);
 
         let modified = <span>, <Trans>modified</Trans> {(this.state.updatedBy !== this.state.createdBy)
             ? `${t('by')} ${this.state.updatedByName || this.state.updatedBy}`
