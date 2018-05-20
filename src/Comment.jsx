@@ -70,6 +70,11 @@ class _Comment extends React.Component {
     componentWillReceiveProps(newProps) {
         let accessTokenChanged = this.props.accessToken !== newProps.accessToken;
         let commentUriChanged = this.props.commentUri !== newProps.commentUri;
+        let localeChanged = this.props.locale !== newProps.locale;
+
+        if (localeChanged) {
+            newProps.i18n.changeLanguage(newProps.locale);
+        }
 
         if ( accessTokenChanged || commentUriChanged ) {
             this.commentClient = new CommentClient(newProps.accessToken, newProps.commentUri);

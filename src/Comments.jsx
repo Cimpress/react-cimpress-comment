@@ -34,6 +34,7 @@ class _Comments extends React.Component {
             failed: false,
             alertDismissed: true
         };
+        props.i18n.changeLanguage(props.locale);
     }
 
     componentWillMount() {
@@ -63,6 +64,11 @@ class _Comments extends React.Component {
 
         let accessTokenChanged = this.props.accessToken !== newProps.accessToken;
         let resourceUriChanged = this.props.resourceUri !== newProps.resourceUri;
+        let localeChanged = this.props.locale !== newProps.locale;
+
+        if ( localeChanged ) {
+            newProps.i18n.changeLanguage(newProps.locale);
+        }
 
         if ( accessTokenChanged ) {
             // new props - recreate
@@ -189,7 +195,8 @@ class _Comments extends React.Component {
         let uri = this.commentsClient.getResourceUri();
 
         return commentIds.map((commentId, index) => (
-            <Comment key={commentId}
+            <Comment locale={this.props.locale}
+                     key={commentId}
                      className={'comment ' + ((index % 2 === 0)
                          ? 'comment-even'
                          : 'comment-odd')}
