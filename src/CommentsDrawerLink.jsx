@@ -19,9 +19,14 @@ class _CommentsDrawerLink extends React.Component {
             opacity: 0,
             isVisible: false
         };
+        props.i18n.changeLanguage(props.locale);
     }
 
     componentWillReceiveProps(newProps) {
+        if (this.props.locale !== newProps.locale) {
+            newProps.i18n.changeLanguage(newProps.locale);
+        }
+
         if ( newProps.resourceUri !== this.props.resourceUri ) {
             this.setState({
                 opacity: 0
