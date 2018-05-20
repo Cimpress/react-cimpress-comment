@@ -1,10 +1,10 @@
 {
   "name": "react-cimpress-comment",
-  "version": "0.2.12",
+  "version": "0.3.0",
   "description": "Visualizes comment(s) for a particular platform resource",
   "main": "./lib/index.js",
   "scripts": {
-    "build": "babel src -d lib",
+    "build": "babel src -d lib --copy-files",
     "storybook": "((kill -9 `cat mockserver.pid`; kill -9 `cat storybook.pid`) || true) && (node_modules/.bin/start-storybook -p 9001 -c .storybook & echo $! > storybook.pid) && (node_modules/.bin/mockserver -p 9102 -m ./mocks/ & echo $! > mockserver.pid)"
   },
   "repository": {
@@ -34,13 +34,20 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "backstopjs": "^3.0.39",
-    "mockserver": "^1.6.2"
+    "mockserver": "^1.6.2",
+    "aws-sdk": "^2.243.1",
+    "iso-639": "^0.2.2",
+    "jsonwebtoken": "^8.2.1",
+    "cimpress-translations": "^2.0.2",
+    "request-promise-native": "^1.0.5"
   },
   "dependencies": {
     "@cimpress/react-components": "^1.2.1",
     "atob": "^2.1.1",
+    "i18next": "^11.3.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-i18next": "^7.6.1",
     "react-mentions": "^1.2.2",
     "react-placeholder": "^1.0.8",
     "react-timeago": "^3.4.3",

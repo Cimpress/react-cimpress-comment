@@ -1,0 +1,13 @@
+{
+    "translations": {
+        "retrieving_comments": "Зареждане, моля изчакайте...",
+        "no_comments_exist": "Няма налични коментари.",
+        "use_at_char_for_mentions": "Използвайте <strong>@</strong> за да споменавате хора. Ще получат известие за вашия коментар.",
+        "by": "от",
+        "btn_post": "Публикувай",
+        "modified": "променено",
+        "unable_to_retrieve_comments": "Коментарите не могат да бъдат извлечени.",
+        "btn_close": "Затвори",
+        "header_comments": "Коментари"
+    }
+}

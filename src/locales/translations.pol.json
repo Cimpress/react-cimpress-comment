@@ -1,0 +1,13 @@
+{
+    "translations": {
+        "retrieving_comments": "Trwa pobieranie komentarzy ...",
+        "no_comments_exist": "Nie ma jeszcze komentarzy.",
+        "use_at_char_for_mentions": "Użyj znaków <strong> @ </ strong>, by wymienić osoby. Powiadomimy ich pocztą e-mail o tym wątku komentarzy.",
+        "by": "przez",
+        "btn_post": "Stanowisko",
+        "modified": "zmodyfikowany",
+        "unable_to_retrieve_comments": "Nie można pobrać komentarzy.",
+        "btn_close": "Blisko",
+        "header_comments": "Komentarze"
+    }
+}
