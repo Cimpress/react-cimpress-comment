@@ -1,13 +1,14 @@
 import i18n from 'i18next';
 import { reactI18nextModule } from 'react-i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
 
 import {resources} from './locales/all';
 
 i18n
     .use(reactI18nextModule)
+    .use(LanguageDetector)
     .init({
 
-        lng: 'eng',
         fallbackLng: 'eng',
 
         resources: resources,
