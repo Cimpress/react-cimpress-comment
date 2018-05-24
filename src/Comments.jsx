@@ -10,8 +10,8 @@ import {Mention, MentionsInput} from 'react-mentions'
 import MentionsClient from './clients/MentionsClient'
 import CustomizrClient from './clients/CustomizrClient'
 
-import './i18n';
-import {Trans, translate} from 'react-i18next';
+import {getI18nInstance} from './i18n';
+import {translate} from 'react-i18next';
 
 let {Spinner} = shapes;
 
@@ -34,7 +34,6 @@ class _Comments extends React.Component {
             failed: false,
             alertDismissed: true
         };
-        props.i18n.changeLanguage(props.locale);
     }
 
     componentWillMount() {
@@ -64,11 +63,6 @@ class _Comments extends React.Component {
 
         let accessTokenChanged = this.props.accessToken !== newProps.accessToken;
         let resourceUriChanged = this.props.resourceUri !== newProps.resourceUri;
-        let localeChanged = this.props.locale !== newProps.locale;
-
-        if ( localeChanged ) {
-            newProps.i18n.changeLanguage(newProps.locale);
-        }
 
         if ( accessTokenChanged ) {
             // new props - recreate
@@ -187,15 +181,20 @@ class _Comments extends React.Component {
     renderLoading() {
         return <div>
             <div className="inline-spinner"><Spinner size={20}/></div>
-            <div className="inline-spinner"><Trans>retrieving_comments</Trans></div>
+            <div className="inline-spinner">{this.tt('retrieving_comments')}</div>
         </div>
+    }
+
+    tt(key) {
+        const {t, locale} = this.props;
+        return t(key, {lng: locale});
     }
 
     renderComments(commentIds) {
         let uri = this.commentsClient.getResourceUri();
 
         return commentIds.map((commentId, index) => (
-            <Comment locale={this.props.locale}
+            <Comment locale={this.props.i18n.language}
                      key={commentId}
                      className={'comment ' + ((index % 2 === 0)
                          ? 'comment-even'
@@ -210,21 +209,21 @@ class _Comments extends React.Component {
         let comments = null;
 
         if ( !this.props.resourceUri ) {
-            comments = <p><Trans>incorrect_component_setup</Trans></p>
+            comments = <p>{this.tt('incorrect_component_setup')}</p>
         } else if ( this.state.commentsIds.length > 0 ) {
             comments = this.renderComments(this.state.commentsIds);
         } else if ( this.state.loading ) {
             comments = this.renderLoading();
         } else if ( this.state.failed ) {
-            comments = <p><Trans>unable_to_retrieve_comments</Trans></p>
+            comments = <p>{this.tt('unable_to_retrieve_comments')}</p>
         } else {
-            comments = <p><Trans>no_comments_exist</Trans></p>
+            comments = <p>{this.tt('no_comments_exist')}</p>
         }
 
         let addCommentBox = <div>
             <div className={'comments_alert'}>
                 <Alert type={"info"}
-                       message={<p><Trans>use_at_char_for_mentions</Trans></p>}
+                       message={<p>{this.tt('use_at_char_for_mentions')}</p>}
                        dismissible={true}
                        dismissed={this.state.alertDismissed}
                        onDismiss={this.onAlertDismissed.bind(this)}
@@ -244,7 +243,7 @@ class _Comments extends React.Component {
                 <span className="input-group-btn" style={{display: 'table-cell'}}>
                       <button disabled={!this.props.resourceUri || this.state.commentToAdd.trim() === ''}
                               onClick={this.addComment.bind(this)} className="btn btn-default">
-                        <Trans>btn_post</Trans>
+                        {this.tt('btn_post')}
                       </button>
                   </span>
             </div>
@@ -283,4 +282,4 @@ _Comments.defaultProps = {
     locale: 'eng'
 };
 
-export default translate("translations")(_Comments);
+export default translate("translations", {i18n: getI18nInstance()})(_Comments);

@@ -6,8 +6,8 @@ import {Drawer} from '@cimpress/react-components';
 import Comments from './Comments';
 import PropTypes from 'prop-types';
 
-import './i18n';
-import {Trans, translate} from 'react-i18next';
+import {getI18nInstance} from './i18n';
+import {translate} from 'react-i18next';
 
 class _CommentsDrawerLink extends React.Component {
 
@@ -19,14 +19,9 @@ class _CommentsDrawerLink extends React.Component {
             opacity: 0,
             isVisible: false
         };
-        props.i18n.changeLanguage(props.locale);
     }
 
     componentWillReceiveProps(newProps) {
-        if (this.props.locale !== newProps.locale) {
-            newProps.i18n.changeLanguage(newProps.locale);
-        }
-
         if ( newProps.resourceUri !== this.props.resourceUri ) {
             this.setState({
                 opacity: 0
@@ -50,16 +45,21 @@ class _CommentsDrawerLink extends React.Component {
         });
     }
 
+    tt(key) {
+        const {t, locale} = this.props;
+        return t(key, {lng: locale});
+    }
+
     defaultFooter() {
         return <div className="text-right">
             <button className="btn btn-default" onClick={() => this.setState({commentsDrawerOpen: false})}>
-                <i className="fa fa-times" aria-hidden="true"></i>&nbsp;<Trans>btn_close</Trans>
+                <i className="fa fa-times" aria-hidden="true"></i>&nbsp;{this.tt('btn_close')}
             </button>
         </div>;
     }
 
     defaultHeader() {
-        return <Trans>header_comments</Trans>;
+        return this.tt('header_comments');
     }
 
     render() {
@@ -125,4 +125,4 @@ _CommentsDrawerLink.defaultProps = {
     locale: 'eng'
 };
 
-export default translate('translations')(_CommentsDrawerLink);
+export default translate('translations', {i18n: getI18nInstance()})(_CommentsDrawerLink);
