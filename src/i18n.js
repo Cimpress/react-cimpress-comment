@@ -1,32 +1,41 @@
 import i18n from 'i18next';
-import { reactI18nextModule } from 'react-i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
+import {reactI18nextModule} from 'react-i18next';
 
 import {resources} from './locales/all';
 
-i18n
-    .use(reactI18nextModule)
-    .use(LanguageDetector)
-    .init({
+let i18n_instance = null;
 
-        fallbackLng: 'eng',
+function getI18nInstance() {
 
-        resources: resources,
+    if ( !i18n_instance ) {
+        i18n_instance = i18n.createInstance();
 
-        // have a common namespace used around the full app
-        ns: ['translations'],
-        defaultNS: 'translations',
+        i18n_instance
+            .use(reactI18nextModule)
+            .init({
 
-        debug: false,
+                fallbackLng: 'eng',
 
-        interpolation: {
-            escapeValue: false, // not needed for react!!
-        },
+                resources: resources,
 
-        react: {
-            wait: true
-        }
-    });
+                ns: ['translations'],
+                defaultNS: 'translations',
 
+                debug: false,
 
-export default i18n;
+                interpolation: {
+                    escapeValue: false, // not needed for react!!
+                },
+
+                react: {
+                    wait: true
+                }
+            });
+    }
+
+    return i18n_instance;
+}
+
+export {
+    getI18nInstance
+};

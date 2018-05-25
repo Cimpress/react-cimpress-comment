@@ -15,8 +15,8 @@ import MentionsClient from './clients/MentionsClient';
 import {shapes} from '@cimpress/react-components';
 import {TextBlock} from 'react-placeholder/lib/placeholders';
 
-import './i18n';
-import {translate, Trans} from 'react-i18next';
+import {translate} from 'react-i18next';
+import {getI18nInstance} from './i18n';
 
 let {Spinner} = shapes;
 
@@ -59,8 +59,6 @@ class _Comment extends React.Component {
             visible: false,
             ready: props.comment != null
         };
-
-        props.i18n.changeLanguage(props.locale);
     }
 
     get [globalCacheKey]() {
@@ -70,11 +68,6 @@ class _Comment extends React.Component {
     componentWillReceiveProps(newProps) {
         let accessTokenChanged = this.props.accessToken !== newProps.accessToken;
         let commentUriChanged = this.props.commentUri !== newProps.commentUri;
-        let localeChanged = this.props.locale !== newProps.locale;
-
-        if (localeChanged) {
-            newProps.i18n.changeLanguage(newProps.locale);
-        }
 
         if ( accessTokenChanged || commentUriChanged ) {
             this.commentClient = new CommentClient(newProps.accessToken, newProps.commentUri);
@@ -220,8 +213,12 @@ class _Comment extends React.Component {
         </div>
     );
 
+    tt(key) {
+        const {t, locale} = this.props;
+        return t(key, {lng: locale});
+    }
+
     render() {
-        const {t} = this.props;
 
         let classes = 'mentions disabled';
         let editMenu = null;
@@ -262,8 +259,8 @@ class _Comment extends React.Component {
                 {editMenu}
             </div>);
 
-        let modified = <span>, <Trans>modified</Trans> {(this.state.updatedBy !== this.state.createdBy)
-            ? `${t('by')} ${this.state.updatedByName || this.state.updatedBy}`
+        let modified = <span>, {this.tt('modified')} {(this.state.updatedBy !== this.state.createdBy)
+            ? `${this.tt('by')} ${this.state.updatedByName || this.state.updatedBy}`
             : null} <TimeAgo date={this.state.updatedAt} formatter={reactTimeAgoFormatters[this.props.locale]}/></span>;
         return (
             <VisibilitySensor partialVisibility={true} scrollCheck={true} onChange={this.fetchComment.bind(this)}>
@@ -274,7 +271,8 @@ class _Comment extends React.Component {
                             {this.state.createdBy
                                 ? `${this.state.createdByName || this.state.createdBy}, `
                                 : null}
-                            <TimeAgo date={this.state.createdAt} formatter={reactTimeAgoFormatters[this.props.locale]}/>{this.state.createdAt !== this.state.updatedAt
+                            <TimeAgo date={this.state.createdAt}
+                                     formatter={reactTimeAgoFormatters[this.props.locale]}/>{this.state.createdAt !== this.state.updatedAt
                             ? modified
                             : null}
                         </div>
@@ -304,4 +302,4 @@ _Comment.defaultProps = {
     locale: 'eng'
 };
 
-export default translate('translations')(_Comment);
+export default translate('translations', {i18n: getI18nInstance()})(_Comment);
