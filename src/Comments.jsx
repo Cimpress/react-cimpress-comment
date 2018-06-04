@@ -194,7 +194,7 @@ class _Comments extends React.Component {
         let uri = this.commentsClient.getResourceUri();
 
         return commentIds.map((commentId, index) => (
-            <Comment locale={this.props.i18n.language}
+            <Comment locale={this.props.locale}
                      key={commentId}
                      className={'comment ' + ((index % 2 === 0)
                          ? 'comment-even'
