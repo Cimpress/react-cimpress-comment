@@ -1,6 +1,6 @@
 {
     "translations": {
-        "retrieving_comments": "Récupération des commentaires ...",
+        "retrieving_comments": "Nous récupérons les commentaires ...",
         "no_comments_exist": "Aucun commentaire ici pour le moment.",
         "use_at_char_for_mentions": "Utilisez le caractère <strong> @ </ strong> pour mentionner les personnes. Nous les informerons par e-mail de ce fil de commentaires.",
         "by": "par",
