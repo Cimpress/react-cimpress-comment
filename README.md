@@ -72,7 +72,7 @@ Publish a module: `$ npm publish`
 
 ## Development
 
-For developping you can use [storybook](https://github.com/storybooks/storybook)
+For developing you can use [storybook](https://github.com/storybooks/storybook)
 
     npm run storybook
 
