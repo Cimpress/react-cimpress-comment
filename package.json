@@ -1,9 +1,10 @@
 {
   "name": "react-cimpress-comment",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Visualizes comment(s) for a particular platform resource",
   "main": "./lib/index.js",
   "scripts": {
+    "translate": "node scripts/retrieveTranslations.js",
     "build": "babel src -d lib --copy-files",
     "storybook": "((kill -9 `cat mockserver.pid`; kill -9 `cat storybook.pid`) || true) && (node_modules/.bin/start-storybook -p 9001 -c .storybook & echo $! > storybook.pid) && (node_modules/.bin/mockserver -p 9102 -m ./mocks/ & echo $! > mockserver.pid)"
   },
