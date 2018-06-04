@@ -1,22 +1,18 @@
 "use strict";
 
-const AWS = require("aws-sdk");
 const jwt = require("jsonwebtoken");
 const rp = require("request-promise-native");
-
-const KMS = new AWS.KMS({region: 'eu-west-1'});
 
 const defaultConfig = {
     domain: "cimpress.auth0.com",
     audience: "https://api.cimpress.io/"
 };
 
-class KmsBasedAuth0Authenticator {
+class Auth0Authenticator {
 
-    constructor(clientId, encryptedClientSecret, config) {
+    constructor(clientId, clientSecret, config) {
         this.clientId = clientId;
-        this.encryptedClientSecret = encryptedClientSecret;
-        this.decryptedClientSecret = process.env.DECRYPTED_CLIENT_SECRET;
+        this.clientSecret = clientSecret;
 
         this.config = Object.assign({}, defaultConfig, (config || {}));
     }
@@ -27,16 +23,12 @@ class KmsBasedAuth0Authenticator {
             return this._token;
         }
 
-        if ( !this.decryptedClientSecret ) {
-            await this._decrypt();
-        }
-
         let options = {
             method: "POST",
             uri: `https://${this.config.domain}/oauth/token`,
             body: {
                 client_id: this.clientId,
-                client_secret: this.decryptedClientSecret,
+                client_secret: this.clientSecret,
                 audience: this.config.audience,
                 grant_type: "client_credentials"
             },
@@ -50,12 +42,6 @@ class KmsBasedAuth0Authenticator {
         return this._token;
     }
 
-    async _decrypt() {
-        this.decryptedClientSecret = await KMS.decrypt({
-            CiphertextBlob: new Buffer(this.encryptedClientSecret, "base64")
-        }).promise();
-    }
-
     _isValidToken() {
         if ( !this._token ) {
             return false;
@@ -67,4 +53,4 @@ class KmsBasedAuth0Authenticator {
     }
 }
 
-module.exports = KmsBasedAuth0Authenticator;
+module.exports = Auth0Authenticator;
