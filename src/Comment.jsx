@@ -75,7 +75,7 @@ class _Comment extends React.Component {
         }
 
         if ( accessTokenChanged ) {
-            this.mentionsClient = new MentionsClient(props.accessToken);
+            this.mentionsClient = new MentionsClient(newProps.accessToken);
         }
 
         if ( commentUriChanged ) {
