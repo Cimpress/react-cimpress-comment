@@ -9,6 +9,7 @@ import TimeAgo from 'react-timeago';
 import {reactTimeAgoFormatters} from './locales/all';
 
 import CommentClient from './clients/CommentClient';
+import AccessibilityIcon from './AccessibilityIcon';
 import {getSubFromJWT} from './helper';
 import {Mention, MentionsInput} from 'react-mentions';
 import MentionsClient from './clients/MentionsClient';
@@ -24,7 +25,6 @@ let globalCacheKey = Symbol();
 let globalCache = {};
 
 class _Comment extends React.Component {
-
     constructor(props) {
         super(props);
         this.commentClient = new CommentClient(props.accessToken, props.commentUri);
@@ -38,6 +38,9 @@ class _Comment extends React.Component {
             comment: (props.comment)
                 ? props.comment.comment
                 : '',
+            accessibility: (props.comment)
+                ? props.comment.accessibility
+                : null,
             createdBy: (props.comment)
                 ? props.comment.createdBy
                 : '',
@@ -56,6 +59,9 @@ class _Comment extends React.Component {
             updatedAt: (props.comment)
                 ? props.comment.updatedAt
                 : '',
+            accessibility: (props.comment)
+                ? props.comment.accessibility
+                : null,
             visible: false,
             ready: props.comment != null
         };
@@ -83,6 +89,9 @@ class _Comment extends React.Component {
                 comment: (newProps.comment)
                     ? newProps.comment.comment
                     : '',
+                accessibility: (props.comment)
+                    ? props.comment.accessibility
+                    : null,
                 createdBy: (newProps.comment)
                     ? newProps.comment.createdBy
                     : '',
@@ -124,8 +133,8 @@ class _Comment extends React.Component {
             });
     }
 
-    putComment(comment) {
-        return this.commentClient.putComment(comment);
+    putComment(comment, accessibility) {
+        return this.commentClient.putComment(comment, accessibility);
     }
 
     fetchComment(isVisible) {
@@ -136,6 +145,7 @@ class _Comment extends React.Component {
             return this.commentClient.fetchComment().then(responseJson => {
                 this.setState({
                     comment: responseJson.comment,
+                    accessibility: responseJson.accessibility,
                     updatedBy: responseJson.updatedBy,
                     createdBy: responseJson.createdBy,
                     createdAt: responseJson.createdAt,
@@ -168,7 +178,7 @@ class _Comment extends React.Component {
             savingComment: true
         });
         if ( this.state.editedComment !== null && this.state.editedComment !== this.state.comment ) {
-            this.putComment(this.state.editedComment.trim()).then((responseJson) => {
+            this.putComment(this.state.editedComment.trim(), this.state.accessibility).then((responseJson) => {
                 this.setState({
                     editedComment: null,
                     editMode: false,
@@ -219,7 +229,6 @@ class _Comment extends React.Component {
     }
 
     render() {
-
         let classes = 'mentions disabled';
         let editMenu = null;
         if ( this.props.editComments === true && (this.state.createdBy === this.jwtSub || this.state.updatedBy === this.jwtSub) ) {
@@ -229,15 +238,15 @@ class _Comment extends React.Component {
             } else if ( this.state.editMode ) {
                 classes = 'mentions';
                 let completeEdit = <div onClick={this.completeEditing.bind(this)}
-                                        className={'fa fa-check mentions-ok'}/>;
+                    className={'fa fa-check mentions-ok'}/>;
                 let cancelEdit = <div onClick={this.cancelEditing.bind(this)}
-                                      className={'fa fa-undo mentions-cancel'}/>;
-                editMenu = (<div>
-                    {(this.state.editedComment !== null && this.state.editedComment !== this.state.comment)
-                        ? completeEdit
-                        : null}
-                    {cancelEdit}
-                </div>);
+                    className={'fa fa-undo mentions-cancel'}/>;
+                    editMenu = (<div>
+                        {(this.state.editedComment !== null && this.state.editedComment !== this.state.comment)
+                            ? completeEdit
+                            : null}
+                        {cancelEdit}
+                    </div>);
             } else {
                 editMenu = <div onClick={() => {
                     this.setState({editMode: true});
@@ -245,45 +254,58 @@ class _Comment extends React.Component {
             }
         }
 
+        let icon = null;
+
+        if (this.state.accessibility) {
+            let accessibilityOption = this.props.commentAccessibilityLevels.find(l => l.value === this.state.accessibility);
+            icon = (
+                <AccessibilityIcon
+                    icon={accessibilityOption.icon}
+                    label={accessibilityOption.label}/>
+            );
+        }
+
         let commentBody = (
             <div style={{position: 'relative'}}>
                 <MentionsInput className={classes} value={this.state.editedComment || this.state.comment}
-                               onChange={this.change.bind(this)}
-                               displayTransform={(id, display, type) => `@${display}`} allowSpaceInQuery={true}
-                               readOnly={classes.includes('disabled')}>
+                    onChange={this.change.bind(this)}
+                    displayTransform={(id, display, type) => `@${display}`} allowSpaceInQuery={true}
+                    readOnly={classes.includes('disabled')}>
                     <Mention trigger="@" data={(search, callback) => {
                         this.mentionsClient.fetchMatchingMentions(search).then(callback);
-                    }}
-                    />
+                    }}/>
                 </MentionsInput>
                 {editMenu}
-            </div>);
+            </div>
+        );
 
         let modified = <span>, {this.tt('modified')} {(this.state.updatedBy !== this.state.createdBy)
-            ? `${this.tt('by')} ${this.state.updatedByName || this.state.updatedBy}`
-            : null} <TimeAgo date={this.state.updatedAt} formatter={reactTimeAgoFormatters[this.props.locale]}/></span>;
+                ? `${this.tt('by')} ${this.state.updatedByName || this.state.updatedBy}`
+                : null} <TimeAgo date={this.state.updatedAt} formatter={reactTimeAgoFormatters[this.props.locale]}/></span>;
         return (
             <VisibilitySensor partialVisibility={true} scrollCheck={true} onChange={this.fetchComment.bind(this)}>
-                <div className={this.props.className || 'comment'}>
-                    <ReactPlaceholder showLoadingAnimation customPlaceholder={this.authorPlaceholder}
-                                      ready={this.state.ready}>
-                        <div className={'comment-creator'}>
-                            {this.state.createdBy
-                                ? `${this.state.createdByName || this.state.createdBy}, `
-                                : null}
-                            <TimeAgo date={this.state.createdAt}
-                                     formatter={reactTimeAgoFormatters[this.props.locale]}/>{this.state.createdAt !== this.state.updatedAt
-                            ? modified
+            <div className={this.props.className || 'comment'}>
+                <ReactPlaceholder showLoadingAnimation customPlaceholder={this.authorPlaceholder}
+                    ready={this.state.ready}>
+                    <div className={'comment-creator'}>
+                        {this.state.createdBy
+                            ? `${this.state.createdByName || this.state.createdBy}, `
                             : null}
-                        </div>
-                    </ReactPlaceholder>
-                    <div>
-                        <ReactPlaceholder showLoadingAnimation customPlaceholder={this.commentPlaceholder}
-                                          ready={this.state.ready}>
-                            {commentBody}
-                        </ReactPlaceholder>
+                        <TimeAgo date={this.state.createdAt}
+                            formatter={reactTimeAgoFormatters[this.props.locale]}/>
+            {this.state.createdAt !== this.state.updatedAt
+                                ? modified
+                                : null}
+                        {icon}
                     </div>
+                </ReactPlaceholder>
+                <div>
+                    <ReactPlaceholder showLoadingAnimation customPlaceholder={this.commentPlaceholder}
+                        ready={this.state.ready}>
+                        {commentBody}
+                    </ReactPlaceholder>
                 </div>
+            </div>
             </VisibilitySensor>
         );
     }

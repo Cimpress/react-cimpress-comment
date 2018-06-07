@@ -10,7 +10,6 @@ import {getI18nInstance} from './i18n';
 import {translate} from 'react-i18next';
 
 class _CommentsDrawerLink extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {

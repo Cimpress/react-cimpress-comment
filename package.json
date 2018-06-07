@@ -45,10 +45,13 @@
   "dependencies": {
     "@cimpress/react-components": "^1.2.1",
     "atob": "^2.1.1",
+    "deepmerge": "^2.1.1",
+    "font-awesome": "^4.7.0",
     "i18next": "^11.3.2",
     "i18next-browser-languagedetector": "^2.2.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-fontawesome": "^1.6.1",
     "react-i18next": "^7.6.1",
     "react-mentions": "^1.2.2",
     "react-placeholder": "^1.0.8",

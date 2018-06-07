@@ -1,9 +1,10 @@
-HTTP/1.1 201 OK
+HTTP/1.1 201 Created
 Content-Type: application/json; charset=utf-8
 Access-Control-Allow-Origin: *
 
 {
     "comment": "Fourth comment",
+    "accessibility": "internal",
     "id": "27084ea0-04f3-11e8-90cb-41822fa03acc",
     "createdAt": "2018-01-29T12:51:41.322Z",
     "createdBy": "",

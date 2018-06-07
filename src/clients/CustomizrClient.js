@@ -1,4 +1,5 @@
 import FetchClient from './FetchClient';
+import merge from 'deepmerge';
 
 const CUSTOMIZR_URL = (process && process.env ? process.env.CUSTOMIZR_URL : null) || 'https://customizr.at.cimpress.io';
 
@@ -12,7 +13,6 @@ export default class CustomizrClient extends FetchClient {
     }
 
     fetchSettings() {
-
         let init = this.getDefaultConfig('GET');
 
         return fetch(this.url, init)
@@ -29,5 +29,13 @@ export default class CustomizrClient extends FetchClient {
         let init = this.getDefaultConfig('PUT', settings);
 
         return fetch(this.url, init)
+    }
+
+    updateSettings(settings) {
+      return this.fetchSettings()
+        .then(json => {
+          let merged = merge(json, settings);
+          return this.putSettings(merged);
+        });
     }
 }
