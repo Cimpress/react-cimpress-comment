@@ -51,7 +51,6 @@
     "i18next-browser-languagedetector": "^2.2.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-fontawesome": "^1.6.1",
     "react-i18next": "^7.6.1",
     "react-mentions": "^1.2.2",
     "react-placeholder": "^1.0.8",

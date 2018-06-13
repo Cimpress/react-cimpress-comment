@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import '../style/index.css';
 import '../style/accessibilityOption.css';
-import FontAwesome from 'react-fontawesome';
 
 class CommentAccessibilityOption extends React.Component {
     tt(key) {
@@ -29,10 +28,7 @@ class CommentAccessibilityOption extends React.Component {
 
     render() {
         let icon = (
-            <FontAwesome
-            name={this.props.option.icon}
-            className="accessibility-option-icon"
-            />
+            <div className={`accessibility-option-icon fa fa-${this.props.option.icon}`}/>
         );
 
         return (

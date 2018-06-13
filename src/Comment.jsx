@@ -59,9 +59,6 @@ class _Comment extends React.Component {
             updatedAt: (props.comment)
                 ? props.comment.updatedAt
                 : '',
-            accessibility: (props.comment)
-                ? props.comment.accessibility
-                : null,
             visible: false,
             ready: props.comment != null
         };
