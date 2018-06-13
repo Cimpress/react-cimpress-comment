@@ -48,12 +48,12 @@
     "deepmerge": "^2.1.1",
     "font-awesome": "^4.7.0",
     "i18next": "^11.3.2",
-    "i18next-browser-languagedetector": "^2.2.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-i18next": "^7.6.1",
     "react-mentions": "^1.2.2",
     "react-placeholder": "^1.0.8",
+    "react-portal": "^4.1.5",
     "react-timeago": "^3.4.3",
     "react-visibility-sensor": "^3.10.1"
   }

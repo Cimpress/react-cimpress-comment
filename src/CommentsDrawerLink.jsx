@@ -5,6 +5,7 @@ import '../style/index.css';
 import {Drawer} from '@cimpress/react-components';
 import Comments from './Comments';
 import PropTypes from 'prop-types';
+import {Portal} from 'react-portal';
 
 import {getI18nInstance} from './i18n';
 import {translate} from 'react-i18next';
@@ -21,12 +22,12 @@ class _CommentsDrawerLink extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        if ( newProps.resourceUri !== this.props.resourceUri ) {
+        if (newProps.resourceUri !== this.props.resourceUri) {
             this.setState({
                 opacity: 0
             });
         }
-        if ( newProps.opened !== this.props.opened ) {
+        if (newProps.opened !== this.props.opened) {
             this.setState({
                 commentsDrawerOpen: newProps.opened
             })
@@ -63,14 +64,14 @@ class _CommentsDrawerLink extends React.Component {
 
     render() {
         let comments;
-        if ( this.state.isVisible ) {
+        if (this.state.isVisible) {
             comments = <Comments {...this.props} commentCountRefreshed={this.updateCommentCount.bind(this)}/>
         }
 
         return (
             <VisibilitySensor
                 onChange={(visible) => {
-                    if ( visible && this.state.isVisible !== visible ) {
+                    if (visible && this.state.isVisible !== visible) {
                         this.setState({isVisible: visible})
                     }
                 }}
@@ -85,15 +86,17 @@ class _CommentsDrawerLink extends React.Component {
             <span key="test" className="comment-count-badge"
                   style={{opacity: this.state.opacity}}>{this.state.availableComments}</span>
           </div>
-          <Drawer
-              show={this.state.commentsDrawerOpen}
-              onRequestHide={() => this.setState({commentsDrawerOpen: false})}
-              header={this.props.header || this.defaultHeader()}
-              position={this.props.position}
-              closeOnClickOutside={true}
-              footer={this.props.footer || this.defaultFooter()}>
-            {comments}
-          </Drawer>
+          <Portal>
+              <Drawer
+                  show={this.state.commentsDrawerOpen}
+                  onRequestHide={() => this.setState({commentsDrawerOpen: false})}
+                  header={this.props.header || this.defaultHeader()}
+                  position={this.props.position}
+                  closeOnClickOutside={true}
+                  footer={this.props.footer || this.defaultFooter()}>
+                {comments}
+              </Drawer>
+          </Portal>
         </span>
             </ VisibilitySensor>
         );
