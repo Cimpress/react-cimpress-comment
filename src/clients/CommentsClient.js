@@ -24,15 +24,22 @@ export default class CommentsClient extends FetchClient {
         let url = `${this.commentServiceUrl}/v0/resources/${this.encodedResourceUri}`;
         let init = this.getDefaultConfig('GET');
 
-        return fetch(url, init).then(response => {
-            if ( response.status === 200 ) {
-                return response.json().then((responseJson) => responseJson.comments);
-            } else if ( response.status === 404 ) {
-                return this.createResource().then(responseJson => responseJson.comments);
-            } else {
-                throw new Error('Unable to fetch comments');
-            }
-        });
+        return fetch(url, init)
+            .then(response => {
+                if ( response.status === 200 ) {
+                    return response.json().then((responseJson) => ({
+                        responseJson: responseJson.comments,
+                        userAccessLevel: response.headers.get("x-cimpress-resource-access-level")
+                    }));
+                } else if ( response.status === 404 ) {
+                    return this.createResource().then(responseJson => ({
+                        responseJson: responseJson.comments,
+                        userAccessLevel: response.headers.get("x-cimpress-resource-access-level")
+                    }));
+                } else {
+                    throw new Error('Unable to fetch comments');
+                }
+            });
     }
 
     createResource() {
@@ -51,10 +58,11 @@ export default class CommentsClient extends FetchClient {
             });
     }
 
-    postComment(comment) {
+    postComment(comment, accessibility) {
         let url = `${this.commentServiceUrl}/v0/resources/${this.encodedResourceUri}/comments`;
         let init = this.getDefaultConfig('POST', {
-            comment: comment
+            comment,
+            accessibility
         });
 
         return fetch(url, init).then(response => {

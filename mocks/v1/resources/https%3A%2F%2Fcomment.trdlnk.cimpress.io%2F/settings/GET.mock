@@ -6,5 +6,6 @@ Access-Control-Allow-Origin: *
 {
     "mentionsUsageNotification": {
         "alertDismissed" : true
-    }
+    },
+    "selectedAccessibility": "internal"
 }
