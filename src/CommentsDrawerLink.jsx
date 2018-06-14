@@ -13,12 +13,29 @@ import {translate} from 'react-i18next';
 class _CommentsDrawerLink extends React.Component {
     constructor(props) {
         super(props);
+        this.escFunction = this.escFunction.bind(this);
         this.state = {
             commentsDrawerOpen: props.opened || false,
             availableComments: null,
             opacity: 0,
             isVisible: false
         };
+    }
+
+    escFunction(event){
+        if(event.keyCode === 27) {
+            this.setState({
+              commentsDrawerOpen: false
+            })
+        }
+    }
+
+    componentDidMount() {
+        document.addEventListener("keydown", this.escFunction, false);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener("keydown", this.escFunction, false);
     }
 
     componentWillReceiveProps(newProps) {
