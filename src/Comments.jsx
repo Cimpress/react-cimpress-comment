@@ -47,7 +47,7 @@ class _Comments extends React.Component {
 
     componentDidMount() {
         this._ismounted = true;
-        this.componentWillReceiveProps(this.props)
+        this.componentWillReceiveProps(this.props);
     }
 
     componentWillUnmount() {
