@@ -59,8 +59,8 @@ class _Comments extends React.Component {
             this.setState({
               alertDismissed: json.mentionsUsageNotification &&
               json.mentionsUsageNotification.alertDismissed === true,
-              selectedAccessibilityOption: this.state.commentAccessibilityLevels.find(l => l.value === json.selectedAccessibility)
-            }, () => { this.resetSelectedAccessibilityOption(); });
+              selectedVisibilityOption: this.state.commentVisibilityLevels.find(l => l.value === json.selectedVisibility)
+            }, () => { this.resetSelectedVisibilityOption(); });
         })
         clearInterval(this.refreshInterval);
         this.refreshInterval = setInterval(() => this.forceFetchComments(), Math.max((this.props.refreshInterval || 60) * 1000, 5000));
