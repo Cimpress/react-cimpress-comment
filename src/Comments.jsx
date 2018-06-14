@@ -98,7 +98,7 @@ class _Comments extends React.Component {
     };
 
     addComment(e) {
-        this.postComment(this.state.commentToAdd, this.state.selectedAccessibilityOption.value);
+        this.postComment(this.state.commentToAdd);
     }
 
     fetchComments(isVisible) {
@@ -191,7 +191,7 @@ class _Comments extends React.Component {
             commentsObjects: Object.assign({[tempId]: {comment}}, this.state.commentObjects)
         });
 
-        return this.commentsClient.postComment(comment, this.state.selectedAccessibilityOption)
+        return this.commentsClient.postComment(comment, this.state.selectedAccessibilityOption.value)
             .then(() => this.fetchComments(this.state.visible))
             .then(() => this.reportCommentCount())
             .catch((err) => {
