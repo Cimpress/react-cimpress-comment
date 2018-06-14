@@ -1,13 +1,13 @@
 import '../style/index.css';
-import '../style/accessibilityIcon.css';
+import '../style/visibilityIcon.css';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Tooltip } from '@cimpress/react-components';
 
-class CommentAccessibilityIcon extends React.Component {
+class CommentVisibilityIcon extends React.Component {
     render() {
         let icon = (
-            <div className={`accessibility-icon-icon fa fa-${this.props.icon}`}/>
+            <div className={`visibility-icon-icon fa fa-${this.props.icon}`}/>
         );
 
         return (
@@ -20,9 +20,9 @@ class CommentAccessibilityIcon extends React.Component {
     }
 }
 
-CommentAccessibilityIcon.propTypes = {
+CommentVisibilityIcon.propTypes = {
     icon: PropTypes.string,
     label: PropTypes.string
 };
 
-export default CommentAccessibilityIcon;
+export default CommentVisibilityIcon;

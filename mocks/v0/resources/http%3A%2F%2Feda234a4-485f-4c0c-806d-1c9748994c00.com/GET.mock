@@ -9,7 +9,7 @@ Access-Control-Expose-Headers: x-cimpress-resource-access-level
     "comments": [
         {
             "createdAt": "2018-02-24T14:04:59.595Z",
-            "accessibility": "public",
+            "visibility": "public",
             "comment": "First comment",
             "id": "908ac1b0-010f-11e8-9aec-197d791cffc8",
             "updatedBy": "49c087ab-3fee-4994-86e7-c63d2b47ac8b",
@@ -18,7 +18,7 @@ Access-Control-Expose-Headers: x-cimpress-resource-access-level
         },
         {
             "createdAt": "2018-02-25T12:15:55.531Z",
-            "accessibility": "internal",
+            "visibility": "internal",
             "comment": "Second comment @[John Doe](b636a568-b51e-4653-903c-01e7bd5a5086) might be longer @[John Does](b636a568-b51e-4653-903c-01e71d5a5a)",            "id": "7e6395b0-01c9-11e8-952c-85c7cdb92fcc",
             "updatedBy": "49c087ab-3fee-4994-86e7-c63d2b47ac8b",
             "createdBy": "49c087ab-3fee-4994-86e7-c63d2b47ac8b",
@@ -26,7 +26,7 @@ Access-Control-Expose-Headers: x-cimpress-resource-access-level
         },
         {
             "createdAt": "2018-03-25T12:16:02.496Z",
-            "accessibility": "public",
+            "visibility": "public",
             "comment": "Thirda comment",
             "id": "828a5c00-01c9-11e8-952c-85c7cdb92fcc",
             "updatedBy": "49c087ab-3fee-4994-86e7-c63d2b47ac8b",
