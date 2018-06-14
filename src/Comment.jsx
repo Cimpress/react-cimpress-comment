@@ -9,7 +9,7 @@ import TimeAgo from 'react-timeago';
 import {reactTimeAgoFormatters} from './locales/all';
 
 import CommentClient from './clients/CommentClient';
-import AccessibilityIcon from './AccessibilityIcon';
+import CommentVisibilityIcon from './CommentVisibilityIcon';
 import {getSubFromJWT} from './helper';
 import {Mention, MentionsInput} from 'react-mentions';
 import MentionsClient from './clients/MentionsClient';
@@ -38,8 +38,8 @@ class _Comment extends React.Component {
             comment: (props.comment)
                 ? props.comment.comment
                 : '',
-            accessibility: (props.comment)
-                ? props.comment.accessibility
+            visibility: (props.comment)
+                ? props.comment.visibility
                 : null,
             createdBy: (props.comment)
                 ? props.comment.createdBy
@@ -86,8 +86,8 @@ class _Comment extends React.Component {
                 comment: (newProps.comment)
                     ? newProps.comment.comment
                     : '',
-                accessibility: (props.comment)
-                    ? props.comment.accessibility
+                visibility: (props.comment)
+                    ? props.comment.visibility
                     : null,
                 createdBy: (newProps.comment)
                     ? newProps.comment.createdBy
@@ -130,8 +130,8 @@ class _Comment extends React.Component {
             });
     }
 
-    putComment(comment, accessibility) {
-        return this.commentClient.putComment(comment, accessibility);
+    putComment(comment, visibility) {
+        return this.commentClient.putComment(comment, visibility);
     }
 
     fetchComment(isVisible) {
@@ -142,7 +142,7 @@ class _Comment extends React.Component {
             return this.commentClient.fetchComment().then(responseJson => {
                 this.setState({
                     comment: responseJson.comment,
-                    accessibility: responseJson.accessibility,
+                    visibility: responseJson.visibility,
                     updatedBy: responseJson.updatedBy,
                     createdBy: responseJson.createdBy,
                     createdAt: responseJson.createdAt,
@@ -175,7 +175,7 @@ class _Comment extends React.Component {
             savingComment: true
         });
         if ( this.state.editedComment !== null && this.state.editedComment !== this.state.comment ) {
-            this.putComment(this.state.editedComment.trim(), this.state.accessibility).then((responseJson) => {
+            this.putComment(this.state.editedComment.trim(), this.state.visibility).then((responseJson) => {
                 this.setState({
                     editedComment: null,
                     editMode: false,
@@ -253,12 +253,12 @@ class _Comment extends React.Component {
 
         let icon = null;
 
-        if (this.state.accessibility) {
-            let accessibilityOption = this.props.commentAccessibilityLevels.find(l => l.value === this.state.accessibility);
+        if (this.state.visibility) {
+            let visibilityOption = this.props.commentVisibilityLevels.find(l => l.value === this.state.visibility);
             icon = (
-                <AccessibilityIcon
-                    icon={accessibilityOption.icon}
-                    label={accessibilityOption.label}/>
+                <CommentVisibilityIcon
+                    icon={visibilityOption.icon}
+                    label={visibilityOption.label}/>
             );
         }
 

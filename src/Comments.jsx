@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 import Comment from './Comment';
 import '../style/index.css';
 import '../style/select.css';
-import { getAccessibilityLevels } from './accessibility';
-import AccessibilityOption from './AccessibilityOption';
+import { getVisibilityLevels } from './visibility';
+import CommentVisibilityOption from './CommentVisibilityOption';
 import {Alert, shapes, Select} from '@cimpress/react-components';
 import CommentsClient from './clients/CommentsClient';
 import {Mention, MentionsInput} from 'react-mentions';
@@ -35,8 +35,8 @@ class _Comments extends React.Component {
             commentToAdd: props.initialValue || '',
             failed: false,
             alertDismissed: true,
-            commentAccessibilityLevels: getAccessibilityLevels(this.tt.bind(this)),
-            selectedAccessibilityOption: null,
+            commentVisibilityLevels: getVisibilityLevels(this.tt.bind(this)),
+            selectedVisibilityOption: null,
             userAccessLevel: null
         };
     }
@@ -51,8 +51,8 @@ class _Comments extends React.Component {
             this.setState({
                 alertDismissed: json.mentionsUsageNotification &&
                     json.mentionsUsageNotification.alertDismissed === true,
-                selectedAccessibilityOption: this.state.commentAccessibilityLevels.find(l => l.value === json.selectedAccessibility)
-            }, () => { this.resetSelectedAccessibilityOption(); });
+                selectedVisibilityOption: this.state.commentVisibilityLevels.find(l => l.value === json.selectedVisibility)
+            }, () => { this.resetSelectedVisibilityOption(); });
         })
     }
 
@@ -85,16 +85,16 @@ class _Comments extends React.Component {
             }, () => this.forceFetchComments());
         }
 
-        this.resetSelectedAccessibilityOption();
+        this.resetSelectedVisibilityOption();
     }
 
     onInputChange(event, newValue, newPlainTextValue, mentions) {
         this.setState({commentToAdd: newValue});
     }
 
-    onAccessibilityChange = selectedAccessibilityOption => {
-        this.customizrClient.updateSettings({ selectedAccessibility: selectedAccessibilityOption.value })
-        this.setState({ selectedAccessibilityOption });
+    onVisibilityChange = selectedVisibilityOption => {
+        this.customizrClient.updateSettings({ selectedVisibility: selectedVisibilityOption.value })
+        this.setState({ selectedVisibilityOption });
     };
 
     addComment(e) {
@@ -110,21 +110,21 @@ class _Comments extends React.Component {
         }
     }
 
-    resetSelectedAccessibilityOption() {
-        let newCommentAccessibilityLevels = getAccessibilityLevels(this.tt.bind(this), this.state.userAccessLevel);
-        let narrowestAvailableAccessibilityOptionIndex = newCommentAccessibilityLevels.every(l => !l.disabled) ?
-            newCommentAccessibilityLevels.length - 1 :
-            newCommentAccessibilityLevels.findIndex(l => l.disabled) - 1;
+    resetSelectedVisibilityOption() {
+        let newCommentVisibilityLevels = getVisibilityLevels(this.tt.bind(this), this.state.userAccessLevel);
+        let narrowestAvailableVisibilityOptionIndex = newCommentVisibilityLevels.every(l => !l.disabled) ?
+            newCommentVisibilityLevels.length - 1 :
+            newCommentVisibilityLevels.findIndex(l => l.disabled) - 1;
 
-        let preferredAccessibilityOptionIndex = this.state.selectedAccessibilityOption ?
-            newCommentAccessibilityLevels.findIndex(l => l.value === this.state.selectedAccessibilityOption.value) :
-            newCommentAccessibilityLevels.length - 1;
+        let preferredVisibilityOptionIndex = this.state.selectedVisibilityOption ?
+            newCommentVisibilityLevels.findIndex(l => l.value === this.state.selectedVisibilityOption.value) :
+            newCommentVisibilityLevels.length - 1;
 
-        let selectedAccessibilityOptionIndex = Math.min(narrowestAvailableAccessibilityOptionIndex, preferredAccessibilityOptionIndex);
+        let selectedVisibilityOptionIndex = Math.min(narrowestAvailableVisibilityOptionIndex, preferredVisibilityOptionIndex);
 
         this.setState({
-            commentAccessibilityLevels: newCommentAccessibilityLevels,
-            selectedAccessibilityOption: newCommentAccessibilityLevels[selectedAccessibilityOptionIndex]
+            commentVisibilityLevels: newCommentVisibilityLevels,
+            selectedVisibilityOption: newCommentVisibilityLevels[selectedVisibilityOptionIndex]
         });
     }
 
@@ -140,7 +140,7 @@ class _Comments extends React.Component {
         let currentClient = this.commentsClient;
         currentClient.fetchComments().then(({ responseJson, userAccessLevel }) => {
             this.setState({userAccessLevel}, () => {
-                this.resetSelectedAccessibilityOption();
+                this.resetSelectedVisibilityOption();
             });
 
             if ( currentClient.resourceUri === this.props.resourceUri && this._ismounted ) {
@@ -191,7 +191,7 @@ class _Comments extends React.Component {
             commentsObjects: Object.assign({[tempId]: {comment}}, this.state.commentObjects)
         });
 
-        return this.commentsClient.postComment(comment, this.state.selectedAccessibilityOption.value)
+        return this.commentsClient.postComment(comment, this.state.selectedVisibilityOption.value)
             .then(() => this.fetchComments(this.state.visible))
             .then(() => this.reportCommentCount())
             .catch((err) => {
@@ -244,7 +244,7 @@ class _Comments extends React.Component {
                      accessToken={this.props.accessToken}
                      commentUri={`${uri}/${commentId}`} comment={this.state.commentObjects[commentId]}
                      editComments={this.props.editComments}
-                     commentAccessibilityLevels={this.state.commentAccessibilityLevels}/>));
+                     commentVisibilityLevels={this.state.commentVisibilityLevels}/>));
     }
 
     render() {
@@ -287,15 +287,15 @@ class _Comments extends React.Component {
                 <div style={{display: 'table'}}>
                     <Select
                         label="Show my comment to"
-                        value={this.state.selectedAccessibilityOption}
-                        options={this.state.commentAccessibilityLevels}
-                        onChange={this.onAccessibilityChange}
+                        value={this.state.selectedVisibilityOption}
+                        options={this.state.commentVisibilityLevels}
+                        onChange={this.onVisibilityChange}
                         searchable={false}
                         clearable={false}
-                        optionComponent={AccessibilityOption}
+                        optionComponent={CommentVisibilityOption}
                     />
                     <span className="input-group-btn" style={{display: 'table-cell', paddingLeft: "6px"}}>
-                          <button disabled={!this.props.resourceUri || this.state.commentToAdd.trim() === '' || !this.state.selectedAccessibilityOption}
+                          <button disabled={!this.props.resourceUri || this.state.commentToAdd.trim() === '' || !this.state.selectedVisibilityOption}
                                   onClick={this.addComment.bind(this)} className="btn btn-default">
                             {this.tt('btn_post')}
                           </button>

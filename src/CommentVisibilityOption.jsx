@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import '../style/index.css';
-import '../style/accessibilityOption.css';
+import '../style/visibilityOption.css';
 
-class CommentAccessibilityOption extends React.Component {
+class CommentVisibilityOption extends React.Component {
     tt(key) {
         const {t, locale} = this.props;
         return t(key, {lng: locale});
@@ -28,7 +28,7 @@ class CommentAccessibilityOption extends React.Component {
 
     render() {
         let icon = (
-            <div className={`accessibility-option-icon fa fa-${this.props.option.icon}`}/>
+            <div className={`visibility-option-icon fa fa-${this.props.option.icon}`}/>
         );
 
         return (
@@ -49,7 +49,7 @@ class CommentAccessibilityOption extends React.Component {
     }
 }
 
-CommentAccessibilityOption.propTypes = {
+CommentVisibilityOption.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
     isDisabled: PropTypes.bool,
@@ -60,4 +60,4 @@ CommentAccessibilityOption.propTypes = {
     option: PropTypes.object.isRequired
 };
 
-export default CommentAccessibilityOption;
+export default CommentVisibilityOption;
