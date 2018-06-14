@@ -20,11 +20,11 @@ export default class CommentClient extends FetchClient {
             });
     }
 
-    putComment(comment, accessibility) {
+    putComment(comment, visibility) {
         let init = this.getDefaultConfig(
             'PUT', {
                 comment,
-                accessibility
+                visibility
             });
 
         return fetch(this.commentUri, init)

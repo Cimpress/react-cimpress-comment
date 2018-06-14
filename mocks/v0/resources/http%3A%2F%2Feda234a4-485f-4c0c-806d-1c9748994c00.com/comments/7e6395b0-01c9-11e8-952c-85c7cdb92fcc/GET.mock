@@ -6,7 +6,7 @@ Access-Control-Expose-Headers: x-cimpress-resource-access-level
 
 {
     "createdAt": "2018-02-10T14:04:59.595Z",
-    "accessibility": "public",
+    "visibility": "public",
     "comment": "First comment",
     "id": "908ac1b0-010f-11e8-9aec-197d791cffc8",
     "updatedBy": "49c087ab-3fee-4994-86e7-c63d2b47ac8b",

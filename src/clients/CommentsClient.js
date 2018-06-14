@@ -58,11 +58,11 @@ export default class CommentsClient extends FetchClient {
             });
     }
 
-    postComment(comment, accessibility) {
+    postComment(comment, visibility) {
         let url = `${this.commentServiceUrl}/v0/resources/${this.encodedResourceUri}/comments`;
         let init = this.getDefaultConfig('POST', {
             comment,
-            accessibility
+            visibility
         });
 
         return fetch(url, init).then(response => {
