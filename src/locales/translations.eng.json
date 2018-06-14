@@ -1,16 +1,16 @@
 {
     "translations": {
-        "accessibility_option_public_label": "Everyone",
         "use_at_char_for_mentions": "Use <strong>@</strong> character to mention people. We will notify them via email about this comment thread.",
+        "visibility_option_internal_label": "Only authorized people",
         "btn_post": "Post",
-        "accessibility_option_internal_description": "Those who have access to the resource I'm commenting on",
         "unable_to_retrieve_comments": "Unable to retrieve comments.",
-        "accessibility_option_internal_label": "Only authorized people",
-        "accessibility_option_public_description": "Every person in Cimpress",
         "retrieving_comments": "Retrieving comments...",
         "no_comments_exist": "No comments here yet.",
+        "visibility_option_internal_description": "Those who have access to the resource I'm commenting on",
+        "visibility_option_public_description": "Every person in Cimpress",
         "by": "by",
         "modified": "modified",
+        "visibility_option_public_label": "Everyone",
         "btn_close": "Close",
         "header_comments": "Comments"
     }
