@@ -47,17 +47,7 @@ class _Comments extends React.Component {
 
     componentDidMount() {
         this._ismounted = true;
-<<<<<<< HEAD
         this.componentWillReceiveProps(this.props);
-=======
-        this.customizrClient.fetchSettings().then(json => {
-            this.setState({
-                alertDismissed: json.mentionsUsageNotification &&
-                    json.mentionsUsageNotification.alertDismissed === true,
-                selectedVisibilityOption: this.state.commentVisibilityLevels.find(l => l.value === json.selectedVisibility)
-            }, () => { this.resetSelectedVisibilityOption(); });
-        })
->>>>>>> d3ae0f274823c47cb090f0728c04d8d3a6d683f2
     }
 
     componentWillUnmount() {
