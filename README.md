@@ -72,6 +72,10 @@ Publish a module: `$ npm publish`
 
 ## Development
 
+Make sure you have the up-to-date translation files by calling
+
+    CLIENT_ID="<here the client id>" CLIENT_SECRET="<here the client secret>" npm run translate
+
 For developing you can use [storybook](https://github.com/storybooks/storybook)
 
     npm run storybook

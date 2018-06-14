@@ -47,13 +47,6 @@ class _Comments extends React.Component {
 
     componentDidMount() {
         this._ismounted = true;
-        this.customizrClient.fetchSettings().then(json => {
-            this.setState({
-                alertDismissed: json.mentionsUsageNotification &&
-                    json.mentionsUsageNotification.alertDismissed === true,
-                selectedAccessibilityOption: this.state.commentAccessibilityLevels.find(l => l.value === json.selectedAccessibility)
-            }, () => { this.resetSelectedAccessibilityOption(); });
-        })
     }
 
     componentWillUnmount() {
@@ -61,6 +54,13 @@ class _Comments extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
+        this.customizrClient.fetchSettings().then(json => {
+            this.setState({
+              alertDismissed: json.mentionsUsageNotification &&
+              json.mentionsUsageNotification.alertDismissed === true,
+              selectedAccessibilityOption: this.state.commentAccessibilityLevels.find(l => l.value === json.selectedAccessibility)
+            }, () => { this.resetSelectedAccessibilityOption(); });
+        })
         clearInterval(this.refreshInterval);
         this.refreshInterval = setInterval(() => this.forceFetchComments(), Math.max((this.props.refreshInterval || 60) * 1000, 5000));
 
@@ -217,6 +217,9 @@ class _Comments extends React.Component {
             mentionsUsageNotification: {
                 alertDismissed: true
             }
+        });
+        this.setState({
+            alertDismissed: true
         });
     }
 

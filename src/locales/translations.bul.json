@@ -1,0 +1,17 @@
+{
+    "translations": {
+        "accessibility_option_public_label": "Всеки",
+        "use_at_char_for_mentions": "Използвайте <strong>@</strong> за да споменете някого. Те ще получат известие за вашия коментар.",
+        "btn_post": "Публикувай",
+        "unable_to_retrieve_comments": "Коментарите не могат да бъдат извлечени.",
+        "accessibility_option_internal_description": "Тези, които имат достъп до ресурса, който коментирам",
+        "accessibility_option_internal_label": "Само упълномощени хора",
+        "accessibility_option_public_description": "Всеки в Cimpress",
+        "retrieving_comments": "Зареждане, моля изчакайте...",
+        "no_comments_exist": "Няма налични коментари.",
+        "by": "от",
+        "modified": "променено",
+        "btn_close": "Затвори",
+        "header_comments": "Коментари"
+    }
+}
