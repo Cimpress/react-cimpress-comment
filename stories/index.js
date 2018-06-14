@@ -16,4 +16,9 @@ storiesOf('Mention box', module)
 
 storiesOf('Comments drawer with link', module)
   .add('Link alone', () => (<CommentsDrawerLink accessToken={"51d3ab44-efe1-4cc7-b0fa-6c86fa2ca134"} resourceUri={"http://eda234a4-485f-4c0c-806d-1c9748994c00.com"} newestFirst={true} />))
-  .add('Link and drawer open by default', () => (<CommentsDrawerLink accessToken={"51d3ab44-efe1-4cc7-b0fa-6c86fa2ca134"} resourceUri={"http://eda234a4-485f-4c0c-806d-1c9748994c00.com"} newestFirst={true} opened={true}/>));
+  .add('Link and drawer open by default', () => (<CommentsDrawerLink accessToken={"51d3ab44-efe1-4cc7-b0fa-6c86fa2ca134"} resourceUri={"http://eda234a4-485f-4c0c-806d-1c9748994c00.com"} newestFirst={true} opened={true}/>))
+  .add('Multiple links on one page', () => (<div>
+    <CommentsDrawerLink accessToken={"51d3ab44-efe1-4cc7-b0fa-6c86fa2ca134"} resourceUri={"http://eda234a4-485f-4c0c-806d-1c9748994c00.com"} newestFirst={true} /><br />
+    <CommentsDrawerLink accessToken={"51d3ab44-efe1-4cc7-b0fa-6c86fa2ca134"} resourceUri={"http://eda234a4-485f-4c0c-806d-1c9748994c00.com"} newestFirst={true} /><br />
+    <CommentsDrawerLink accessToken={"51d3ab44-efe1-4cc7-b0fa-6c86fa2ca134"} resourceUri={"http://eda234a4-485f-4c0c-806d-1c9748994c00.com"} newestFirst={true} /><br />
+  </div>));
