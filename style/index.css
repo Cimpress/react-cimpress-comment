@@ -106,6 +106,7 @@
     height:100%;
     overflow-y: hidden;
     padding-bottom: 6px;
+    z-index: 6;
 }
 .mentions-min-height > .mentions__control > .mentions__input,
 .mentions-min-height > .mentions__control > .mentions__highlighter {
