@@ -264,7 +264,8 @@ class _Comment extends React.Component {
 
         let commentBody = (
             <div style={{position: 'relative'}}>
-                <MentionsInput className={classes} value={this.state.editedComment || this.state.comment}
+                <MentionsInput className={classes}
+                    value={this.state.editedComment !== null ? this.state.editedComment : this.state.comment}
                     onChange={this.change.bind(this)}
                     displayTransform={(id, display, type) => `@${display}`} allowSpaceInQuery={true}
                     readOnly={classes.includes('disabled')}>
