@@ -186,10 +186,11 @@ class _Comments extends React.Component {
             this.state.commentsIds.push(tempId);
         }
 
+        let newCommentObjects = Object.assign({[tempId]: {comment}}, this.state.commentObjects)
         this.setState({
             commentToAdd: '',
             commentsIds: this.state.commentsIds.slice(0),
-            commentsObjects: Object.assign({[tempId]: {comment}}, this.state.commentObjects)
+            commentObjects: newCommentObjects
         });
 
         return this.commentsClient.postComment(comment, this.state.selectedVisibilityOption.value)
@@ -197,12 +198,12 @@ class _Comments extends React.Component {
             .then(() => this.reportCommentCount())
             .catch((err) => {
                 console.log(err);
-                let newCommentsObjects = Object.assign({}, this.state.commentsObjects);
-                delete newCommentsObjects[tempId];
+                let newCommentObjects = Object.assign({}, this.state.commentObjects);
+                delete newCommentObjects[tempId];
 
                 this.setState({
                     commentsIds: this.state.commentsIds.filter(id => id !== tempId),
-                    commentsObjects: newCommentsObjects
+                    commentObjects: newCommentObjects
                 });
             });
     }
@@ -240,7 +241,6 @@ class _Comments extends React.Component {
 
     renderComments(commentIds) {
         let uri = this.commentsClient.getResourceUri();
-
         return commentIds.map((commentId, index) => (
             <Comment locale={this.props.locale} key={commentId} className={'comment ' + ((index % 2 === 0)
                          ? 'comment-even'
