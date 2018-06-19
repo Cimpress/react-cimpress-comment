@@ -106,7 +106,6 @@
     height:100%;
     overflow-y: hidden;
     padding-bottom: 6px;
-    z-index: 6;
 }
 .mentions-min-height > .mentions__control > .mentions__input,
 .mentions-min-height > .mentions__control > .mentions__highlighter {
@@ -168,7 +167,7 @@ textarea {
     border: 1px solid #c4cdd6;
     border-radius: 2px;
     position: relative;
-    z-index: 2;
+    z-index: 6 !important;
     float: left;
     width: 100%;
     margin-bottom: 0;

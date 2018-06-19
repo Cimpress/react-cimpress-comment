@@ -6,7 +6,7 @@ Access-Control-Allow-Origin: *
     "principals" : [
         {
             "name" : "John Doe",
-            "user_id" : "b636a568-b51e-4653-903c-01e7bd5a5086"
+            "user_id" : "49c087ab-3fee-4994-86e7-c63d2b47ac8b"
         },
         {
             "name" : "John Does",
