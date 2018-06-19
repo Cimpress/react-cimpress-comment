@@ -20,7 +20,7 @@ export default class MentionsClient extends FetchClient {
             .then(response => {
                 if ( response.status === 200 ) {
                     return response.json().then(responseJson => responseJson.principals.map(p => {
-                        return {id: p.user_id, display: p.name};
+                        return {id: p.user_id, display: p.name, email: p.email};
                     }));
                 } else {
                     throw new Error(`Unable to fetch principals for query: ${query}`);
