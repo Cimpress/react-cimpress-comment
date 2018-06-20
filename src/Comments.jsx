@@ -251,6 +251,14 @@ class _Comments extends React.Component {
                      commentVisibilityLevels={this.state.commentVisibilityLevels}/>));
     }
 
+    renderSuggestion(entry, search, highlightedDisplay, index) {
+      return (
+        <span>
+          {highlightedDisplay} <i><small>{entry.email}</small></i>
+        </span>
+        )
+    }
+
     render() {
         let comments = null;
 
@@ -285,6 +293,7 @@ class _Comments extends React.Component {
                                  data={(search, callback) => {
                                      this.mentionsClient.fetchMatchingMentions(search).then(callback)
                                  }}
+                                 renderSuggestion={this.renderSuggestion}
                         />
                     </MentionsInput>
                 </div>
