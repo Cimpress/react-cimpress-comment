@@ -34,7 +34,7 @@ class _Comment extends React.Component {
         this.state = {
             editMode: false,
             editedComment: null,
-            savingComment: false,
+            savingComment: props.comment && !props.comment.createdAt && !props.comment.updatedAt,
             comment: (props.comment)
                 ? props.comment.comment
                 : '',
@@ -60,7 +60,6 @@ class _Comment extends React.Component {
                 ? props.comment.updatedAt
                 : '',
             visible: false,
-            ready: props.comment != null
         };
     }
 
@@ -73,8 +72,8 @@ class _Comment extends React.Component {
         let commentUriChanged = this.props.commentUri !== newProps.commentUri;
 
         if ( accessTokenChanged || commentUriChanged ) {
-            this.commentClient = new CommentClient(newProps.accessToken, newProps.commentUri);
-            this.jwtSub = getSubFromJWT(newProps.accessToken);
+          this.commentClient = new CommentClient(newProps.accessToken, newProps.commentUri);
+          this.jwtSub = getSubFromJWT(newProps.accessToken);
         }
 
         if ( accessTokenChanged ) {
@@ -106,9 +105,10 @@ class _Comment extends React.Component {
                     : null,
                 createdByName: (newProps.comment)
                     ? this[globalCacheKey][newProps.comment.createdBy]
-                    : null,
-                ready: newProps.comment != null
-            }, () => this.fetchComment(this.state.visible));
+                    : null
+            }, () => {
+                this.fetchComment(this.state.visible)
+            });
         }
     }
 
@@ -135,10 +135,14 @@ class _Comment extends React.Component {
     }
 
     fetchComment(isVisible) {
+        const TEMP_ID_LENGTH = 5;
         this.setState({
             visible: isVisible
         });
-        if ( isVisible ) {
+        let commentId = this.props.commentUri.substr(this.props.commentUri.lastIndexOf('/') + 1)
+        // Make sure not to call for comments which are stored with placeholder id
+        // They will get a real id once save operation is successful
+        if ( isVisible && commentId.length !== TEMP_ID_LENGTH ) {
             return this.commentClient.fetchComment().then(responseJson => {
                 this.setState({
                     comment: responseJson.comment,
@@ -149,7 +153,6 @@ class _Comment extends React.Component {
                     updatedAt: responseJson.updatedAt,
                     updatedByName: this[globalCacheKey][responseJson.updatedBy],
                     createdByName: this[globalCacheKey][responseJson.createdBy],
-                    ready: true
                 });
                 if ( responseJson.updatedBy ) {
                     this.fetchUserName(responseJson.updatedBy, 'updatedByName');
@@ -228,11 +231,12 @@ class _Comment extends React.Component {
     render() {
         let classes = 'mentions disabled';
         let editMenu = null;
-        if ( this.props.editComments === true && (this.state.createdBy === this.jwtSub || this.state.updatedBy === this.jwtSub) ) {
-            if ( this.state.savingComment === true ) {
-                classes = 'mentions disabled';
-                editMenu = <div className={'mentions-edit'}><Spinner size={20}/></div>;
-            } else if ( this.state.editMode ) {
+        if ( this.state.savingComment === true ) {
+          classes = 'mentions disabled';
+          editMenu = <div className={'mentions-edit'}><Spinner size={20}/></div>;
+        }
+        else if ( this.props.editComments === true && (this.state.createdBy === this.jwtSub || this.state.updatedBy === this.jwtSub) ) {
+            if ( this.state.editMode ) {
                 classes = 'mentions';
                 let completeEdit = <div onClick={this.completeEditing.bind(this)}
                     className={'fa fa-check mentions-ok'}/>;
@@ -283,7 +287,7 @@ class _Comment extends React.Component {
             <VisibilitySensor partialVisibility={true} scrollCheck={true} onChange={this.fetchComment.bind(this)}>
             <div className={this.props.className || 'comment'}>
                 <ReactPlaceholder showLoadingAnimation customPlaceholder={this.authorPlaceholder}
-                    ready={this.state.ready}>
+                    ready={Boolean(this.state.createdAt && this.state.updatedAt)}>
                     <div className={'comment-creator'}>
                         {this.state.createdBy
                             ? `${this.state.createdByName || this.state.createdBy}, `
@@ -298,7 +302,7 @@ class _Comment extends React.Component {
                 </ReactPlaceholder>
                 <div>
                     <ReactPlaceholder showLoadingAnimation customPlaceholder={this.commentPlaceholder}
-                        ready={this.state.ready}>
+                        ready={Boolean(this.state.comment)}>
                         {commentBody}
                     </ReactPlaceholder>
                 </div>
