@@ -239,7 +239,7 @@ class _Comment extends React.Component {
                 let cancelEdit = <div onClick={this.cancelEditing.bind(this)}
                     className={'fa fa-undo mentions-cancel'}/>;
                     editMenu = (<div>
-                        {(this.state.editedComment !== null && this.state.editedComment !== this.state.comment)
+                        {(this.state.editedComment !== null && this.state.editedComment !== this.state.comment && this.state.editedComment !== '')
                             ? completeEdit
                             : null}
                         {cancelEdit}
