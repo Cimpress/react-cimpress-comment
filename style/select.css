@@ -360,3 +360,11 @@
   padding-left: 20px; }
 
 /*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzZWxlY3QuY3NzIiwic291cmNlUm9vdCI6IiJ9*/
+
+
+/* HACK */
+.comments-add .Select-control {
+  border-right: 0px;
+  border-radius: 4px 0px 0px 4px;
+}
+/* END HACK */
