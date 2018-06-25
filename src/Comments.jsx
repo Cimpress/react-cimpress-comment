@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import Comment from './Comment';
 import '../style/index.css';
 import '../style/select.css';
-import { getVisibilityLevels } from './visibility';
+import {getVisibilityLevels} from './visibility';
 import CommentVisibilityOption from './CommentVisibilityOption';
 import {Alert, shapes, Select} from '@cimpress/react-components';
 import CommentsClient from './clients/CommentsClient';
@@ -57,10 +57,12 @@ class _Comments extends React.Component {
     componentWillReceiveProps(newProps) {
         this.customizrClient.fetchSettings().then(json => {
             this.setState({
-              alertDismissed: json.mentionsUsageNotification &&
-              json.mentionsUsageNotification.alertDismissed === true,
-              selectedVisibilityOption: this.state.commentVisibilityLevels.find(l => l.value === json.selectedVisibility)
-            }, () => { this.resetSelectedVisibilityOption(); });
+                alertDismissed: json.mentionsUsageNotification &&
+                    json.mentionsUsageNotification.alertDismissed === true,
+                selectedVisibilityOption: this.state.commentVisibilityLevels.find(l => l.value === json.selectedVisibility)
+            }, () => {
+                this.resetSelectedVisibilityOption();
+            });
         })
         clearInterval(this.refreshInterval);
         this.refreshInterval = setInterval(() => this.forceFetchComments(), Math.max((this.props.refreshInterval || 60) * 1000, 5000));
@@ -68,18 +70,18 @@ class _Comments extends React.Component {
         let accessTokenChanged = this.props.accessToken !== newProps.accessToken;
         let resourceUriChanged = this.props.resourceUri !== newProps.resourceUri;
 
-        if ( accessTokenChanged ) {
+        if (accessTokenChanged) {
             // new props - recreate
             this.mentionsClient = new MentionsClient(newProps.accessToken);
             this.customizrClient = new CustomizrClient(newProps.accessToken);
         }
 
-        if ( accessTokenChanged || resourceUriChanged ) {
+        if (accessTokenChanged || resourceUriChanged) {
             // new props - recreate
             this.commentsClient = new CommentsClient(newProps.accessToken, newProps.resourceUri);
         }
 
-        if ( resourceUriChanged ) {
+        if (resourceUriChanged) {
             this.setState({
                 failed: false,
                 commentsIds: []
@@ -94,8 +96,8 @@ class _Comments extends React.Component {
     }
 
     onVisibilityChange = selectedVisibilityOption => {
-        this.customizrClient.updateSettings({ selectedVisibility: selectedVisibilityOption.value })
-        this.setState({ selectedVisibilityOption });
+        this.customizrClient.updateSettings({selectedVisibility: selectedVisibilityOption.value})
+        this.setState({selectedVisibilityOption});
     };
 
     addComment(e) {
@@ -106,7 +108,7 @@ class _Comments extends React.Component {
         this.setState({
             visible: isVisible
         });
-        if ( isVisible && this.props.resourceUri ) {
+        if (isVisible && this.props.resourceUri) {
             this.forceFetchComments();
         }
     }
@@ -130,7 +132,7 @@ class _Comments extends React.Component {
     }
 
     forceFetchComments() {
-        if ( !this._ismounted ) {
+        if (!this._ismounted) {
             return;
         }
 
@@ -139,17 +141,17 @@ class _Comments extends React.Component {
             failed: false
         });
         let currentClient = this.commentsClient;
-        currentClient.fetchComments().then(({ responseJson, userAccessLevel }) => {
+        currentClient.fetchComments().then(({responseJson, userAccessLevel}) => {
             this.setState({userAccessLevel}, () => {
                 this.resetSelectedVisibilityOption();
             });
 
-            if ( currentClient.resourceUri === this.props.resourceUri && this._ismounted ) {
+            if (currentClient.resourceUri === this.props.resourceUri && this._ismounted) {
                 this.setState({
                     loading: false,
                     failed: false,
                     commentsIds: responseJson.sort((a, b) => {
-                        if ( this.props.newestFirst === true ) {
+                        if (this.props.newestFirst === true) {
                             return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
                         } else {
                             return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
@@ -162,7 +164,7 @@ class _Comments extends React.Component {
                 });
             }
         }).catch(err => {
-            if ( currentClient.resourceUri === this.props.resourceUri ) {
+            if (currentClient.resourceUri === this.props.resourceUri) {
                 this.setState({
                     loading: false,
                     failed: true
@@ -175,12 +177,12 @@ class _Comments extends React.Component {
     }
 
     postComment(comment) {
-        if ( !comment || comment.length === 0 ) {
+        if (!comment || comment.length === 0) {
             return;
         }
         let tempId = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
 
-        if ( this.props.newestFirst ) {
+        if (this.props.newestFirst) {
             this.state.commentsIds.unshift(tempId);
         } else {
             this.state.commentsIds.push(tempId);
@@ -209,7 +211,7 @@ class _Comments extends React.Component {
     }
 
     reportCommentCount() {
-        if ( this.props.commentCountRefreshed ) {
+        if (this.props.commentCountRefreshed) {
             this.props.commentCountRefreshed(this.state.commentsIds.length);
         }
     }
@@ -243,8 +245,8 @@ class _Comments extends React.Component {
         let uri = this.commentsClient.getResourceUri();
         return commentIds.map((commentId, index) => (
             <Comment locale={this.props.locale} key={commentId} className={'comment ' + ((index % 2 === 0)
-                         ? 'comment-even'
-                         : 'comment-odd')}
+                ? 'comment-even'
+                : 'comment-odd')}
                      accessToken={this.props.accessToken}
                      commentUri={`${uri}/${commentId}`} comment={this.state.commentObjects[commentId]}
                      editComments={this.props.editComments}
@@ -252,8 +254,8 @@ class _Comments extends React.Component {
     }
 
     renderSuggestion(entry, search, highlightedDisplay, index) {
-      return (
-        <span>
+        return (
+            <span>
           {highlightedDisplay} <i><small>{entry.email}</small></i>
         </span>
         )
@@ -262,13 +264,13 @@ class _Comments extends React.Component {
     render() {
         let comments = null;
 
-        if ( !this.props.resourceUri ) {
+        if (!this.props.resourceUri) {
             comments = (<p>{this.tt('incorrect_component_setup')}</p>);
-        } else if ( this.state.commentsIds.length > 0 ) {
+        } else if (this.state.commentsIds.length > 0) {
             comments = this.renderComments(this.state.commentsIds);
-        } else if ( this.state.loading ) {
+        } else if (this.state.loading) {
             comments = this.renderLoading();
-        } else if ( this.state.failed ) {
+        } else if (this.state.failed) {
             comments = (<p>{this.tt('unable_to_retrieve_comments')}</p>);
         } else {
             comments = (<p>{this.tt('no_comments_exist')}</p>);
@@ -276,7 +278,7 @@ class _Comments extends React.Component {
 
         let addCommentBox = (
             <div className="comments-add">
-                <div>
+                <div className='comments-alert'>
                     <Alert type={"info"}
                            message={<p>{this.tt('use_at_char_for_mentions')}</p>}
                            dismissible={true}
@@ -284,20 +286,18 @@ class _Comments extends React.Component {
                            onDismiss={this.onAlertDismissed.bind(this)}
                     />
                 </div>
-                <div>
-                    <MentionsInput className="mentions mentions-min-height"
-                                   value={this.state.commentToAdd}
-                                   onChange={this.onInputChange.bind(this)}
-                                   displayTransform={(id, display, type) => `@${display}`} allowSpaceInQuery={true}>
-                        <Mention trigger="@"
-                                 data={(search, callback) => {
-                                     this.mentionsClient.fetchMatchingMentions(search).then(callback)
-                                 }}
-                                 renderSuggestion={this.renderSuggestion}
-                        />
-                    </MentionsInput>
-                </div>
-                <div style={{display: 'table'}}>
+                <MentionsInput className="mentions mentions-min-height"
+                               value={this.state.commentToAdd}
+                               onChange={this.onInputChange.bind(this)}
+                               displayTransform={(id, display, type) => `@${display}`} allowSpaceInQuery={true}>
+                    <Mention trigger="@"
+                             data={(search, callback) => {
+                                 this.mentionsClient.fetchMatchingMentions(search).then(callback)
+                             }}
+                             renderSuggestion={this.renderSuggestion}
+                    />
+                </MentionsInput>
+                <div style={{display:'table'}}>
                     <Select
                         label="Show my comment to"
                         value={this.state.selectedVisibilityOption}
@@ -307,9 +307,10 @@ class _Comments extends React.Component {
                         clearable={false}
                         optionComponent={CommentVisibilityOption}
                     />
-                    <span className="input-group-btn" style={{display: 'table-cell', paddingLeft: "6px"}}>
-                          <button disabled={!this.props.resourceUri || this.state.commentToAdd.trim() === '' || !this.state.selectedVisibilityOption}
-                                  onClick={this.addComment.bind(this)} className="btn btn-default">
+                    <span className="input-group-btn" style={{display: 'table-cell'}}>
+                          <button
+                              disabled={!this.props.resourceUri || this.state.commentToAdd.trim() === '' || !this.state.selectedVisibilityOption}
+                              onClick={this.addComment.bind(this)} className="btn btn-default">
                             {this.tt('btn_post')}
                           </button>
                       </span>
