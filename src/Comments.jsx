@@ -15,6 +15,7 @@ import CustomizrClient from './clients/CustomizrClient';
 
 import {getI18nInstance} from './i18n';
 import {translate} from 'react-i18next';
+import {errorToString} from './helper';
 
 let {Spinner} = shapes;
 
@@ -63,7 +64,8 @@ class _Comments extends React.Component {
             }, () => {
                 this.resetSelectedVisibilityOption();
             });
-        })
+        });
+
         clearInterval(this.refreshInterval);
         this.refreshInterval = setInterval(() => this.forceFetchComments(), Math.max((this.props.refreshInterval || 60) * 1000, 5000));
 
@@ -140,6 +142,7 @@ class _Comments extends React.Component {
             loading: true,
             failed: false
         });
+
         let currentClient = this.commentsClient;
         currentClient.fetchComments().then(({responseJson, userAccessLevel}) => {
             this.setState({userAccessLevel}, () => {
@@ -167,7 +170,8 @@ class _Comments extends React.Component {
             if (currentClient.resourceUri === this.props.resourceUri) {
                 this.setState({
                     loading: false,
-                    failed: true
+                    failed: true,
+                    error: err
                 });
             }
             console.error(err);
@@ -254,11 +258,21 @@ class _Comments extends React.Component {
     }
 
     renderSuggestion(entry, search, highlightedDisplay, index) {
-        return (
-            <span>
-          {highlightedDisplay} <i><small>{entry.email}</small></i>
-        </span>
-        )
+        return <span>{highlightedDisplay} <i><small>{entry.email}</small></i></span>
+    }
+
+    renderError() {
+        let e = this.state.error;
+        let message;
+        let title;
+        if (!e) {
+            message = this.tt('unable_to_retrieve_comments');
+        } else {
+            let details = errorToString(e);
+            title = this.tt('unable_to_retrieve_comments')
+            message = this.tt(details);
+        }
+        return <Alert type={'danger'} title={title} message={message} dismissible={false}/>;
     }
 
     render() {
@@ -271,9 +285,9 @@ class _Comments extends React.Component {
         } else if (this.state.loading) {
             comments = this.renderLoading();
         } else if (this.state.failed) {
-            comments = (<p>{this.tt('unable_to_retrieve_comments')}</p>);
+            comments = this.renderError();
         } else {
-            comments = (<p>{this.tt('no_comments_exist')}</p>);
+            comments = <div className={'no-comments'}>{this.tt('no_comments_exist')}</div>;
         }
 
         let addCommentBox = (
@@ -297,7 +311,7 @@ class _Comments extends React.Component {
                              renderSuggestion={this.renderSuggestion}
                     />
                 </MentionsInput>
-                <div style={{display:'table'}}>
+                <div style={{display: 'table'}}>
                     <Select
                         label="Show my comment to"
                         value={this.state.selectedVisibilityOption}

@@ -1,5 +1,10 @@
 .comment {
-    padding: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.comment .alert {
+    margin-bottom: 0px;
 }
 
 .comment-editable {
@@ -21,15 +26,17 @@
 }
 
 .comments {
-    padding: 2px;
     border: 0px solid #c4cdd6;
     border-radius: 0px;
-    margin: 2px;
     display: grid;
 }
 
+.no-comments {
+    padding-left: 3px;
+}
+
 .comment-creator {
-    margin-left: 1px;
+    margin-left: 3px;
     margin-bottom: 4px;
     font-size: 10px;
     max-width: 500px;
