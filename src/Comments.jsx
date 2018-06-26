@@ -42,12 +42,15 @@ class _Comments extends React.Component {
     }
 
     componentWillMount() {
-        setTimeout(() => this.forceFetchComments(), 10);
+        setTimeout(() => {
+            this.fetchSettings()
+            this.forceFetchComments()
+        }, 10);
     }
 
     componentDidMount() {
         this._ismounted = true;
-        this.componentWillReceiveProps(this.props);
+        this.resetSelectedVisibilityOption();
     }
 
     componentWillUnmount() {
@@ -55,15 +58,6 @@ class _Comments extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        this.customizrClient.fetchSettings().then(json => {
-            this.setState({
-                alertDismissed: json.mentionsUsageNotification &&
-                    json.mentionsUsageNotification.alertDismissed === true,
-                selectedVisibilityOption: this.state.commentVisibilityLevels.find(l => l.value === json.selectedVisibility)
-            }, () => {
-                this.resetSelectedVisibilityOption();
-            });
-        })
         clearInterval(this.refreshInterval);
         this.refreshInterval = setInterval(() => this.forceFetchComments(), Math.max((this.props.refreshInterval || 60) * 1000, 5000));
 
@@ -102,6 +96,20 @@ class _Comments extends React.Component {
 
     addComment(e) {
         this.postComment(this.state.commentToAdd);
+    }
+
+    fetchSettings() {
+        this.customizrClient
+            .fetchSettings()
+            .then(json => {
+                this.setState({
+                    alertDismissed: json.mentionsUsageNotification &&
+                        json.mentionsUsageNotification.alertDismissed === true,
+                    selectedVisibilityOption: this.state.commentVisibilityLevels.find(l => l.value === json.selectedVisibility)
+                }, () => {
+                    this.resetSelectedVisibilityOption();
+                });
+            });
     }
 
     fetchComments(isVisible) {
@@ -297,7 +305,7 @@ class _Comments extends React.Component {
                              renderSuggestion={this.renderSuggestion}
                     />
                 </MentionsInput>
-                <div style={{display:'table'}}>
+                <div style={{display: 'table'}}>
                     <Select
                         label="Show my comment to"
                         value={this.state.selectedVisibilityOption}

@@ -17,11 +17,16 @@ export default class CustomizrClient extends FetchClient {
 
         return fetch(this.url, init)
             .then(response => {
-                if ( response.status === 200 ) {
+                if (response.status === 200) {
                     return response.json();
-                } else {
-                    throw new Error(`Unable to fetch user settings from Customizr`);
                 }
+
+                // No settings stored - this is OK
+                if (response.status === 404) {
+                    return {}
+                }
+
+                throw new Error(`Unable to fetch user settings from Customizr`);
             });
     }
 
@@ -32,10 +37,10 @@ export default class CustomizrClient extends FetchClient {
     }
 
     updateSettings(settings) {
-      return this.fetchSettings()
-        .then(json => {
-          let merged = merge(json, settings);
-          return this.putSettings(merged);
-        });
+        return this.fetchSettings()
+            .then(json => {
+                let merged = merge(json, settings);
+                return this.putSettings(merged);
+            });
     }
 }

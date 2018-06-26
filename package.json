@@ -1,12 +1,13 @@
 {
   "name": "react-cimpress-comment",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Visualizes comment(s) for a particular platform resource",
   "main": "./lib/index.js",
   "scripts": {
     "translate": "node scripts/retrieveTranslations.js",
     "build": "babel src -d lib --copy-files",
-    "storybook": "((kill -9 `cat mockserver.pid`; kill -9 `cat storybook.pid`) || true) && (node_modules/.bin/start-storybook -p 9001 -c .storybook & echo $! > storybook.pid) && (node_modules/.bin/mockserver -p 9102 -m ./mocks/ & echo $! > mockserver.pid)"
+    "storybook": "((kill -9 `cat mockserver.pid`; kill -9 `cat storybook.pid`) || true) && (node_modules/.bin/start-storybook -p 9001 -c .storybook & echo $! > storybook.pid) && (node_modules/.bin/mockserver -p 9102 -m ./mocks/ & echo $! > mockserver.pid)",
+    "storybookstop": "kill -9 `cat mockserver.pid`; kill -9 `cat storybook.pid`"
   },
   "repository": {
     "type": "git",
