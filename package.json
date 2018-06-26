@@ -47,6 +47,7 @@
   },
   "dependencies": {
     "atob": "^2.1.1",
+    "deepmerge": "^2.1.1",
     "i18next": "^11.3.2",
     "react-i18next": "^7.6.1",
     "react-mentions": "^1.2.2",
