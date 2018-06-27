@@ -261,7 +261,7 @@ class _Comment extends React.Component {
                         this.mentionsClient.fetchMatchingMentions(search).then(callback);
                     }}/>
                 </MentionsInput>
-                {this.renderError(this.state.errorPut)}
+                {this.renderError(this.state.errorPut, this.tt('unable_to_edit_comment'))}
                 {editMenu}
             </div>
         );
