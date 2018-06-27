@@ -162,8 +162,10 @@ class _Comment extends React.Component {
                     createdAt: responseJson.createdAt,
                     updatedAt: responseJson.updatedAt
                 });
-            }).catch(() => {
+            }).catch((err) => {
+                console.log(err);
                 this.setState({
+                    errorPut: err,
                     savingComment: false
                 });
             });
@@ -178,6 +180,7 @@ class _Comment extends React.Component {
 
     cancelEditing() {
         this.setState({
+            errorPut: undefined,
             editedComment: null,
             editMode: false
         });
@@ -201,11 +204,13 @@ class _Comment extends React.Component {
         return t(key, {lng: locale});
     }
 
-    renderError() {
-        if (!this.state.error) {
+    renderError(e, prefix) {
+        if (!e) {
             return null;
         }
-        return <Alert title={this.tt('unable_to_read_comment')} message={this.tt(errorToString(this.state.error))}/>
+        return <span className={'text-danger'}>&nbsp;<i
+            className={'fa fa-exclamation-triangle'}/>&nbsp;{prefix}{prefix ?
+            <span>&nbsp;</span> : null}({this.tt(errorToString(e))})</span>
     }
 
     render() {
@@ -256,6 +261,7 @@ class _Comment extends React.Component {
                         this.mentionsClient.fetchMatchingMentions(search).then(callback);
                     }}/>
                 </MentionsInput>
+                {this.renderError(this.state.errorPut)}
                 {editMenu}
             </div>
         );
@@ -264,7 +270,7 @@ class _Comment extends React.Component {
             ? `${this.tt('by')} ${this.state.updatedByName || this.state.updatedBy}`
             : null} <TimeAgo date={this.state.updatedAt} formatter={reactTimeAgoFormatters[this.props.locale]}/></span>;
 
-        let error = this.renderError();
+        let error = this.renderError(this.state.error, this.tt('unable_to_read_comment'));
 
         return (
             <VisibilitySensor partialVisibility={true} scrollCheck={true} onChange={this.fetchComment.bind(this)}>

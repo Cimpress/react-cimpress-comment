@@ -35,6 +35,7 @@ class _Comments extends React.Component {
             commentObjects: {},
             commentToAdd: props.initialValue || '',
             failed: false,
+            failedPost: false,
             alertDismissed: true,
             commentVisibilityLevels: getVisibilityLevels(this.tt.bind(this)),
             selectedVisibilityOption: null,
@@ -86,6 +87,7 @@ class _Comments extends React.Component {
         if (resourceUriChanged) {
             this.setState({
                 failed: false,
+                failedPost: false,
                 commentsIds: []
             }, () => this.forceFetchComments());
         }
@@ -194,12 +196,15 @@ class _Comments extends React.Component {
 
         let newCommentObjects = Object.assign({[tempId]: {comment}}, this.state.commentObjects)
         this.setState({
+            failed: false,
+            error: undefined,
             commentToAdd: '',
             commentsIds: this.state.commentsIds.slice(0),
             commentObjects: newCommentObjects
         });
 
-        return this.commentsClient.postComment(comment, this.state.selectedVisibilityOption.value)
+        return this.commentsClient
+            .postComment(comment, this.state.selectedVisibilityOption.value)
             .then(() => this.fetchComments(this.state.visible))
             .then(() => this.reportCommentCount())
             .catch((err) => {
@@ -208,6 +213,8 @@ class _Comments extends React.Component {
                 delete newCommentObjects[tempId];
 
                 this.setState({
+                    failedPost: true,
+                    error: err,
                     commentsIds: this.state.commentsIds.filter(id => id !== tempId),
                     commentObjects: newCommentObjects
                 });
@@ -261,18 +268,22 @@ class _Comments extends React.Component {
         return <span>{highlightedDisplay} <i><small>{entry.email}</small></i></span>
     }
 
-    renderError() {
+    renderError(defaultErrorMessage, dismissible = false, onDismiss) {
+        if (!this.state.failed && !this.state.failedPost) {
+            return null;
+        }
+
+        let title;
         let e = this.state.error;
         let message;
-        let title;
         if (!e) {
-            message = this.tt('unable_to_retrieve_comments');
+            message = defaultErrorMessage
         } else {
             let details = errorToString(e);
-            title = this.tt('unable_to_retrieve_comments')
+            title = defaultErrorMessage;
             message = this.tt(details);
         }
-        return <Alert type={'danger'} title={title} message={message} dismissible={false}/>;
+        return <Alert type={'danger'} title={title} message={message} dismissible={dismissible} onDismiss={onDismiss}/>;
     }
 
     render() {
@@ -285,7 +296,7 @@ class _Comments extends React.Component {
         } else if (this.state.loading) {
             comments = this.renderLoading();
         } else if (this.state.failed) {
-            comments = this.renderError();
+            comments = this.renderError(this.tt('unable_to_retrieve_comments'));
         } else {
             comments = <div className={'no-comments'}>{this.tt('no_comments_exist')}</div>;
         }
@@ -299,6 +310,11 @@ class _Comments extends React.Component {
                            dismissed={this.state.alertDismissed}
                            onDismiss={this.onAlertDismissed.bind(this)}
                     />
+                    {this.state.failedPost
+                        ? this.renderError(this.tt('unable_to_post_comment'), true, () => {
+                            this.setState({failedPost: false})
+                        })
+                        : null}
                 </div>
                 <MentionsInput className="mentions mentions-min-height"
                                value={this.state.commentToAdd}

@@ -75,6 +75,7 @@ export default class CommentsClient extends FetchClient {
         });
 
         return fetch(url, init).then(response => {
+            throw createError.Forbidden();
             if (response.status === 201) {
                 return response.json();
             } else if (response.status === 401) {
