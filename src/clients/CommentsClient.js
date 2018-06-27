@@ -32,10 +32,10 @@ export default class CommentsClient extends FetchClient {
                         responseJson: responseJson.comments,
                         userAccessLevel: response.headers.get("x-cimpress-resource-access-level")
                     }));
-                } else if (response.status === 403) {
-                    throw createError.Forbidden()
                 } else if (response.status === 401) {
                     throw createError.Unauthorized()
+                } else if (response.status === 403) {
+                    throw createError.Forbidden()
                 } else if (response.status === 404) {
                     return this.createResource().then(responseJson => ({
                         responseJson: responseJson.comments,
@@ -60,7 +60,7 @@ export default class CommentsClient extends FetchClient {
                 } else if (response.status === 401) {
                     throw createError.Unauthorized()
                 } else if (response.status === 403) {
-                    return createError.Forbidden();
+                    throw createError.Forbidden();
                 } else {
                     throw new Error(`Unable to create resource (Status code: ${response.status})`);
                 }
@@ -77,8 +77,10 @@ export default class CommentsClient extends FetchClient {
         return fetch(url, init).then(response => {
             if (response.status === 201) {
                 return response.json();
+            } else if (response.status === 401) {
+                throw createError.Unauthorized()
             } else if (response.status === 403) {
-                return createError.Unauthorized();
+                throw createError.Forbidden();
             } else {
                 throw new Error(`Unable to create comment for: ${this.resourceUri} Status code: ${response.status})`);
             }
