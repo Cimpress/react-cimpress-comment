@@ -1,4 +1,5 @@
 import FetchClient from './FetchClient';
+import * as createError from 'http-errors';
 
 export default class CommentClient extends FetchClient {
 
@@ -12,30 +13,37 @@ export default class CommentClient extends FetchClient {
 
         return fetch(this.commentUri, init)
             .then(response => {
-                if ( response.status === 200 ) {
+                if (response.status === 200) {
                     return response.json();
+                } else if (response.status === 401) {
+                    throw createError.Unauthorized()
+                } else if (response.status === 403) {
+                    throw createError.Forbidden()
                 } else {
-                    throw new Error(`Unable to fetch comment: ${this.commentUri}`);
+                    throw new Error(`Unable to fetch comment: ${this.commentUri} (Status code: ${response.status})`);
                 }
             });
     }
 
     putComment(comment, visibility) {
-        let init = this.getDefaultConfig(
-            'PUT', {
-                comment,
-                visibility
-            });
+        let init = this.getDefaultConfig('PUT', {
+            comment,
+            visibility
+        });
 
         return fetch(this.commentUri, init)
             .then(response => {
-                if ( response.status === 200 ) {
+                if (response.status === 200) {
                     return this.fetchComment()
                         .catch(() => {
                             throw new Error('Error retrieving the comment after putting it');
                         });
+                } else if (response.status === 401) {
+                    throw createError.Unauthorized()
+                } else if (response.status === 403) {
+                    throw createError.Forbidden()
                 } else {
-                    throw new Error(`Unable to update comment: ${this.commentUri}`);
+                    throw new Error(`Unable to update comment: ${this.commentUri} (Status code: ${response.status})`);
                 }
             });
     }

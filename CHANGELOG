@@ -1,0 +1,38 @@
+# Changelog
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
+and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
+
+## [0.5.1] - 2018-06-27
+### Fixed
+- Add more information in case of failure to retrieve comments
+- Do not throw error in case there is a 404 response from Customizr
+
+## [0.5.0] - 2018-06-26
+### Fixed
+- Fix an issue causing the 'add new comment' form to take 100% height within the drawer
+- Updated styles for 'add new comment' form
+
+## [0.4.5] - 2018-06-20
+### Fixed
+- Allow to edit comment to be an empty comment (#62)
+- Suggestions listing includes the the user's email (to cover cases where there are multiple users with same name but different email address) (#59)
+- Fix redundant 404s, modify component appearance when posting comments (#54)
+
+## [0.4.4] - 2018-06-19
+### Fixed
+- Fixes in styles related to mentions (z-index issue)
+
+## [0.4.3] - 2018-06-14
+### Added
+- Expose the ability to post public comments
+
+## [0.3.7] - 2018-06-11
+### Fixed
+- Fix styling issues by making the drawer top-level component (using react-portals)
+
+## [0.3.5] - 2018-06-04
+### Added
+- Added internationalization support
+

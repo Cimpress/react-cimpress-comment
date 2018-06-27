@@ -175,6 +175,40 @@
       "selectorExpansion": true,
       "misMatchThreshold": 1.0,
       "requireSameDimensions": true
+    },
+    {
+      "label": "with_errors_get_comments_with_403",
+      "cookiePath": "",
+      "url": "http://localhost:9001/iframe.html?selectedKind=Errors&selectedStory=With%20get%20comments%20returning%20403",
+      "referenceUrl": "",
+      "readyEvent": "",
+      "readySelector": "div.comments",
+      "delay": 2000,
+      "hideSelectors": [],
+      "removeSelectors": [],
+      "hoverSelector": "",
+      "postInteractionWait": "",
+      "selectors": [],
+      "selectorExpansion": true,
+      "misMatchThreshold": 1.0,
+      "requireSameDimensions": true
+    },
+    {
+      "label": "with_errors_get_comment_with_403",
+      "cookiePath": "",
+      "url": "http://localhost:9001/iframe.html?selectedKind=Errors&selectedStory=With%20getting%20single%20comment%20returning%20403",
+      "referenceUrl": "",
+      "readyEvent": "",
+      "readySelector": "div.comments",
+      "delay": 2000,
+      "hideSelectors": [],
+      "removeSelectors": [],
+      "hoverSelector": "",
+      "postInteractionWait": "",
+      "selectors": [],
+      "selectorExpansion": true,
+      "misMatchThreshold": 1.0,
+      "requireSameDimensions": true
     }
   ],
   "paths": {
