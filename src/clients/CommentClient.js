@@ -1,5 +1,4 @@
 import FetchClient from './FetchClient';
-import * as createError from 'http-errors';
 
 export default class CommentClient extends FetchClient {
 
@@ -16,9 +15,9 @@ export default class CommentClient extends FetchClient {
                 if (response.status === 200) {
                     return response.json();
                 } else if (response.status === 401) {
-                    throw createError.Unauthorized()
+                    throw new Error('Unauthorized')
                 } else if (response.status === 403) {
-                    throw createError.Forbidden()
+                    throw new Error('Forbidden')
                 } else {
                     throw new Error(`Unable to fetch comment: ${this.commentUri} (Status code: ${response.status})`);
                 }
@@ -39,9 +38,9 @@ export default class CommentClient extends FetchClient {
                             throw new Error('Error retrieving the comment after putting it');
                         });
                 } else if (response.status === 401) {
-                    throw createError.Unauthorized()
+                    throw new Error('Unauthorized')
                 } else if (response.status === 403) {
-                    throw createError.Forbidden()
+                    throw new Error('Forbidden')
                 } else {
                     throw new Error(`Unable to update comment: ${this.commentUri} (Status code: ${response.status})`);
                 }
