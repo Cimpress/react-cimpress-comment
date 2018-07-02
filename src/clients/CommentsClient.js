@@ -1,5 +1,4 @@
 import FetchClient from './FetchClient';
-import * as createError from 'http-errors';
 
 const SERVICE_URL = (process && process.env ? process.env.COMMENT_SERVICE_URL : null) || 'https://comment.trdlnk.cimpress.io';
 
@@ -33,9 +32,9 @@ export default class CommentsClient extends FetchClient {
                         userAccessLevel: response.headers.get("x-cimpress-resource-access-level")
                     }));
                 } else if (response.status === 401) {
-                    throw createError.Unauthorized()
+                    throw new Error('Unauthorized')
                 } else if (response.status === 403) {
-                    throw createError.Forbidden()
+                    throw new Error('Forbidden')
                 } else if (response.status === 404) {
                     return this.createResource().then(responseJson => ({
                         responseJson: responseJson.comments,
@@ -58,9 +57,9 @@ export default class CommentsClient extends FetchClient {
                 if (response.status >= 200 && response.status < 300) {
                     return response.json();
                 } else if (response.status === 401) {
-                    throw createError.Unauthorized()
+                    throw new Error('Unauthorized')
                 } else if (response.status === 403) {
-                    throw createError.Forbidden();
+                    throw new Error('Forbidden')
                 } else {
                     throw new Error(`Unable to create resource (Status code: ${response.status})`);
                 }
@@ -78,9 +77,9 @@ export default class CommentsClient extends FetchClient {
             if (response.status === 201) {
                 return response.json();
             } else if (response.status === 401) {
-                throw createError.Unauthorized()
+                throw new Error('Unauthorized')
             } else if (response.status === 403) {
-                throw createError.Forbidden();
+                throw new Error('Forbidden')
             } else {
                 throw new Error(`Unable to create comment for: ${this.resourceUri} Status code: ${response.status})`);
             }
