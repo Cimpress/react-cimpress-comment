@@ -20,13 +20,7 @@ export default class CustomizrClient extends FetchClient {
                 if (response.status === 200) {
                     return response.json();
                 }
-
-                // No settings stored - this is OK
-                if (response.status === 404) {
-                    return {}
-                }
-
-                throw new Error(`Unable to fetch user settings from Customizr`);
+                return {};
             });
     }
 
