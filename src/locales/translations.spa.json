@@ -2,7 +2,7 @@
     "translations": {
         "retrieving_comments": "Recuperando comentarios ...",
         "no_comments_exist": "No hay comentarios aquí todavía.",
-        "use_at_char_for_mentions": "Usa el personaje <strong> @ </ strong> para mencionar a las personas. Los notificaremos por correo electrónico sobre este hilo de comentarios.",
+        "use_at_char_for_mentions": "Usa el personaje <0>@</0> para mencionar a las personas. Los notificaremos por correo electrónico sobre este hilo de comentarios.",
         "by": "por",
         "btn_post": "Enviar",
         "modified": "modificado",
