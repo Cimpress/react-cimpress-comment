@@ -2,7 +2,7 @@
     "translations": {
         "retrieving_comments": "Kommentare abrufen ...",
         "no_comments_exist": "Noch keine Kommentare hier.",
-        "use_at_char_for_mentions": "Verwenden Sie <strong> @ </ strong>, um Personen zu erwähnen. Wir werden sie per E-Mail über diesen Kommentarthread informieren.",
+        "use_at_char_for_mentions": "Verwenden Sie <0>@</0>, um Personen zu erwähnen. Wir werden sie per E-Mail über diesen Kommentarthread informieren.",
         "by": "durch",
         "btn_post": "Post",
         "modified": "geändert",

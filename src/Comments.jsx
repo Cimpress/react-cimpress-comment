@@ -14,7 +14,7 @@ import MentionsClient from './clients/MentionsClient';
 import CustomizrClient from './clients/CustomizrClient';
 
 import {getI18nInstance} from './i18n';
-import {translate} from 'react-i18next';
+import {translate, Trans} from 'react-i18next';
 import {errorToString} from './helper';
 
 let {Spinner} = shapes;
@@ -305,7 +305,10 @@ class _Comments extends React.Component {
             <div className="comments-add">
                 <div className='comments-alert'>
                     <Alert type={"info"}
-                           message={<p>{this.tt('use_at_char_for_mentions')}</p>}
+                           message = {<p><Trans
+                                        defaults={this.tt('use_at_char_for_mentions')}
+                                        components={[<strong>@</strong>]}
+                                    /></p>}
                            dismissible={true}
                            dismissed={this.state.alertDismissed}
                            onDismiss={this.onAlertDismissed.bind(this)}

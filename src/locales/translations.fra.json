@@ -2,7 +2,7 @@
     "translations": {
         "retrieving_comments": "Nous récupérons les commentaires ...",
         "no_comments_exist": "Aucun commentaire ici pour le moment.",
-        "use_at_char_for_mentions": "Utilisez le caractère <strong> @ </ strong> pour mentionner les personnes. Nous les informerons par e-mail de ce fil de commentaires.",
+        "use_at_char_for_mentions": "Utilisez le caractère <0>@</0> pour mentionner les personnes. Nous les informerons par e-mail de ce fil de commentaires.",
         "by": "par",
         "btn_post": "Poster",
         "modified": "modifié",

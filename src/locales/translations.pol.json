@@ -2,7 +2,7 @@
     "translations": {
         "retrieving_comments": "Trwa pobieranie komentarzy ...",
         "no_comments_exist": "Nie ma jeszcze żadnych komentarzy.",
-        "use_at_char_for_mentions": "Użyj znaku <strong>@</ strong>, by wspomnieć konkretne osoby w swoim komentarzu, a powiadomimy je o nim przy pomocy e-mail'a.",
+        "use_at_char_for_mentions": "Użyj znaku <0>@</0>, by wspomnieć konkretne osoby w swoim komentarzu, a powiadomimy je o nim przy pomocy e-mail'a.",
         "by": "przez",
         "btn_post": "Wyślij",
         "modified": "zmodyfikowany",

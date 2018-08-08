@@ -1,6 +1,6 @@
 {
     "translations": {
-        "use_at_char_for_mentions": "Използвайте <strong>@</strong> за да споменете някого. Те ще получат известие за вашия коментар.",
+        "use_at_char_for_mentions": "Използвайте <0>@</0> за да споменете някого. Те ще получат известие за вашия коментар.",
         "visibility_option_internal_label": "Само упълномощени хора",
         "btn_post": "Публикувай",
         "unable_to_retrieve_comments": "Коментарите не могат да бъдат извлечени.",

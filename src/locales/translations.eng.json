@@ -1,6 +1,6 @@
 {
     "translations": {
-        "use_at_char_for_mentions": "Use <strong>@</strong> character to mention people. We will notify them via email about this comment thread.",
+        "use_at_char_for_mentions": "Use <0>@</0> character to mention people. We will notify them via email about this comment thread.",
         "visibility_option_internal_label": "Only authorized people",
         "btn_post": "Post",
         "unable_to_retrieve_comments": "Unable to retrieve comments.",
