@@ -1,9 +1,8 @@
-import FetchClient from './FetchClient';
+import _FetchClient from './_FetchClient';
 
 const AUTH_SERVICE_URL = (process && process.env ? process.env.AUTH_SERVICE_URL : null) || 'https://api.cimpress.io';
 
-export default class MentionsClient extends FetchClient {
-
+export default class MentionsClient extends _FetchClient {
     constructor(accessToken) {
         super(accessToken);
     }
@@ -17,9 +16,9 @@ export default class MentionsClient extends FetchClient {
         let init = this.getDefaultConfig('GET');
 
         return fetch(url, init)
-            .then(response => {
+            .then((response) => {
                 if ( response.status === 200 ) {
-                    return response.json().then(responseJson => responseJson.principals.map(p => {
+                    return response.json().then((responseJson) => responseJson.principals.map((p) => {
                         return {id: p.user_id, display: p.name, email: p.email};
                     }));
                 } else {
@@ -33,12 +32,12 @@ export default class MentionsClient extends FetchClient {
         let init = this.getDefaultConfig('GET');
 
         return fetch(url, init)
-            .then(response => {
+            .then((response) => {
                 if ( response.status === 200 ) {
                     return response.json();
                 }
                 throw new Error(response.status);
-            }).catch(err => {
+            }).catch((err) => {
                 console.error(err);
             });
     }

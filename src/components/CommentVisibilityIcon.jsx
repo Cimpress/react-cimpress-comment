@@ -1,8 +1,8 @@
-import '../style/index.css';
-import '../style/visibilityIcon.css';
+import '../../style/index.css';
+import '../../style/visibilityIcon.css';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Tooltip } from '@cimpress/react-components';
+import {Tooltip} from '@cimpress/react-components';
 
 class CommentVisibilityIcon extends React.Component {
     render() {
@@ -12,8 +12,8 @@ class CommentVisibilityIcon extends React.Component {
 
         return (
             <Tooltip
-            direction="top"
-            contents={this.props.label}>
+                direction="top"
+                contents={this.props.label}>
                 {icon}
             </Tooltip>
         );
@@ -22,7 +22,7 @@ class CommentVisibilityIcon extends React.Component {
 
 CommentVisibilityIcon.propTypes = {
     icon: PropTypes.string,
-    label: PropTypes.string
+    label: PropTypes.string,
 };
 
 export default CommentVisibilityIcon;

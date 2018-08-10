@@ -1,11 +1,9 @@
-export default class FetchClient {
-
+export default class _FetchClient {
     constructor(accessToken) {
         this.accessToken = accessToken;
     }
 
     getDefaultConfig(method, jsonPayload) {
-
         let headers = new Headers();
         headers.append('Authorization', `Bearer ${this.accessToken}`);
         if (method !== 'GET') {
@@ -16,14 +14,13 @@ export default class FetchClient {
             method: method,
             headers: headers,
             mode: 'cors',
-            cache: 'default'
+            cache: 'default',
         };
 
-        if ( jsonPayload ) {
+        if (jsonPayload) {
             config.body = JSON.stringify(jsonPayload);
         }
 
         return config;
     }
-
 }

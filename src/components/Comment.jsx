@@ -3,32 +3,31 @@ import VisibilitySensor from 'react-visibility-sensor';
 import ReactPlaceholder from 'react-placeholder';
 import 'react-placeholder/lib/reactPlaceholder.css';
 import PropTypes from 'prop-types';
-import '../style/index.css';
+import '../../style/index.css';
 
 import TimeAgo from 'react-timeago';
-import {reactTimeAgoFormatters} from './locales/all';
+import {reactTimeAgoFormatters} from '../locales/all';
 
-import CommentClient from './clients/CommentClient';
+import CommentsClient from '../clients/CommentsClient';
 import CommentVisibilityIcon from './CommentVisibilityIcon';
-import {getSubFromJWT} from './helper';
+import {getSubFromJWT, errorToString} from '../tools/helper';
 import {Mention, MentionsInput} from 'react-mentions';
-import MentionsClient from './clients/MentionsClient';
-import {shapes, Alert} from '@cimpress/react-components';
+import MentionsClient from '../clients/MentionsClient';
+import {shapes} from '@cimpress/react-components';
 import {TextBlock} from 'react-placeholder/lib/placeholders';
 
 import {translate} from 'react-i18next';
-import {getI18nInstance} from './i18n';
-import {errorToString} from './helper';
+import {getI18nInstance} from '../tools/i18n';
 
 let {Spinner} = shapes;
 
 let globalCacheKey = Symbol();
 let globalCache = {};
 
-class _Comment extends React.Component {
+class Comment extends React.Component {
     constructor(props) {
         super(props);
-        this.commentClient = new CommentClient(props.accessToken, props.commentUri);
+        this.commentsClient = new CommentsClient(props.accessToken);
         this.mentionsClient = new MentionsClient(props.accessToken);
         this.jwtSub = getSubFromJWT(props.accessToken);
 
@@ -57,7 +56,7 @@ class _Comment extends React.Component {
         let commentUriChanged = this.props.commentUri !== newProps.commentUri;
 
         if (accessTokenChanged || commentUriChanged) {
-            this.commentClient = new CommentClient(newProps.accessToken, newProps.commentUri);
+            this.commentsClient = new CommentsClient(newProps.accessToken);
             this.jwtSub = getSubFromJWT(newProps.accessToken);
         }
 
@@ -100,7 +99,7 @@ class _Comment extends React.Component {
     }
 
     putComment(comment, visibility) {
-        return this.commentClient.putComment(comment, visibility);
+        return this.commentsClient.putComment(this.props.commentUri, comment, visibility);
     }
 
     fetchComment(isVisible) {
@@ -112,8 +111,8 @@ class _Comment extends React.Component {
         // Make sure not to call for comments which are stored with placeholder id
         // They will get a real id once save operation is successful
         if (isVisible && commentId.length !== TEMP_ID_LENGTH) {
-            return this.commentClient
-                .fetchComment()
+            return this.commentsClient
+                .fetchComment(this.props.commentUri)
                 .then(responseJson => {
                     this.setState({
                         error: undefined,
@@ -304,7 +303,7 @@ class _Comment extends React.Component {
     }
 }
 
-_Comment.propTypes = {
+Comment.propTypes = {
     locale: PropTypes.string,
     className: PropTypes.string,
     accessToken: PropTypes.string,
@@ -313,8 +312,8 @@ _Comment.propTypes = {
     editComments: PropTypes.bool
 };
 
-_Comment.defaultProps = {
+Comment.defaultProps = {
     locale: 'eng'
 };
 
-export default translate('translations', {i18n: getI18nInstance()})(_Comment);
+export default translate('translations', {i18n: getI18nInstance()})(Comment);

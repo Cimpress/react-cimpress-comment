@@ -1,12 +1,11 @@
 import i18n from 'i18next';
 import {reactI18nextModule} from 'react-i18next';
 
-import {resources} from './locales/all';
+import {resources} from '../locales/all';
 
 let i18n_instance = null;
 
 function getI18nInstance() {
-
     if ( !i18n_instance ) {
         i18n_instance = i18n.createInstance();
 
@@ -28,8 +27,8 @@ function getI18nInstance() {
                 },
 
                 react: {
-                    wait: true
-                }
+                    wait: true,
+                },
             });
     }
 
@@ -37,5 +36,5 @@ function getI18nInstance() {
 }
 
 export {
-    getI18nInstance
+    getI18nInstance,
 };

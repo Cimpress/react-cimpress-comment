@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import '../style/index.css';
-import '../style/visibilityOption.css';
+import '../../style/index.css';
+import '../../style/visibilityOption.css';
 
 class CommentVisibilityOption extends React.Component {
     tt(key) {
@@ -9,7 +9,7 @@ class CommentVisibilityOption extends React.Component {
         return t(key, {lng: locale});
     }
 
-    handleMouseDown (event) {
+    handleMouseDown(event) {
         event.preventDefault();
         event.stopPropagation();
         if (!this.props.option.disabled) {
@@ -17,11 +17,11 @@ class CommentVisibilityOption extends React.Component {
         }
     }
 
-    handleMouseEnter (event) {
+    handleMouseEnter(event) {
         this.props.onFocus(this.props.option, event);
     }
 
-    handleMouseMove (event) {
+    handleMouseMove(event) {
         if (this.props.isFocused) return;
         this.props.onFocus(this.props.option, event);
     }
@@ -50,14 +50,19 @@ class CommentVisibilityOption extends React.Component {
 }
 
 CommentVisibilityOption.propTypes = {
+
+    // Silence eslint
+    t: PropTypes.func,
+    locale: PropTypes.string,
     children: PropTypes.node,
+
     className: PropTypes.string,
     isDisabled: PropTypes.bool,
     isFocused: PropTypes.bool,
     isSelected: PropTypes.bool,
     onFocus: PropTypes.func,
     onSelect: PropTypes.func,
-    option: PropTypes.object.isRequired
+    option: PropTypes.object.isRequired,
 };
 
 export default CommentVisibilityOption;

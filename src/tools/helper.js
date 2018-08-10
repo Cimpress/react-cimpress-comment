@@ -10,19 +10,19 @@ function getSubFromJWT(jwt) {
 
 function errorToString(e) {
     if (!e) {
-        return ''
+        return '';
     }
 
     if (e instanceof Error) {
-        return e.message
+        return e.message;
     } else if (typeof e === 'string') {
         return e;
     }
 
-    return e.toString()
+    return e.toString();
 }
 
 export {
     getSubFromJWT,
-    errorToString
+    errorToString,
 };

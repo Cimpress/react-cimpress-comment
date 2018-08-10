@@ -2,24 +2,24 @@ import React from 'react';
 import VisibilitySensor from 'react-visibility-sensor';
 import 'react-placeholder/lib/reactPlaceholder.css';
 import PropTypes from 'prop-types';
-import Comment from './Comment';
+import Comment from './components/Comment';
 import '../style/index.css';
 import '../style/select.css';
-import {getVisibilityLevels} from './visibility';
-import CommentVisibilityOption from './CommentVisibilityOption';
+import {getVisibilityLevels} from './tools/visibility';
+import CommentVisibilityOption from './components/CommentVisibilityOption';
 import {Alert, shapes, Select} from '@cimpress/react-components';
 import CommentsClient from './clients/CommentsClient';
 import {Mention, MentionsInput} from 'react-mentions';
 import MentionsClient from './clients/MentionsClient';
 import CustomizrClient from './clients/CustomizrClient';
 
-import {getI18nInstance} from './i18n';
+import {getI18nInstance} from './tools/i18n';
 import {translate, Trans} from 'react-i18next';
-import {errorToString} from './helper';
+import {errorToString} from './tools/helper';
 
 let {Spinner} = shapes;
 
-class _Comments extends React.Component {
+class Comments extends React.Component {
     constructor(props) {
         super(props);
 
@@ -44,7 +44,7 @@ class _Comments extends React.Component {
     }
 
     componentWillMount() {
-        setTimeout(() => this.forceFetchComments(), 10);
+        this.forceFetchComments();
     }
 
     componentDidMount() {
@@ -57,15 +57,16 @@ class _Comments extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        this.customizrClient.fetchSettings().then(json => {
-            this.setState({
-                alertDismissed: json.mentionsUsageNotification &&
-                    json.mentionsUsageNotification.alertDismissed === true,
-                selectedVisibilityOption: this.state.commentVisibilityLevels.find(l => l.value === json.selectedVisibility)
-            }, () => {
-                this.resetSelectedVisibilityOption();
+        this.customizrClient.fetchSettings()
+            .then(json => {
+                this.setState({
+                    alertDismissed: json.mentionsUsageNotification &&
+                        json.mentionsUsageNotification.alertDismissed === true,
+                    selectedVisibilityOption: this.state.commentVisibilityLevels.find(l => l.value === json.selectedVisibility)
+                }, () => {
+                    this.resetSelectedVisibilityOption();
+                });
             });
-        });
 
         clearInterval(this.refreshInterval);
         this.refreshInterval = setInterval(() => this.forceFetchComments(), Math.max((this.props.refreshInterval || 60) * 1000, 5000));
@@ -305,10 +306,10 @@ class _Comments extends React.Component {
             <div className="comments-add">
                 <div className='comments-alert'>
                     <Alert type={"info"}
-                           message = {<p><Trans
-                                        defaults={this.tt('use_at_char_for_mentions')}
-                                        components={[<strong>@</strong>]}
-                                    /></p>}
+                           message={<p><Trans
+                               defaults={this.tt('use_at_char_for_mentions')}
+                               components={[<strong>@</strong>]}
+                           /></p>}
                            dismissible={true}
                            dismissed={this.state.alertDismissed}
                            onDismiss={this.onAlertDismissed.bind(this)}
@@ -369,7 +370,7 @@ class _Comments extends React.Component {
     }
 }
 
-_Comments.propTypes = {
+Comments.propTypes = {
     locale: PropTypes.string,
     accessToken: PropTypes.string.isRequired,
     resourceUri: PropTypes.string.isRequired,
@@ -380,8 +381,8 @@ _Comments.propTypes = {
     initialValue: PropTypes.string
 };
 
-_Comments.defaultProps = {
+Comments.defaultProps = {
     locale: 'eng'
 };
 
-export default translate("translations", {i18n: getI18nInstance()})(_Comments);
+export default translate("translations", {i18n: getI18nInstance()})(Comments);
