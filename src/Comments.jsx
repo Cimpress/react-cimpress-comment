@@ -197,7 +197,7 @@ class Comments extends React.Component {
                     failedPostComment: '',
                     error: undefined,
                 });
-                this.fetchComments()
+                this.fetchComments();
             })
             .catch((err) => {
                 let newCommentObjects = Object.assign({}, this.state.commentObjects);
