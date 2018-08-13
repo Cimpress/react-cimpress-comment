@@ -3,13 +3,13 @@ import {reactI18nextModule} from 'react-i18next';
 
 import {resources} from '../locales/all';
 
-let i18n_instance = null;
+let i18nInstance = null;
 
 function getI18nInstance() {
-    if ( !i18n_instance ) {
-        i18n_instance = i18n.createInstance();
+    if ( !i18nInstance ) {
+        i18nInstance = i18n.createInstance();
 
-        i18n_instance
+        i18nInstance
             .use(reactI18nextModule)
             .init({
 
@@ -32,7 +32,7 @@ function getI18nInstance() {
             });
     }
 
-    return i18n_instance;
+    return i18nInstance;
 }
 
 export {

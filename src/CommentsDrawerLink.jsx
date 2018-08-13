@@ -1,5 +1,4 @@
 import React from 'react';
-import VisibilitySensor from 'react-visibility-sensor';
 import 'react-placeholder/lib/reactPlaceholder.css';
 import '../style/index.css';
 import {Drawer} from '@cimpress/react-components';
@@ -9,16 +8,15 @@ import {Portal} from 'react-portal';
 
 import {getI18nInstance} from './tools/i18n';
 import {translate} from 'react-i18next';
+import CommentsClient from './clients/CommentsClient';
 
-class _CommentsDrawerLink extends React.Component {
+class CommentsDrawerLink extends React.Component {
     constructor(props) {
         super(props);
         this.escFunction = this.escFunction.bind(this);
         this.state = {
             commentsDrawerOpen: props.opened || false,
-            availableComments: null,
-            opacity: 0,
-            isVisible: false,
+            unreadCommentsCount: null,
         };
     }
 
@@ -32,44 +30,57 @@ class _CommentsDrawerLink extends React.Component {
 
     componentDidMount() {
         document.addEventListener('keydown', this.escFunction, false);
+        this.fetchUnreadCount();
     }
 
     componentWillUnmount() {
         document.removeEventListener('keydown', this.escFunction, false);
     }
 
-    componentWillReceiveProps(newProps) {
-        if (newProps.resourceUri !== this.props.resourceUri) {
-            this.setState({
-                opacity: 0,
-            });
+    fetchUnreadCount() {
+        if (!this.props.accessToken) {
+            return;
         }
-        if (newProps.opened !== this.props.opened) {
-            this.setState({
-                commentsDrawerOpen: newProps.opened,
-            });
-        }
+
+        let client = new CommentsClient(this.props.accessToken, this.props.resourceUri);
+        this.setState({
+            fetchingData: true,
+        }, () => client
+            .getUserInfo()
+            .then((data) => {
+                this.setState({
+                    fetchingData: false,
+                    unreadCommentsCount: data.unreadCount,
+                });
+            })
+            .catch((err) => {
+                this.setState({
+                    fetchingData: false,
+                    unreadCommentsCount: 'n/a',
+                });
+            }));
     }
 
-    updateCommentCount(commentCount) {
-        this.setState({
-            availableComments: commentCount === 0
-                ? null
-                : commentCount,
-            opacity: commentCount === 0
-                ? 0
-                : 1,
-        });
+    componentDidUpdate(prevProps) {
+        if (prevProps.resourceUri !== this.props.resourceUri) {
+            this.fetchUnreadCount();
+        }
+        if (prevProps.opened !== this.props.opened) {
+            this.setState({
+                commentsDrawerOpen: this.props.opened,
+            });
+        }
     }
 
     tt(key) {
+        // eslint-disable-next-line react/prop-types
         const {t, locale} = this.props;
         return t(key, {lng: locale});
     }
 
     defaultFooter() {
         return <div className="text-right">
-            <button className="btn btn-default" onClick={() => this.setState({commentsDrawerOpen: false})}>
+            <button className="btn btn-default" onClick={() => this.onDrawerClose()}>
                 <i className="fa fa-times" aria-hidden="true"></i>&nbsp;{this.tt('btn_close')}
             </button>
         </div>;
@@ -79,48 +90,53 @@ class _CommentsDrawerLink extends React.Component {
         return this.tt('header_comments');
     }
 
-    render() {
-        let comments;
-        if (this.state.isVisible) {
-            comments = <Comments {...this.props} commentCountRefreshed={this.updateCommentCount.bind(this)}/>;
+    getUnreadComments() {
+        let items;
+        if (this.state.fetchingData) {
+            items = <i className={'fa fa-spinner fa-spin'}/>;
+        } else {
+            items = this.state.unreadCommentsCount;
         }
 
-        return (
-            <VisibilitySensor
-                onChange={(visible) => {
-                    if (visible && this.state.isVisible !== visible) {
-                        this.setState({isVisible: visible});
-                    }
-                }}
-                partialVisibility
-                scrollCheck>
-                <span>
-                    <div className="comment-drawer-button">
-                        <span className="fa fa-comments-o"
-                            onClick={() => this.setState({
-                                commentsDrawerOpen: true,
-                            })}/>
-                        <span key="test" className="comment-count-badge"
-                            style={{opacity: this.state.opacity}}>{this.state.availableComments}</span>
-                    </div>
-                    <Portal>
-                        <Drawer
-                            show={this.state.commentsDrawerOpen}
-                            onRequestHide={() => this.setState({commentsDrawerOpen: false})}
-                            header={this.props.header || this.defaultHeader()}
-                            position={this.props.position}
-                            closeOnClickOutside={true}
-                            footer={this.props.footer || this.defaultFooter()}>
-                            {comments}
-                        </Drawer>
-                    </Portal>
-                </span>
-            </ VisibilitySensor>
-        );
+        if (!this.state.fetchingData && this.state.unreadCommentsCount === 0) {
+            return null;
+        }
+
+        return <span className={`comment-count-badge ${this.state.fetchingData ? 'comment-count-badge-loading' : ''}`}>
+            {items}
+        </span>;
+    }
+
+    onDrawerOpen() {
+        this.setState({commentsDrawerOpen: true});
+    }
+
+    onDrawerClose() {
+        this.setState({commentsDrawerOpen: false}, () => this.fetchUnreadCount());
+    }
+
+    render() {
+        return [
+            <div key={0} className="comment-drawer-button">
+                <span className="fa fa-comments-o" onClick={() => this.onDrawerOpen()}/>
+                {this.getUnreadComments()}
+            </div>,
+            <Portal key={1}>
+                <Drawer
+                    show={this.state.commentsDrawerOpen}
+                    onRequestHide={() => this.onDrawerClose()}
+                    header={this.props.header || this.defaultHeader()}
+                    position={this.props.position}
+                    closeOnClickOutside={true}
+                    footer={this.props.footer || this.defaultFooter()}>
+                    {this.state.commentsDrawerOpen ? <Comments {...this.props} /> : null}
+                </Drawer>
+            </Portal>,
+        ];
     }
 }
 
-_CommentsDrawerLink.propTypes = {
+CommentsDrawerLink.propTypes = {
     locale: PropTypes.string,
     accessToken: PropTypes.string.isRequired,
     resourceUri: PropTypes.string.isRequired,
@@ -133,15 +149,15 @@ _CommentsDrawerLink.propTypes = {
     opened: PropTypes.bool,
 };
 
-_CommentsDrawerLink.defaultProps = {
+CommentsDrawerLink.defaultProps = {
     position: 'left',
     newestFirst: true,
     editComments: false,
     opened: false,
 };
 
-_CommentsDrawerLink.defaultProps = {
+CommentsDrawerLink.defaultProps = {
     locale: 'eng',
 };
 
-export default translate('translations', {i18n: getI18nInstance()})(_CommentsDrawerLink);
+export default translate('translations', {i18n: getI18nInstance()})(CommentsDrawerLink);

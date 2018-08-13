@@ -2,13 +2,15 @@ import _FetchClient from './_FetchClient';
 
 const AUTH_SERVICE_URL = (process && process.env ? process.env.AUTH_SERVICE_URL : null) || 'https://api.cimpress.io';
 
+const mentionsUserCache = {};
+
 export default class MentionsClient extends _FetchClient {
     constructor(accessToken) {
         super(accessToken);
     }
 
     fetchMatchingMentions(query) {
-        if ( !query || query.length == 0 ) {
+        if (!query || query.length == 0) {
             return Promise.resolve([]);
         }
 
@@ -17,7 +19,7 @@ export default class MentionsClient extends _FetchClient {
 
         return fetch(url, init)
             .then((response) => {
-                if ( response.status === 200 ) {
+                if (response.status === 200) {
                     return response.json().then((responseJson) => responseJson.principals.map((p) => {
                         return {id: p.user_id, display: p.name, email: p.email};
                     }));
@@ -28,17 +30,26 @@ export default class MentionsClient extends _FetchClient {
     }
 
     fetchUserName(userId) {
+        if (mentionsUserCache[userId]) {
+            return mentionsUserCache[userId];
+        }
+
         let url = `${AUTH_SERVICE_URL}/auth/access-management/v1/principals/${userId}`;
         let init = this.getDefaultConfig('GET');
 
-        return fetch(url, init)
+        let promiseToGetUser = fetch(url, init)
             .then((response) => {
-                if ( response.status === 200 ) {
+                if (response.status === 200) {
                     return response.json();
                 }
                 throw new Error(response.status);
             }).catch((err) => {
+                // eslint-disable-next-line no-console
                 console.error(err);
             });
+
+        mentionsUserCache[userId] = promiseToGetUser;
+
+        return promiseToGetUser;
     }
 }

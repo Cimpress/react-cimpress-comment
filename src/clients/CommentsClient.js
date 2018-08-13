@@ -19,6 +19,26 @@ export default class CommentsClient extends _FetchClient {
         return `${this.commentServiceUrl}/v0/resources/${encodedResourceUri}/comments`;
     }
 
+    createResource() {
+        let url = `${this.commentServiceUrl}/v0/resources/${this.encodedResourceUri}`;
+        let init = this.getDefaultConfig('PUT', {
+            URI: this.resourceUri,
+        });
+
+        return fetch(url, init)
+            .then((response) => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response.json();
+                } else if (response.status === 401) {
+                    throw new Error('Unauthorized');
+                } else if (response.status === 403) {
+                    throw new Error('Forbidden');
+                } else {
+                    throw new Error(`Unable to create resource (Status code: ${response.status})`);
+                }
+            });
+    }
+
     fetchComments() {
         let url = `${this.commentServiceUrl}/v0/resources/${this.encodedResourceUri}`;
         let init = this.getDefaultConfig('GET');
@@ -41,26 +61,6 @@ export default class CommentsClient extends _FetchClient {
                     }));
                 } else {
                     throw new Error(`Unexpected status code ${response.status}`);
-                }
-            });
-    }
-
-    createResource() {
-        let url = `${this.commentServiceUrl}/v0/resources/${this.encodedResourceUri}`;
-        let init = this.getDefaultConfig('PUT', {
-            URI: this.resourceUri,
-        });
-
-        return fetch(url, init)
-            .then((response) => {
-                if (response.status >= 200 && response.status < 300) {
-                    return response.json();
-                } else if (response.status === 401) {
-                    throw new Error('Unauthorized');
-                } else if (response.status === 403) {
-                    throw new Error('Forbidden');
-                } else {
-                    throw new Error(`Unable to create resource (Status code: ${response.status})`);
                 }
             });
     }
@@ -111,7 +111,7 @@ export default class CommentsClient extends _FetchClient {
         return fetch(commentUri, init)
             .then((response) => {
                 if (response.status === 200) {
-                    return this.fetchComment()
+                    return this.fetchComment(commentUri)
                         .catch(() => {
                             throw new Error('Error retrieving the comment after putting it');
                         });
@@ -121,6 +121,24 @@ export default class CommentsClient extends _FetchClient {
                     throw new Error('Forbidden');
                 } else {
                     throw new Error(`Unable to update comment: ${commentUri} (Status code: ${response.status})`);
+                }
+            });
+    }
+
+    getUserInfo() {
+        let init = this.getDefaultConfig('GET');
+        let url = `${this.commentServiceUrl}/v0/resources/${this.encodedResourceUri}/userinfo`;
+
+        return fetch(url, init)
+            .then((response) => {
+                if (response.status === 200) {
+                    return response.json();
+                } else if (response.status === 401) {
+                    throw new Error('Unauthorized');
+                } else if (response.status === 403) {
+                    throw new Error('Forbidden');
+                } else {
+                    throw new Error(`Unable to fetch user info (Status code: ${response.status})`);
                 }
             });
     }

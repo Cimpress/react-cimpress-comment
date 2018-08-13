@@ -1,178 +1,96 @@
 import React from 'react';
-import VisibilitySensor from 'react-visibility-sensor';
 import ReactPlaceholder from 'react-placeholder';
 import 'react-placeholder/lib/reactPlaceholder.css';
+import {TextBlock} from 'react-placeholder/lib/placeholders';
 import PropTypes from 'prop-types';
+
 import '../../style/index.css';
 
 import TimeAgo from 'react-timeago';
 import {reactTimeAgoFormatters} from '../locales/all';
 
-import CommentsClient from '../clients/CommentsClient';
 import CommentVisibilityIcon from './CommentVisibilityIcon';
-import {getSubFromJWT, errorToString} from '../tools/helper';
+import {errorToString} from '../tools/helper';
 import {Mention, MentionsInput} from 'react-mentions';
-import MentionsClient from '../clients/MentionsClient';
 import {shapes} from '@cimpress/react-components';
-import {TextBlock} from 'react-placeholder/lib/placeholders';
 
 import {translate} from 'react-i18next';
 import {getI18nInstance} from '../tools/i18n';
 
 let {Spinner} = shapes;
 
-let globalCacheKey = Symbol();
-let globalCache = {};
-
 class Comment extends React.Component {
     constructor(props) {
         super(props);
-        this.commentsClient = new CommentsClient(props.accessToken);
-        this.mentionsClient = new MentionsClient(props.accessToken);
-        this.jwtSub = getSubFromJWT(props.accessToken);
 
         this.state = {
             editMode: false,
             editedComment: null,
-            savingComment: props.comment && !props.comment.createdAt && !props.comment.updatedAt,
-            comment: (props.comment) ? props.comment.comment : '',
-            visibility: (props.comment) ? props.comment.visibility : null,
-            createdBy: (props.comment) ? props.comment.createdBy : '',
-            createdByName: (props.comment) ? this[globalCacheKey][props.comment.createdBy] : null,
-            createdAt: (props.comment) ? props.comment.createdAt : '',
-            updatedBy: (props.comment) ? props.comment.updatedBy : '',
-            updatedByName: (props.comment) ? this[globalCacheKey][props.comment.updatedBy] : null,
-            updatedAt: (props.comment) ? props.comment.updatedAt : '',
-            visible: false,
+            savingComment: !props.comment.createdAt && !props.comment.updatedAt,
+            commentObject: props.comment,
         };
     }
 
-    get [globalCacheKey]() {
-        return globalCache;
+    fetchUserNames() {
+        if (this.state.updatedByName === undefined && this.state.commentObject.updatedBy) {
+            this.fetchUserName(this.state.commentObject.updatedBy, 'updatedByName');
+        }
+        if (this.state.createdByName === undefined && this.state.commentObject.createdBy) {
+            this.fetchUserName(this.state.commentObject.createdBy, 'createdByName');
+        }
     }
 
-    componentWillReceiveProps(newProps) {
-        let accessTokenChanged = this.props.accessToken !== newProps.accessToken;
-        let commentUriChanged = this.props.commentUri !== newProps.commentUri;
+    componentDidMount() {
+        this.fetchUserNames();
+    }
 
-        if (accessTokenChanged || commentUriChanged) {
-            this.commentsClient = new CommentsClient(newProps.accessToken);
-            this.jwtSub = getSubFromJWT(newProps.accessToken);
-        }
-
-        if (accessTokenChanged) {
-            this.mentionsClient = new MentionsClient(newProps.accessToken);
-        }
-
-        if (commentUriChanged) {
-            this.setState({
-                comment: (newProps.comment) ? newProps.comment.comment : '',
-                visibility: (props.comment) ? props.comment.visibility : null,
-                createdBy: (newProps.comment) ? newProps.comment.createdBy : '',
-                createdAt: (newProps.comment) ? newProps.comment.createdAt : '',
-                updatedBy: (newProps.comment) ? newProps.comment.updatedBy : '',
-                updatedAt: (newProps.comment) ? newProps.comment.updatedAt : '',
-                updatedByName: (newProps.comment) ? this[globalCacheKey][newProps.comment.updatedBy] : null,
-                createdByName: (newProps.comment) ? this[globalCacheKey][newProps.comment.createdBy] : null
-            }, () => {
-                this.fetchComment(this.state.visible)
-            });
-        }
+    componentDidUpdate() {
+        this.fetchUserNames();
     }
 
     fetchUserName(userId, stateToUpdate) {
-
-        if (this[globalCacheKey][userId]) {
-            this.setState({
-                [stateToUpdate]: this[globalCacheKey][userId]
-            });
-        }
-
-        return this.mentionsClient
+        this.props.mentionsClient
             .fetchUserName(userId)
             .then((responseJson) => {
-                this[globalCacheKey][userId] = responseJson.profile.name;
                 this.setState({
-                    [stateToUpdate]: responseJson.profile.name
+                    [stateToUpdate]: responseJson.profile.name,
                 });
             });
-    }
-
-    putComment(comment, visibility) {
-        return this.commentsClient.putComment(this.props.commentUri, comment, visibility);
-    }
-
-    fetchComment(isVisible) {
-        const TEMP_ID_LENGTH = 5;
-        this.setState({
-            visible: isVisible
-        });
-        let commentId = this.props.commentUri.substr(this.props.commentUri.lastIndexOf('/') + 1)
-        // Make sure not to call for comments which are stored with placeholder id
-        // They will get a real id once save operation is successful
-        if (isVisible && commentId.length !== TEMP_ID_LENGTH) {
-            return this.commentsClient
-                .fetchComment(this.props.commentUri)
-                .then(responseJson => {
-                    this.setState({
-                        error: undefined,
-                        comment: responseJson.comment,
-                        visibility: responseJson.visibility,
-                        updatedBy: responseJson.updatedBy,
-                        createdBy: responseJson.createdBy,
-                        createdAt: responseJson.createdAt,
-                        updatedAt: responseJson.updatedAt,
-                        updatedByName: this[globalCacheKey][responseJson.updatedBy],
-                        createdByName: this[globalCacheKey][responseJson.createdBy],
-                    });
-                    if (responseJson.updatedBy) {
-                        this.fetchUserName(responseJson.updatedBy, 'updatedByName');
-                    }
-                    if (responseJson.createdBy) {
-                        this.fetchUserName(responseJson.createdBy, 'createdByName');
-                    }
-                }).catch(err => {
-                    this.setState({error: err});
-                    console.error(err);
-                });
-        }
-        return Promise.resolve();
     }
 
     change(event, newValue, newPlainTextValue, mentions) {
         this.setState({
-            editedComment: newValue
+            editedComment: newValue,
         });
     }
 
     completeEditing() {
-        this.setState({
-            savingComment: true
-        });
-        if (this.state.editedComment !== null && this.state.editedComment !== this.state.comment) {
-            this.putComment(this.state.editedComment.trim(), this.state.visibility).then((responseJson) => {
-                this.setState({
-                    editedComment: null,
-                    editMode: false,
-                    savingComment: false,
-                    comment: responseJson.comment,
-                    updatedBy: responseJson.updatedBy,
-                    createdBy: responseJson.createdBy,
-                    createdAt: responseJson.createdAt,
-                    updatedAt: responseJson.updatedAt
-                });
-            }).catch((err) => {
-                console.log(err);
-                this.setState({
-                    errorPut: err,
-                    savingComment: false
-                });
+        if (this.state.editedComment !== null && this.state.editedComment !== this.state.commentObject.comment) {
+            this.setState({
+                savingComment: true,
             });
+
+            this.props.commentsClient
+                .putComment(this.props.commentUri, this.state.editedComment.trim(), this.state.commentObject.visibility)
+                .then((responseJson) => {
+                    this.setState({
+                        editedComment: null,
+                        editMode: false,
+                        savingComment: false,
+                        commentObject: responseJson,
+                    });
+                })
+                .catch((err) => {
+                    this.setState({
+                        errorPut: err,
+                        savingComment: false,
+                    });
+                });
         } else {
             this.setState({
                 editedComment: null,
                 editMode: false,
-                savingComment: false
+                savingComment: false,
             });
         }
     }
@@ -181,24 +99,13 @@ class Comment extends React.Component {
         this.setState({
             errorPut: undefined,
             editedComment: null,
-            editMode: false
+            editMode: false,
         });
-        this.fetchComment(this.state.isVisible);
     }
 
-    authorPlaceholder = (
-        <div>
-            <TextBlock rows={1} color='lightgray' style={{width: 30, height: 5, marginTop: 10, marginBottom: 10}}/>
-        </div>
-    );
-
-    commentPlaceholder = (
-        <div>
-            <TextBlock rows={2} color='gray' lineSpacing={4} style={{width: 30, height: 30}}/>
-        </div>
-    );
 
     tt(key) {
+        // eslint-disable-next-line react/prop-types
         const {t, locale} = this.props;
         return t(key, {lng: locale});
     }
@@ -209,55 +116,60 @@ class Comment extends React.Component {
         }
         return <span className={'text-danger'}>&nbsp;<i
             className={'fa fa-exclamation-triangle'}/>&nbsp;{prefix}{prefix ?
-            <span>&nbsp;</span> : null}({this.tt(errorToString(e))})</span>
+            <span>&nbsp;</span> : null}({this.tt(errorToString(e))})</span>;
+    }
+
+    renderEditMenu() {
+        if (!this.props.editComments) {
+            // editing disabled
+            return null;
+        }
+
+        if (this.state.commentObject.createdBy !== this.props.jwtSub && this.state.commentObject.updatedBy !== this.props.jwtSub) {
+            // can edit only 'own' comments
+            return null;
+        }
+
+
+        if (this.state.editMode) {
+            return (<div>
+                {(this.state.editedComment !== null && this.state.editedComment !== this.state.commentObject.comment && this.state.editedComment !== '')
+                    ? <div onClick={this.completeEditing.bind(this)} className={'fa fa-check mentions-ok'}/>
+                    : null}
+                {<div onClick={this.cancelEditing.bind(this)} className={'fa fa-times mentions-cancel'}/>}
+            </div>);
+        }
+
+        return <div onClick={() => this.setState({editMode: true})} className={'mentions-edit fa fa-edit'}/>;
     }
 
     render() {
-        let classes = 'mentions disabled';
-        let editMenu = null;
+        let editMenu;
+        let readonlyTextField;
         if (this.state.savingComment === true) {
-            classes = 'mentions disabled';
+            readonlyTextField = true;
             editMenu = <div className={'mentions-edit'}><Spinner size={20}/></div>;
-        } else if (this.props.editComments === true && (this.state.createdBy === this.jwtSub || this.state.updatedBy === this.jwtSub)) {
-            if (this.state.editMode) {
-                classes = 'mentions';
-                let completeEdit = <div onClick={this.completeEditing.bind(this)}
-                                        className={'fa fa-check mentions-ok'}/>;
-                let cancelEdit = <div onClick={this.cancelEditing.bind(this)}
-                                      className={'fa fa-undo mentions-cancel'}/>;
-                editMenu = (<div>
-                    {(this.state.editedComment !== null && this.state.editedComment !== this.state.comment && this.state.editedComment !== '')
-                        ? completeEdit
-                        : null}
-                    {cancelEdit}
-                </div>);
-            } else {
-                editMenu = <div onClick={() => {
-                    this.setState({editMode: true});
-                }} className={'mentions-edit fa fa-edit'}/>;
-            }
+        } else {
+            readonlyTextField = !this.state.editMode || !editMenu;
+            editMenu = this.renderEditMenu();
         }
 
         let icon = null;
-
-        if (this.state.visibility) {
-            let visibilityOption = this.props.commentVisibilityLevels.find(l => l.value === this.state.visibility);
-            icon = (
-                <CommentVisibilityIcon
-                    icon={visibilityOption.icon}
-                    label={visibilityOption.label}/>
-            );
+        if (this.state.commentObject.visibility) {
+            let visibilityOption = this.props.commentVisibilityLevels.find((l) => l.value === this.state.commentObject.visibility);
+            icon = <CommentVisibilityIcon icon={visibilityOption.icon} label={visibilityOption.label}/>;
         }
 
         let commentBody = (
             <div style={{position: 'relative'}}>
-                <MentionsInput className={classes}
-                               value={this.state.editedComment !== null ? this.state.editedComment : this.state.comment}
-                               onChange={this.change.bind(this)}
-                               displayTransform={(id, display, type) => `@${display}`} allowSpaceInQuery={true}
-                               readOnly={classes.includes('disabled')}>
+                <MentionsInput
+                    className={`mentions ${readonlyTextField ? 'disabled' : ''}`}
+                    value={this.state.editedComment !== null ? this.state.editedComment : this.state.commentObject.comment}
+                    onChange={this.change.bind(this)}
+                    displayTransform={(id, display, type) => `@${display}`} allowSpaceInQuery={true}
+                    readOnly={readonlyTextField}>
                     <Mention trigger="@" data={(search, callback) => {
-                        this.mentionsClient.fetchMatchingMentions(search).then(callback);
+                        this.props.mentionsClient.fetchMatchingMentions(search).then(callback);
                     }}/>
                 </MentionsInput>
                 {this.renderError(this.state.errorPut, this.tt('unable_to_edit_comment'))}
@@ -265,55 +177,65 @@ class Comment extends React.Component {
             </div>
         );
 
-        let modified = <span>, {this.tt('modified')} {(this.state.updatedBy !== this.state.createdBy)
-            ? `${this.tt('by')} ${this.state.updatedByName || this.state.updatedBy}`
-            : null} <TimeAgo date={this.state.updatedAt} formatter={reactTimeAgoFormatters[this.props.locale]}/></span>;
+        let commentCreator = <div className={'comment-creator'}>
+            {this.state.commentObject.createdBy
+                ? `${this.state.createdByName || this.state.commentObject.createdBy}, `
+                : null}
+            <TimeAgo
+                date={this.state.commentObject.createdAt}
+                formatter={reactTimeAgoFormatters[this.props.locale]}/>
+            {this.state.commentObject.createdAt !== this.state.commentObject.updatedAt
+                ? <span>, {this.tt('modified')} {(this.state.commentObject.updatedBy !== this.state.commentObject.createdBy)
+                    ? `${this.tt('by')} ${this.state.updatedByName || this.state.commentObject.updatedBy}`
+                    : null} <TimeAgo
+                    date={this.state.commentObject.updatedAt}
+                    formatter={reactTimeAgoFormatters[this.props.locale]}/></span>
+                : null}
+            {icon}
+        </div>;
 
         let error = this.renderError(this.state.error, this.tt('unable_to_read_comment'));
+        if (error) {
+            return <div className={this.props.className || 'comment'}>{error}</div>;
+        }
 
-        return (
-            <VisibilitySensor partialVisibility={true} scrollCheck={true} onChange={this.fetchComment.bind(this)}>
-                {error
-                    ? <div className={this.props.className || 'comment'}>{error}</div>
-                    : <div className={this.props.className || 'comment'}>
-                        <ReactPlaceholder showLoadingAnimation customPlaceholder={this.authorPlaceholder}
-                                          ready={Boolean(this.state.createdAt && this.state.updatedAt)}>
-                            <div className={'comment-creator'}>
-                                {this.state.createdBy
-                                    ? `${this.state.createdByName || this.state.createdBy}, `
-                                    : null}
-                                <TimeAgo date={this.state.createdAt}
-                                         formatter={reactTimeAgoFormatters[this.props.locale]}/>
-                                {this.state.createdAt !== this.state.updatedAt
-                                    ? modified
-                                    : null}
-                                {icon}
-                            </div>
-                        </ReactPlaceholder>
-                        <div className={'comment-body'}>
-                            <ReactPlaceholder showLoadingAnimation customPlaceholder={this.commentPlaceholder}
-                                              ready={Boolean(this.state.comment)}>
-                                {commentBody}
-                            </ReactPlaceholder>
-                        </div>
-                    </div>
-                }
-            </VisibilitySensor>
-        );
+        return <div className={this.props.className || 'comment'}>
+            <ReactPlaceholder
+                showLoadingAnimation
+                customPlaceholder={<TextBlock
+                    rows={1} color='lightgray'
+                    style={{width: 30, height: 5, marginTop: 10, marginBottom: 10}}/>}
+                ready={Boolean(this.state.commentObject.createdAt && this.state.commentObject.updatedAt)}>
+                {commentCreator}
+            </ReactPlaceholder>
+            <div className={'comment-body'}>
+                <ReactPlaceholder
+                    showLoadingAnimation
+                    customPlaceholder={<TextBlock
+                        rows={2} color='lightgray' lineSpacing={4} style={{width: 30, height: 30}}/>}
+                    ready={Boolean(this.state.commentObject.createdAt && this.state.commentObject.updatedAt)}>
+                    {commentBody}
+                </ReactPlaceholder>
+            </div>
+        </div>;
     }
 }
 
 Comment.propTypes = {
     locale: PropTypes.string,
     className: PropTypes.string,
-    accessToken: PropTypes.string,
+    jwtSub: PropTypes.string,
     commentUri: PropTypes.string,
     comment: PropTypes.object,
-    editComments: PropTypes.bool
+    editComments: PropTypes.bool,
+
+    commentVisibilityLevels: PropTypes.array,
+    mentionsClient: PropTypes.any,
+    commentsClient: PropTypes.any,
 };
 
 Comment.defaultProps = {
-    locale: 'eng'
+    locale: 'eng',
 };
 
 export default translate('translations', {i18n: getI18nInstance()})(Comment);

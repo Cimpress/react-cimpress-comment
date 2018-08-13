@@ -1,11 +1,11 @@
 {
   "name": "react-cimpress-comment",
-  "version": "0.5.5",
+  "version": "0.6.0",
   "description": "Visualizes comment(s) for a particular platform resource",
   "main": "./lib/index.js",
   "scripts": {
     "translate": "node scripts/retrieveTranslations.js",
-    "check": "/node_modules/.bin/eslint ",
+    "check": "./node_modules/.bin/eslint --ext .js,.jsx src/",
     "build": "babel src -d lib --copy-files",
     "storybook": "((kill -9 `cat mockserver.pid`; kill -9 `cat storybook.pid`) || true) && (node_modules/.bin/start-storybook -p 9001 -c .storybook & echo $! > storybook.pid) && (node_modules/.bin/mockserver -p 9102 -m ./mocks/ & echo $! > mockserver.pid)",
     "storybookstop": "kill -9 `cat mockserver.pid`; kill -9 `cat storybook.pid`"
@@ -57,13 +57,13 @@
     "atob": "^2.1.1",
     "deepmerge": "^2.1.1",
     "i18next": "^11.3.2",
+    "md5": "^2.2.1",
     "prop-types": "^15.6.2",
     "react-i18next": "^7.6.1",
     "react-mentions": "^1.2.2",
     "react-placeholder": "^1.0.8",
     "react-portal": "^4.1.5",
-    "react-timeago": "^3.4.3",
-    "react-visibility-sensor": "^3.10.1"
+    "react-timeago": "^3.4.3"
   },
   "peerDependencies": {
     "react": "^15.0.0-0 || ^16.0.0-0 || ^17.0.0-0",
