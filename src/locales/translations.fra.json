@@ -1,12 +1,20 @@
 {
     "translations": {
+        "a": null,
+        "use_at_char_for_mentions": "Utilisez le caractère <strong> @ </ strong> pour mentionner les personnes. Nous les informerons par e-mail de ce fil de commentaires.",
+        "visibility_option_internal_label": null,
+        "btn_post": "Poster",
+        "Forbidden": null,
+        "unable_to_retrieve_comments": "Impossible de récupérer les commentaires.",
+        "unable_to_read_comment": null,
         "retrieving_comments": "Nous récupérons les commentaires ...",
         "no_comments_exist": "Aucun commentaire ici pour le moment.",
-        "use_at_char_for_mentions": "Utilisez le caractère <0>@</0> pour mentionner les personnes. Nous les informerons par e-mail de ce fil de commentaires.",
+        "visibility_option_internal_description": null,
+        "visibility_option_public_description": null,
         "by": "par",
-        "btn_post": "Poster",
         "modified": "modifié",
-        "unable_to_retrieve_comments": "Impossible de récupérer les commentaires.",
+        "unable_to_post_comment": "b",
+        "visibility_option_public_label": null,
         "btn_close": "Fermer",
         "header_comments": "Commentaires"
     }
