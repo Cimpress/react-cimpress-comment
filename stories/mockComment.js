@@ -17,7 +17,7 @@ const comments = [{
     'createdBy': '49c087ab-3fee-4994-86e7-c63d2b47ac8b',
     'updatedAt': '2018-02-10T12:55:24.973Z',
 }, {
-    'createdAt': '2018-02-10T12:16:02.496Z',
+    'createdAt': '2018-02-10T10:16:02.496Z',
     'visibility': 'public',
     'comment': 'Third comment',
     'id': '828a5c00-01c9-11e8-952c-85c7cdb92fcc',
@@ -51,9 +51,9 @@ function mockCommentsGetResource(fetchMock, resourceId) {
     });
 }
 
-function mockCommentsGetResourceWith404(fetchMock, resourceId) {
+function mockCommentsGetResourceWithStatus(fetchMock, resourceId, statusCode) {
     return fetchMock.get(`${COMMENTS_URL}/v0/resources/${resourceId}`, {
-        status: 404,
+        status: statusCode,
         body: {},
     });
 }
@@ -81,7 +81,7 @@ function mockCommentsResourceUserInfo(fetchMock, resourceId, unreadCount) {
 function mockComments(fetchMock) {
     let m = fetchMock;
     m = mockCommentsResource(m, 'http%3A%2F%2Feda234a4-485f-4c0c-806d-1c9748994c00.com');
-    m = mockCommentsGetResourceWith404(m, 'http%3A%2F%2Feda234a4-485f-4c0c-806d-1c9748994c00.com%2Fnon-existent');
+    m = mockCommentsGetResourceWithStatus(m, 'http%3A%2F%2Feda234a4-485f-4c0c-806d-1c9748994c00.com%2Fnon-existent', 404);
     return m;
 }
 

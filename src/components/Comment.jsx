@@ -40,8 +40,19 @@ class Comment extends React.Component {
         }
     }
 
+    safeSetState(data, callback) {
+        if (this._ismounted) {
+            this.setState(data, callback);
+        }
+    }
+
     componentDidMount() {
+        this._ismounted = true;
         this.fetchUserNames();
+    }
+
+    componentWillUnmount() {
+        this._ismounted = false;
     }
 
     componentDidUpdate() {
@@ -52,28 +63,28 @@ class Comment extends React.Component {
         this.props.mentionsClient
             .fetchUserName(userId)
             .then((responseJson) => {
-                this.setState({
+                this.safeSetState({
                     [stateToUpdate]: responseJson.profile.name,
                 });
             });
     }
 
     change(event, newValue, newPlainTextValue, mentions) {
-        this.setState({
+        this.safeSetState({
             editedComment: newValue,
         });
     }
 
     completeEditing() {
         if (this.state.editedComment !== null && this.state.editedComment !== this.state.commentObject.comment) {
-            this.setState({
+            this.safeSetState({
                 savingComment: true,
             });
 
             this.props.commentsClient
                 .putComment(this.props.commentUri, this.state.editedComment.trim(), this.state.commentObject.visibility)
                 .then((responseJson) => {
-                    this.setState({
+                    this.safeSetState({
                         editedComment: null,
                         editMode: false,
                         savingComment: false,
@@ -81,13 +92,13 @@ class Comment extends React.Component {
                     });
                 })
                 .catch((err) => {
-                    this.setState({
+                    this.safeSetState({
                         errorPut: err,
                         savingComment: false,
                     });
                 });
         } else {
-            this.setState({
+            this.safeSetState({
                 editedComment: null,
                 editMode: false,
                 savingComment: false,
@@ -96,7 +107,7 @@ class Comment extends React.Component {
     }
 
     cancelEditing() {
-        this.setState({
+        this.safeSetState({
             errorPut: undefined,
             editedComment: null,
             editMode: false,
@@ -140,7 +151,7 @@ class Comment extends React.Component {
             </div>);
         }
 
-        return <div onClick={() => this.setState({editMode: true})} className={'mentions-edit fa fa-edit'}/>;
+        return <div onClick={() => this.safeSetState({editMode: true})} className={'mentions-edit fa fa-edit'}/>;
     }
 
     render() {

@@ -22,18 +22,26 @@ class CommentsDrawerLink extends React.Component {
 
     escFunction(event) {
         if (event.keyCode === 27) {
-            this.setState({
+            this.safeSetState({
                 commentsDrawerOpen: false,
             });
         }
     }
 
+    safeSetState(data, callback) {
+        if (this._ismounted) {
+            this.setState(data, callback);
+        }
+    }
+
     componentDidMount() {
+        this._ismounted = true;
         document.addEventListener('keydown', this.escFunction, false);
         this.fetchUnreadCount();
     }
 
     componentWillUnmount() {
+        this._ismounted = false;
         document.removeEventListener('keydown', this.escFunction, false);
     }
 
@@ -43,18 +51,18 @@ class CommentsDrawerLink extends React.Component {
         }
 
         let client = new CommentsClient(this.props.accessToken, this.props.resourceUri);
-        this.setState({
+        this.safeSetState({
             fetchingData: true,
         }, () => client
             .getUserInfo()
             .then((data) => {
-                this.setState({
+                this.safeSetState({
                     fetchingData: false,
                     unreadCommentsCount: data.unreadCount,
                 });
             })
             .catch((err) => {
-                this.setState({
+                this.safeSetState({
                     fetchingData: false,
                     unreadCommentsCount: 'n/a',
                 });
@@ -66,7 +74,7 @@ class CommentsDrawerLink extends React.Component {
             this.fetchUnreadCount();
         }
         if (prevProps.opened !== this.props.opened) {
-            this.setState({
+            this.safeSetState({
                 commentsDrawerOpen: this.props.opened,
             });
         }
@@ -108,11 +116,11 @@ class CommentsDrawerLink extends React.Component {
     }
 
     onDrawerOpen() {
-        this.setState({commentsDrawerOpen: true});
+        this.safeSetState({commentsDrawerOpen: true});
     }
 
     onDrawerClose() {
-        this.setState({commentsDrawerOpen: false}, () => this.fetchUnreadCount());
+        this.safeSetState({commentsDrawerOpen: false}, () => this.fetchUnreadCount());
     }
 
     render() {

@@ -125,6 +125,26 @@ export default class CommentsClient extends _FetchClient {
             });
     }
 
+    markAsReadAfter(date) {
+        let url = `${this.commentServiceUrl}/v0/resources/${this.encodedResourceUri}/read`;
+        let init = this.getDefaultConfig('POST', {
+            createdAt: date,
+        });
+
+        return fetch(url, init)
+            .then((response) => {
+                if (response.status === 204) {
+                    return;
+                } else if (response.status === 401) {
+                    throw new Error('Unauthorized');
+                } else if (response.status === 403) {
+                    throw new Error('Forbidden');
+                } else {
+                    throw new Error(`Unable to mark comments as read since ${date} (Status code: ${response.status})`);
+                }
+            });
+    }
+
     getUserInfo() {
         let init = this.getDefaultConfig('GET');
         let url = `${this.commentServiceUrl}/v0/resources/${this.encodedResourceUri}/userinfo`;

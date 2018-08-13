@@ -60,12 +60,19 @@ class Comments extends React.Component {
 
     componentWillUnmount() {
         this._ismounted = false;
-        clearInterval(this.refreshIntervalHandle);
+        clearTimeout(this._markAsReadAfterHandle);
+        clearInterval(this._refreshIntervalHandle);
+    }
+
+    safeSetState(data, callback) {
+        if (this._ismounted) {
+            this.setState(data, callback);
+        }
     }
 
     init() {
-        clearInterval(this.refreshIntervalHandle);
-        this.refreshIntervalHandle = setInterval(() => this.fetchComments(), Math.max((this.props.refreshInterval || 60) * 1000, 5000));
+        clearInterval(this._refreshIntervalHandle);
+        this._refreshIntervalHandle = setInterval(() => this.fetchComments(), Math.max((this.props.refreshInterval || 60) * 1000, 5000));
 
         // Get the settings (it won't make a network call as the data is cached!
         this.customizrClient.fetchSettings()
@@ -74,7 +81,7 @@ class Comments extends React.Component {
                 let newSelectedVisibilityOption = this.state.commentVisibilityLevels.find((l) => l.value === json.selectedVisibility);
                 // Only update the state if there is change
                 if (this.state.alertDismissed !== newAlertDismissed || this.state.selectedVisibilityOption !== newSelectedVisibilityOption) {
-                    this.setState({
+                    this.safeSetState({
                         alertDismissed: newAlertDismissed,
                         selectedVisibilityOption: newSelectedVisibilityOption,
                     }, () => {
@@ -103,15 +110,19 @@ class Comments extends React.Component {
 
         if (this.state.commentVisibilityLevels !== newCommentVisibilityLevels ||
             this.state.selectedVisibilityOption !== newCommentVisibilityLevels[selectedVisibilityOptionIndex]) {
-            this.setState({
+            this.safeSetState({
                 commentVisibilityLevels: newCommentVisibilityLevels,
                 selectedVisibilityOption: newCommentVisibilityLevels[selectedVisibilityOptionIndex],
             });
         }
     }
 
+    markAsReadAfter(date) {
+        this.commentsClient.markAsReadAfter(date);
+    }
+
     fetchComments() {
-        this.setState({
+        this.safeSetState({
             loading: true,
             failed: false,
         });
@@ -123,7 +134,21 @@ class Comments extends React.Component {
                     return;
                 }
 
-                this.setState({
+                const sortedComments = responseJson.sort((a, b) => {
+                    if (this.props.newestFirst === true) {
+                        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+                    } else {
+                        return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+                    }
+                });
+
+                const lastestCommentDate = sortedComments.length > 0
+                    ? this.props.newestFirst
+                        ? sortedComments[0].createdAt
+                        : sortedComments[sortedComments.length - 1].createdAt
+                    : null;
+
+                this.safeSetState({
                     userAccessLevel: userAccessLevel,
                     loading: false,
                     failed: false,
@@ -141,9 +166,14 @@ class Comments extends React.Component {
                 }, () => {
                     this.resetSelectedVisibilityOption();
                 });
+
+                // mark all as read after 1s
+                if (lastestCommentDate) {
+                    this._markAsReadAfterHandle = setTimeout(() => this.markAsReadAfter(lastestCommentDate), 1000);
+                }
             })
             .catch((err) => {
-                this.setState({
+                this.safeSetState({
                     loading: false,
                     failed: true,
                     error: err,
@@ -164,7 +194,7 @@ class Comments extends React.Component {
         }
 
         let newCommentObjects = Object.assign({[tempId]: {comment}}, this.state.commentObjects);
-        this.setState({
+        this.safeSetState({
             failed: false,
             error: undefined,
             commentToAdd: '',
@@ -179,7 +209,7 @@ class Comments extends React.Component {
                 let newCommentObjects = Object.assign({}, this.state.commentObjects);
                 delete newCommentObjects[tempId];
 
-                this.setState({
+                this.safeSetState({
                     failedPost: true,
                     error: err,
                     commentsIds: this.state.commentsIds.filter((id) => id !== tempId),
@@ -194,7 +224,7 @@ class Comments extends React.Component {
                 alertDismissed: true,
             },
         });
-        this.setState({
+        this.safeSetState({
             alertDismissed: true,
         });
     }
@@ -286,14 +316,14 @@ class Comments extends React.Component {
                     />
                     {this.state.failedPost
                         ? this.renderError(this.tt('unable_to_post_comment'), true, () => {
-                            this.setState({failedPost: false});
+                            this.safeSetState({failedPost: false});
                         })
                         : null}
                 </div>
                 <MentionsInput
                     className="mentions mentions-min-height"
                     value={this.state.commentToAdd}
-                    onChange={(e, newValue) => this.setState({commentToAdd: newValue})}
+                    onChange={(e, newValue) => this.safeSetState({commentToAdd: newValue})}
                     displayTransform={(id, display, type) => `@${display}`} allowSpaceInQuery={true}>
                     <Mention
                         trigger="@"
@@ -310,7 +340,7 @@ class Comments extends React.Component {
                         options={this.state.commentVisibilityLevels}
                         onChange={(selectedVisibilityOption) => {
                             this.customizrClient.updateSettings({selectedVisibility: selectedVisibilityOption.value});
-                            this.setState({selectedVisibilityOption});
+                            this.safeSetState({selectedVisibilityOption});
                         }}
                         searchable={false}
                         clearable={false}
