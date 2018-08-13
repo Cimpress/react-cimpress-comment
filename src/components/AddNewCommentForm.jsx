@@ -142,7 +142,7 @@ class AddNewCommentForm extends React.Component {
                 </MentionsInput>
                 <div style={{display: 'table'}}>
                     <Select
-                        label=""
+                        label={this.tt('show_my_comment_to')}
                         value={this.state.selectedVisibilityOption}
                         options={this.state.commentVisibilityLevels}
                         onChange={(selectedVisibilityOption) => {
