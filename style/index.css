@@ -74,7 +74,7 @@
 }
 
 .comment-count-badge-loading {
-    background: #fff !important;
+    background: transparent !important;
     color: #0088a9 !important;
 }
 
