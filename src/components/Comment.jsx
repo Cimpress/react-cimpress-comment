@@ -35,7 +35,7 @@ class Comment extends React.Component {
         if (this.state.createdByName === undefined && this.state.commentObject.createdBy) {
             this.fetchUserName(this.state.commentObject.createdBy, 'createdByName');
         }
-        if (this.state.jwtSubName === undefined) {
+        if (this.state.jwtSubName === undefined && this.props.jwtSub) {
             this.fetchUserName(this.props.jwtSub, 'jwtSubName');
         }
     }
