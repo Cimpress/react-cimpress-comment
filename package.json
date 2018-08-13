@@ -7,8 +7,8 @@
     "translate": "node scripts/retrieveTranslations.js",
     "check": "./node_modules/.bin/eslint --ext .js,.jsx src/",
     "build": "babel src -d lib --copy-files",
-    "storybook": "((kill -9 `cat mockserver.pid`; kill -9 `cat storybook.pid`) || true) && (node_modules/.bin/start-storybook -p 9001 -c .storybook & echo $! > storybook.pid) && (node_modules/.bin/mockserver -p 9102 -m ./mocks/ & echo $! > mockserver.pid)",
-    "storybookstop": "kill -9 `cat mockserver.pid`; kill -9 `cat storybook.pid`"
+    "storybook": "node_modules/.bin/start-storybook -p 9001 -c .storybook & echo $! > storybook.pid",
+    "storybookstop": "kill -9 `cat storybook.pid`"
   },
   "repository": {
     "type": "git",
@@ -48,7 +48,6 @@
     "fetch-mock": "^6.4.4",
     "iso-639": "^0.2.2",
     "jsonwebtoken": "^8.2.1",
-    "mockserver": "^1.6.2",
     "react": "^15.0.0-0 || ^16.0.0-0 || ^17.0.0-0",
     "react-dom": "^15.0.0-0 || ^16.0.0-0 || ^17.0.0-0",
     "request-promise-native": "^1.0.5"
