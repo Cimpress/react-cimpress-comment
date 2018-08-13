@@ -183,21 +183,29 @@ class Comments extends React.Component {
         }, this.state.commentObjects);
         this.safeSetState({
             failed: false,
+            failedPostComment: '',
             error: undefined,
-            commentToAdd: '',
             commentsIds: this.state.commentsIds.slice(0),
             commentObjects: newCommentObjects,
         });
 
         return this.commentsClient
             .postComment(comment, this.state.selectedVisibilityOption.value)
-            .then(() => this.fetchComments())
+            .then(() => {
+                this.safeSetState({
+                    failedPost: false,
+                    failedPostComment: '',
+                    error: undefined,
+                });
+                this.fetchComments()
+            })
             .catch((err) => {
                 let newCommentObjects = Object.assign({}, this.state.commentObjects);
                 delete newCommentObjects[tempId];
 
                 this.safeSetState({
                     failedPost: true,
+                    failedPostComment: comment,
                     error: err,
                     commentsIds: this.state.commentsIds.filter((id) => id !== tempId),
                     commentObjects: newCommentObjects,
@@ -284,6 +292,7 @@ class Comments extends React.Component {
                 : null}
             <AddNewCommentForm
                 locale={this.props.locale}
+                initialValue={this.state.failedPostComment || this.props.initialValue}
                 accessToken={this.props.accessToken}
                 mentionsClient={this.mentionsClient}
                 resourceUri={this.props.resourceUri}
