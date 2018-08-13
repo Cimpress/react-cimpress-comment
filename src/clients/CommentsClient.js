@@ -128,7 +128,7 @@ export default class CommentsClient extends _FetchClient {
     markAsReadAfter(date) {
         let url = `${this.commentServiceUrl}/v0/resources/${this.encodedResourceUri}/read`;
         let init = this.getDefaultConfig('POST', {
-            createdAt: date,
+            lastReadDate: date,
         });
 
         return fetch(url, init)
