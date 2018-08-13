@@ -1,7 +1,4 @@
 import React from 'react';
-import ReactPlaceholder from 'react-placeholder';
-import 'react-placeholder/lib/reactPlaceholder.css';
-import {TextBlock} from 'react-placeholder/lib/placeholders';
 import PropTypes from 'prop-types';
 
 import '../../style/index.css';
@@ -37,6 +34,9 @@ class Comment extends React.Component {
         }
         if (this.state.createdByName === undefined && this.state.commentObject.createdBy) {
             this.fetchUserName(this.state.commentObject.createdBy, 'createdByName');
+        }
+        if (this.state.jwtSubName === undefined) {
+            this.fetchUserName(this.props.jwtSub, 'jwtSubName');
         }
     }
 
@@ -161,7 +161,7 @@ class Comment extends React.Component {
             readonlyTextField = true;
             editMenu = <div className={'mentions-edit'}><Spinner size={20}/></div>;
         } else {
-            readonlyTextField = !this.state.editMode || !editMenu;
+            readonlyTextField = !this.state.editMode;
             editMenu = this.renderEditMenu();
         }
 
@@ -189,14 +189,14 @@ class Comment extends React.Component {
         );
 
         let commentCreator = <div className={'comment-creator'}>
-            {this.state.commentObject.createdBy
-                ? `${this.state.createdByName || this.state.commentObject.createdBy}, `
-                : null}
+            {`${this.state.createdByName || this.state.commentObject.createdBy}`}
+            {this.state.commentObject.createdAt ? <span>,&nbsp;</span> : null}
             <TimeAgo
                 date={this.state.commentObject.createdAt}
                 formatter={reactTimeAgoFormatters[this.props.locale]}/>
-            {this.state.commentObject.createdAt !== this.state.commentObject.updatedAt
-                ? <span>, {this.tt('modified')} {(this.state.commentObject.updatedBy !== this.state.commentObject.createdBy)
+            {this.state.commentObject.createdAt !== this.state.commentObject.updatedAt && this.state.commentObject.updatedAt
+                ?
+                <span>, {this.tt('modified')} {(this.state.commentObject.updatedBy !== this.state.commentObject.createdBy)
                     ? `${this.tt('by')} ${this.state.updatedByName || this.state.commentObject.updatedBy}`
                     : null} <TimeAgo
                     date={this.state.commentObject.updatedAt}
@@ -211,22 +211,9 @@ class Comment extends React.Component {
         }
 
         return <div className={this.props.className || 'comment'}>
-            <ReactPlaceholder
-                showLoadingAnimation
-                customPlaceholder={<TextBlock
-                    rows={1} color='lightgray'
-                    style={{width: 30, height: 5, marginTop: 10, marginBottom: 10}}/>}
-                ready={Boolean(this.state.commentObject.createdAt && this.state.commentObject.updatedAt)}>
-                {commentCreator}
-            </ReactPlaceholder>
+            {commentCreator}
             <div className={'comment-body'}>
-                <ReactPlaceholder
-                    showLoadingAnimation
-                    customPlaceholder={<TextBlock
-                        rows={2} color='lightgray' lineSpacing={4} style={{width: 30, height: 30}}/>}
-                    ready={Boolean(this.state.commentObject.createdAt && this.state.commentObject.updatedAt)}>
-                    {commentBody}
-                </ReactPlaceholder>
+                {commentBody}
             </div>
         </div>;
     }

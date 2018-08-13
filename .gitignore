@@ -5,3 +5,10 @@ backstop_data/bitmaps_test
 backstop_data/html_report
 backstop_data/ci_report
 mockserver.pid
+src/locales/all.js
+src/locales/translations.bul.json
+src/locales/translations.deu.json
+src/locales/translations.eng.json
+src/locales/translations.fra.json
+src/locales/translations.pol.json
+src/locales/translations.spa.json

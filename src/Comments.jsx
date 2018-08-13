@@ -1,24 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import 'react-placeholder/lib/reactPlaceholder.css';
 import '../style/index.css';
 import '../style/select.css';
 
 import Comment from './components/Comment';
-import CommentVisibilityOption from './components/CommentVisibilityOption';
 
 import {getVisibilityLevels} from './tools/visibility';
-import {Mention, MentionsInput} from 'react-mentions';
-import {Alert, shapes, Select} from '@cimpress/react-components';
+import {Alert, shapes} from '@cimpress/react-components';
 
 import CommentsClient from './clients/CommentsClient';
 import MentionsClient from './clients/MentionsClient';
-import CustomizrClient from './clients/CustomizrClient';
 
 import {getI18nInstance} from './tools/i18n';
-import {translate, Trans} from 'react-i18next';
+import {translate} from 'react-i18next';
 import {errorToString, getSubFromJWT} from './tools/helper';
+import AddNewCommentForm from './components/AddNewCommentForm';
 
 let {Spinner} = shapes;
 
@@ -28,7 +25,7 @@ class Comments extends React.Component {
 
         this.commentsClient = new CommentsClient(props.accessToken, props.resourceUri);
         this.mentionsClient = new MentionsClient(props.accessToken);
-        this.customizrClient = new CustomizrClient(props.accessToken);
+        this.jwtSub = getSubFromJWT(this.props.accessToken);
 
         this.state = {
             blockEnter: false,
@@ -53,6 +50,7 @@ class Comments extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
+        this.jwtSub = getSubFromJWT(this.props.accessToken);
         if (this.props.resourceUri !== prevProps.resourceUri) {
             this.fetchComments();
         }
@@ -74,25 +72,8 @@ class Comments extends React.Component {
         clearInterval(this._refreshIntervalHandle);
         this._refreshIntervalHandle = setInterval(() => this.fetchComments(), Math.max((this.props.refreshInterval || 60) * 1000, 5000));
 
-        // Get the settings (it won't make a network call as the data is cached!
-        this.customizrClient.fetchSettings()
-            .then((json) => {
-                let newAlertDismissed = json.mentionsUsageNotification && json.mentionsUsageNotification.alertDismissed === true;
-                let newSelectedVisibilityOption = this.state.commentVisibilityLevels.find((l) => l.value === json.selectedVisibility);
-                // Only update the state if there is change
-                if (this.state.alertDismissed !== newAlertDismissed || this.state.selectedVisibilityOption !== newSelectedVisibilityOption) {
-                    this.safeSetState({
-                        alertDismissed: newAlertDismissed,
-                        selectedVisibilityOption: newSelectedVisibilityOption,
-                    }, () => {
-                        this.resetSelectedVisibilityOption();
-                    });
-                }
-            });
-
         // Creating these clients is inexpensive and do not clear caching
         this.mentionsClient = new MentionsClient(this.props.accessToken);
-        this.customizrClient = new CustomizrClient(this.props.accessToken);
         this.commentsClient = new CommentsClient(this.props.accessToken, this.props.resourceUri);
     }
 
@@ -193,7 +174,13 @@ class Comments extends React.Component {
             this.state.commentsIds.push(tempId);
         }
 
-        let newCommentObjects = Object.assign({[tempId]: {comment}}, this.state.commentObjects);
+        let newCommentObjects = Object.assign({
+            [tempId]: {
+                createdBy: this.jwtSub,
+                visibility: this.state.selectedVisibilityOption.value,
+                comment: comment,
+            },
+        }, this.state.commentObjects);
         this.safeSetState({
             failed: false,
             error: undefined,
@@ -216,17 +203,6 @@ class Comments extends React.Component {
                     commentObjects: newCommentObjects,
                 });
             });
-    }
-
-    onAlertDismissed() {
-        this.customizrClient.updateSettings({
-            mentionsUsageNotification: {
-                alertDismissed: true,
-            },
-        });
-        this.safeSetState({
-            alertDismissed: true,
-        });
     }
 
     renderLoading() {
@@ -300,63 +276,19 @@ class Comments extends React.Component {
             comments = <div className={'no-comments'}>{this.tt('no_comments_exist')}</div>;
         }
 
-        let addCommentBox = (
-            <div className="comments-add">
-                <div className='comments-alert'>
-                    <Alert
-                        type={'info'}
-                        message={<p><Trans
-                            defaults={this.tt('use_at_char_for_mentions')}
-                            // eslint-disable-next-line react/jsx-key
-                            components={[<strong>@</strong>]}
-                        /></p>}
-                        dismissible={true}
-                        dismissed={this.state.alertDismissed}
-                        onDismiss={this.onAlertDismissed.bind(this)}
-                    />
-                    {this.state.failedPost
-                        ? this.renderError(this.tt('unable_to_post_comment'), true, () => {
-                            this.safeSetState({failedPost: false});
-                        })
-                        : null}
-                </div>
-                <MentionsInput
-                    className="mentions mentions-min-height"
-                    value={this.state.commentToAdd}
-                    onChange={(e, newValue) => this.safeSetState({commentToAdd: newValue})}
-                    displayTransform={(id, display, type) => `@${display}`} allowSpaceInQuery={true}>
-                    <Mention
-                        trigger="@"
-                        data={(search, callback) => {
-                            this.mentionsClient.fetchMatchingMentions(search).then(callback);
-                        }}
-                        renderSuggestion={this.renderSuggestion}
-                    />
-                </MentionsInput>
-                <div style={{display: 'table'}}>
-                    <Select
-                        label="Show my comment to"
-                        value={this.state.selectedVisibilityOption}
-                        options={this.state.commentVisibilityLevels}
-                        onChange={(selectedVisibilityOption) => {
-                            this.customizrClient.updateSettings({selectedVisibility: selectedVisibilityOption.value});
-                            this.safeSetState({selectedVisibilityOption});
-                        }}
-                        searchable={false}
-                        clearable={false}
-                        optionComponent={CommentVisibilityOption}
-                    />
-                    <span className="input-group-btn" style={{display: 'table-cell'}}>
-                        <button
-                            className="btn btn-default"
-                            disabled={!this.props.resourceUri || this.state.commentToAdd.trim() === '' || !this.state.selectedVisibilityOption}
-                            onClick={() => this.postComment(this.state.commentToAdd)}>
-                            {this.tt('btn_post')}
-                        </button>
-                    </span>
-                </div>
-            </div>
-        );
+        let addCommentBox = <div>
+            {this.state.failedPost
+                ? this.renderError(this.tt('unable_to_post_comment'), true, () => {
+                    this.safeSetState({failedPost: false});
+                })
+                : null}
+            <AddNewCommentForm
+                locale={this.props.locale}
+                accessToken={this.props.accessToken}
+                mentionsClient={this.mentionsClient}
+                resourceUri={this.props.resourceUri}
+                onPostComment={(comment) => this.postComment(comment)}/>
+        </div>;
 
         return <div>
             {this.props.newestFirst

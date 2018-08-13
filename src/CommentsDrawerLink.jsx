@@ -1,5 +1,4 @@
 import React from 'react';
-import 'react-placeholder/lib/reactPlaceholder.css';
 import '../style/index.css';
 import {Drawer} from '@cimpress/react-components';
 import Comments from './Comments';

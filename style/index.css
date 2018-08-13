@@ -208,6 +208,7 @@ textarea {
     right: 0px;
     background-color: white;
     padding-left: 5px;
+    cursor: pointer;
 }
 
 .mentions-ok {
@@ -218,6 +219,7 @@ textarea {
     color: green;
     background-color: white;
     padding-left: 5px;
+    cursor: pointer;
 }
 
 .mentions-cancel {
@@ -228,6 +230,7 @@ textarea {
     color: red;
     background-color: white;
     padding-left: 5px;
+    cursor: pointer;
 }
 
 .mentions__highlighter > strong {
