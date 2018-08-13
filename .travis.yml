@@ -12,6 +12,7 @@ install:
 - npm install
 script:
 - npm run translate
+- npm run check
 - npm run storybook
 - sleep 20 && echo "done waiting"
 - node_modules/.bin/backstop test
@@ -21,10 +22,10 @@ after_script:
 - "./push.sh"
 deploy:
   provider: npm
+  email: TrdelnikSquad@cimpress.com
   skip_cleanup: true
-  email: rafalnowosielski@me.com
   api_key:
-    secure: WMaoX64C2QJ9rA37suY9URQYbfmDyZOVv1pU9TBcotSnQrD4pzX7NPeASJ/xtXG+6IUM6zNnvRTl7QrCuIEJAJBy0GYrrb9TzE4k4q/eWqt1ge8kzg9q8PPMn3YGQ0MqT58ZzuAQqrhdK4QUrfbK+X/upA/b15AceinWKekVFCZE9vASS2Q8nw4djIuALR5Rl4uD6+72LRFRxJkxNSfZaZYiyuSAUQt5vsHCE/QCL8VVy6WWTDkNCmxPmEgQnUxM9RK4DvuQtGieBjZSfohauuFPKWXu1pJATbrGQBTnWjRcjypaCeliXsLJLwXzlmFqnSXzGqC6N2xH5T8oveZ1IA0xl0eanv4UWvkWcRQ0lmpGhrfE3aFuY6gFv8FcBb/VkMUkLU/QGjzPOxIBO/97PRTn4e/eh7GYSJvJiIm69uyio1Z8ntkSU7tKZTIe4wxZMTOX2fNS5MOkPWzZgzru4DGcQOc5UTRm5qndyfK3gYfVDG4k9uQVomiM/AardCVLKUtscG5fIgJ8GiV0roVux58pQ0OKiyDdAuTrLTfKu29b9Ov8M6u9DMG3FpvHe93FDsWXUPlbRR6o8pHhvWobG2pdRcYUiDndPI5+0lejHOrBE8K1hS1g4W6Eo2RmspsCFy69iA6NUUdCm6u9MZ9qSJW8b4bnQrv+10+BYBofJJ8=
+    secure: hVc6N82O0n2rK2XCSIMqz+tmf9B9s8cZ5bRtHk7sfu3sjFIJm9tY757/F7oaM5k15iZxt+GHhP3N4cWFZMd8TolDRcjqTnuV+2zr4sE4XqemYaOZU+yvh5g7rQ0OmrOF93igdcHwvu2GXVpw70WrmFA8WrjpV+F3hhYKG9m/6koe/l2AJqRR95YsoZ4zhWegMG7Rwbcm5DkbEc/N3GPWYnpoYVqRRo3KR+xkVZKHY4IgTeXt0IEmrz2VssXmwwU7jmeP5hpP095ynSGqWDojQS84/fGxGs055oZ9LQovjVWetXd45mmY/p6uu95lto2LMfe1bE9GdbnLmEfbJNFWOmoiVk3jOCIeTIYDulCDR/Lu2RADEdKiJ4KfCnHVsfLT6+bKEWvAxLimASM62of/3G5mqOz2tCCcbmbzOUNWh+3d/rM6agIbpV17PVzN4gA4w1T4NOScY6HLSrIH7MY7QThODtMJ8CrJna1xzxud1YkAS6Dk5FN0gj9MeR9djz8wmRCmRs19r9F2ilyB5fd97MRokL26rz1EalLqeh35cOdEqVfq81EOupuy9J+XIfzGXVjllnclI8ns+5zY/h2ZT6I0kTvBje4WzS/nlr1g/UGxqFsHbkfTO3ixuDDhvbXDYOkALV1xlbYltLKZWxpR4cQgGjWQMSBclvdYvPkn8+s=
   on:
     branch: master
 notifications:

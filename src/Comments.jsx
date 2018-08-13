@@ -1,35 +1,34 @@
 import React from 'react';
-import VisibilitySensor from 'react-visibility-sensor';
-import 'react-placeholder/lib/reactPlaceholder.css';
 import PropTypes from 'prop-types';
-import Comment from './Comment';
+
 import '../style/index.css';
 import '../style/select.css';
-import {getVisibilityLevels} from './visibility';
-import CommentVisibilityOption from './CommentVisibilityOption';
-import {Alert, shapes, Select} from '@cimpress/react-components';
-import CommentsClient from './clients/CommentsClient';
-import {Mention, MentionsInput} from 'react-mentions';
-import MentionsClient from './clients/MentionsClient';
-import CustomizrClient from './clients/CustomizrClient';
 
-import {getI18nInstance} from './i18n';
-import {translate, Trans} from 'react-i18next';
-import {errorToString} from './helper';
+import Comment from './components/Comment';
+
+import {getVisibilityLevels} from './tools/visibility';
+import {Alert, shapes} from '@cimpress/react-components';
+
+import CommentsClient from './clients/CommentsClient';
+import MentionsClient from './clients/MentionsClient';
+
+import {getI18nInstance} from './tools/i18n';
+import {translate} from 'react-i18next';
+import {errorToString, getSubFromJWT} from './tools/helper';
+import AddNewCommentForm from './components/AddNewCommentForm';
 
 let {Spinner} = shapes;
 
-class _Comments extends React.Component {
+class Comments extends React.Component {
     constructor(props) {
         super(props);
 
         this.commentsClient = new CommentsClient(props.accessToken, props.resourceUri);
         this.mentionsClient = new MentionsClient(props.accessToken);
-        this.customizrClient = new CustomizrClient(props.accessToken);
+        this.jwtSub = getSubFromJWT(this.props.accessToken);
 
         this.state = {
             blockEnter: false,
-            visible: false,
             loading: false,
             commentsIds: [],
             commentObjects: {},
@@ -39,147 +38,128 @@ class _Comments extends React.Component {
             alertDismissed: true,
             commentVisibilityLevels: getVisibilityLevels(this.tt.bind(this)),
             selectedVisibilityOption: null,
-            userAccessLevel: null
+            userAccessLevel: null,
         };
-    }
-
-    componentWillMount() {
-        setTimeout(() => this.forceFetchComments(), 10);
     }
 
     componentDidMount() {
         this._ismounted = true;
-        this.componentWillReceiveProps(this.props);
+        this.init();
+        this.fetchComments();
+        this.resetSelectedVisibilityOption();
+    }
+
+    componentDidUpdate(prevProps) {
+        this.jwtSub = getSubFromJWT(this.props.accessToken);
+        if (this.props.resourceUri !== prevProps.resourceUri) {
+            this.fetchComments();
+        }
     }
 
     componentWillUnmount() {
         this._ismounted = false;
+        clearTimeout(this._markAsReadAfterHandle);
+        clearInterval(this._refreshIntervalHandle);
     }
 
-    componentWillReceiveProps(newProps) {
-        this.customizrClient.fetchSettings().then(json => {
-            this.setState({
-                alertDismissed: json.mentionsUsageNotification &&
-                    json.mentionsUsageNotification.alertDismissed === true,
-                selectedVisibilityOption: this.state.commentVisibilityLevels.find(l => l.value === json.selectedVisibility)
-            }, () => {
-                this.resetSelectedVisibilityOption();
-            });
-        });
-
-        clearInterval(this.refreshInterval);
-        this.refreshInterval = setInterval(() => this.forceFetchComments(), Math.max((this.props.refreshInterval || 60) * 1000, 5000));
-
-        let accessTokenChanged = this.props.accessToken !== newProps.accessToken;
-        let resourceUriChanged = this.props.resourceUri !== newProps.resourceUri;
-
-        if (accessTokenChanged) {
-            // new props - recreate
-            this.mentionsClient = new MentionsClient(newProps.accessToken);
-            this.customizrClient = new CustomizrClient(newProps.accessToken);
+    safeSetState(data, callback) {
+        if (this._ismounted) {
+            this.setState(data, callback);
         }
-
-        if (accessTokenChanged || resourceUriChanged) {
-            // new props - recreate
-            this.commentsClient = new CommentsClient(newProps.accessToken, newProps.resourceUri);
-        }
-
-        if (resourceUriChanged) {
-            this.setState({
-                failed: false,
-                failedPost: false,
-                commentsIds: []
-            }, () => this.forceFetchComments());
-        }
-
-        this.resetSelectedVisibilityOption();
     }
 
-    onInputChange(event, newValue, newPlainTextValue, mentions) {
-        this.setState({commentToAdd: newValue});
-    }
+    init() {
+        clearInterval(this._refreshIntervalHandle);
+        this._refreshIntervalHandle = setInterval(() => this.fetchComments(), Math.max((this.props.refreshInterval || 60) * 1000, 5000));
 
-    onVisibilityChange = selectedVisibilityOption => {
-        this.customizrClient.updateSettings({selectedVisibility: selectedVisibilityOption.value})
-        this.setState({selectedVisibilityOption});
-    };
-
-    addComment(e) {
-        this.postComment(this.state.commentToAdd);
-    }
-
-    fetchComments(isVisible) {
-        this.setState({
-            visible: isVisible
-        });
-        if (isVisible && this.props.resourceUri) {
-            this.forceFetchComments();
-        }
+        // Creating these clients is inexpensive and do not clear caching
+        this.mentionsClient = new MentionsClient(this.props.accessToken);
+        this.commentsClient = new CommentsClient(this.props.accessToken, this.props.resourceUri);
     }
 
     resetSelectedVisibilityOption() {
         let newCommentVisibilityLevels = getVisibilityLevels(this.tt.bind(this), this.state.userAccessLevel);
-        let narrowestAvailableVisibilityOptionIndex = newCommentVisibilityLevels.every(l => !l.disabled) ?
+        let narrowestAvailableVisibilityOptionIndex = newCommentVisibilityLevels.every((l) => !l.disabled) ?
             newCommentVisibilityLevels.length - 1 :
-            newCommentVisibilityLevels.findIndex(l => l.disabled) - 1;
+            newCommentVisibilityLevels.findIndex((l) => l.disabled) - 1;
 
         let preferredVisibilityOptionIndex = this.state.selectedVisibilityOption ?
-            newCommentVisibilityLevels.findIndex(l => l.value === this.state.selectedVisibilityOption.value) :
+            newCommentVisibilityLevels.findIndex((l) => l.value === this.state.selectedVisibilityOption.value) :
             newCommentVisibilityLevels.length - 1;
 
         let selectedVisibilityOptionIndex = Math.min(narrowestAvailableVisibilityOptionIndex, preferredVisibilityOptionIndex);
 
-        this.setState({
-            commentVisibilityLevels: newCommentVisibilityLevels,
-            selectedVisibilityOption: newCommentVisibilityLevels[selectedVisibilityOptionIndex]
-        });
+        if (this.state.commentVisibilityLevels !== newCommentVisibilityLevels ||
+            this.state.selectedVisibilityOption !== newCommentVisibilityLevels[selectedVisibilityOptionIndex]) {
+            this.safeSetState({
+                commentVisibilityLevels: newCommentVisibilityLevels,
+                selectedVisibilityOption: newCommentVisibilityLevels[selectedVisibilityOptionIndex],
+            });
+        }
     }
 
-    forceFetchComments() {
-        if (!this._ismounted) {
-            return;
-        }
+    markAsReadAfter(date) {
+        this.commentsClient.markAsReadAfter(date);
+    }
 
-        this.setState({
+    fetchComments() {
+        this.safeSetState({
             loading: true,
-            failed: false
+            failed: false,
         });
 
-        let currentClient = this.commentsClient;
-        currentClient.fetchComments().then(({responseJson, userAccessLevel}) => {
-            this.setState({userAccessLevel}, () => {
-                this.resetSelectedVisibilityOption();
-            });
+        this.commentsClient
+            .fetchComments()
+            .then(({responseJson, userAccessLevel}) => {
+                if (!this._ismounted) {
+                    return;
+                }
 
-            if (currentClient.resourceUri === this.props.resourceUri && this._ismounted) {
-                this.setState({
+                const sortedComments = responseJson.sort((a, b) => {
+                    if (this.props.newestFirst === true) {
+                        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+                    } else {
+                        return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+                    }
+                });
+
+                const lastestCommentDate = sortedComments.length > 0
+                    ? this.props.newestFirst
+                        ? sortedComments[0].createdAt
+                        : sortedComments[sortedComments.length - 1].createdAt
+                    : null;
+
+                this.safeSetState({
+                    userAccessLevel: userAccessLevel,
                     loading: false,
                     failed: false,
                     commentsIds: responseJson.sort((a, b) => {
                         if (this.props.newestFirst === true) {
-                            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+                            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
                         } else {
-                            return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+                            return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
                         }
-                    }).map(c => c.id),
+                    }).map((c) => c.id),
                     commentObjects: responseJson.reduce((acc, curr) => {
                         acc[curr.id] = curr;
-                        return acc
-                    }, {})
+                        return acc;
+                    }, {}),
+                }, () => {
+                    this.resetSelectedVisibilityOption();
                 });
-            }
-        }).catch(err => {
-            if (currentClient.resourceUri === this.props.resourceUri) {
-                this.setState({
+
+                // mark all as read after 1s
+                if (lastestCommentDate) {
+                    this._markAsReadAfterHandle = setTimeout(() => this.markAsReadAfter(lastestCommentDate), 1000);
+                }
+            })
+            .catch((err) => {
+                this.safeSetState({
                     loading: false,
                     failed: true,
-                    error: err
+                    error: err,
                 });
-            }
-            console.error(err);
-        }).then(() => {
-            this.reportCommentCount();
-        });
+            });
     }
 
     postComment(comment) {
@@ -194,48 +174,43 @@ class _Comments extends React.Component {
             this.state.commentsIds.push(tempId);
         }
 
-        let newCommentObjects = Object.assign({[tempId]: {comment}}, this.state.commentObjects)
-        this.setState({
+        let newCommentObjects = Object.assign({
+            [tempId]: {
+                createdBy: this.jwtSub,
+                visibility: this.state.selectedVisibilityOption.value,
+                comment: comment,
+            },
+        }, this.state.commentObjects);
+        this.safeSetState({
             failed: false,
+            failedPostComment: '',
             error: undefined,
-            commentToAdd: '',
             commentsIds: this.state.commentsIds.slice(0),
-            commentObjects: newCommentObjects
+            commentObjects: newCommentObjects,
         });
 
         return this.commentsClient
             .postComment(comment, this.state.selectedVisibilityOption.value)
-            .then(() => this.fetchComments(this.state.visible))
-            .then(() => this.reportCommentCount())
+            .then(() => {
+                this.safeSetState({
+                    failedPost: false,
+                    failedPostComment: '',
+                    error: undefined,
+                });
+                this.fetchComments();
+            })
             .catch((err) => {
-                console.log(err);
                 let newCommentObjects = Object.assign({}, this.state.commentObjects);
                 delete newCommentObjects[tempId];
 
-                this.setState({
+                this.safeSetState({
                     failedPost: true,
+                    failedPostComment: comment,
                     error: err,
-                    commentsIds: this.state.commentsIds.filter(id => id !== tempId),
-                    commentObjects: newCommentObjects
+                    commentsIds: this.state.commentsIds.filter((id) => id !== tempId),
+                    commentObjects: newCommentObjects,
                 });
             });
-    }
-
-    reportCommentCount() {
-        if (this.props.commentCountRefreshed) {
-            this.props.commentCountRefreshed(this.state.commentsIds.length);
-        }
-    }
-
-    onAlertDismissed() {
-        this.customizrClient.updateSettings({
-            mentionsUsageNotification: {
-                alertDismissed: true
-            }
-        });
-        this.setState({
-            alertDismissed: true
-        });
     }
 
     renderLoading() {
@@ -248,24 +223,32 @@ class _Comments extends React.Component {
     }
 
     tt(key) {
+        // eslint-disable-next-line react/prop-types
         const {t, locale} = this.props;
         return t(key, {lng: locale});
     }
 
     renderComments(commentIds) {
         let uri = this.commentsClient.getResourceUri();
-        return commentIds.map((commentId, index) => (
-            <Comment locale={this.props.locale} key={commentId} className={'comment ' + ((index % 2 === 0)
-                ? 'comment-even'
-                : 'comment-odd')}
-                     accessToken={this.props.accessToken}
-                     commentUri={`${uri}/${commentId}`} comment={this.state.commentObjects[commentId]}
-                     editComments={this.props.editComments}
-                     commentVisibilityLevels={this.state.commentVisibilityLevels}/>));
+
+        return commentIds.map((commentId, index) => {
+            let className = 'comment ' + ((index % 2 === 0) ? 'comment-even' : 'comment-odd');
+            return <Comment
+                key={commentId}
+                locale={this.props.locale}
+                className={className}
+                jwtSub={getSubFromJWT(this.props.accessToken)}
+                mentionsClient={this.mentionsClient}
+                commentsClient={this.commentsClient}
+                commentUri={`${uri}/${commentId}`}
+                comment={this.state.commentObjects[commentId]}
+                editComments={this.props.editComments}
+                commentVisibilityLevels={this.state.commentVisibilityLevels}/>;
+        });
     }
 
     renderSuggestion(entry, search, highlightedDisplay, index) {
-        return <span>{highlightedDisplay} <i><small>{entry.email}</small></i></span>
+        return <span>{highlightedDisplay} <i><small>{entry.email}</small></i></span>;
     }
 
     renderError(defaultErrorMessage, dismissible = false, onDismiss) {
@@ -277,7 +260,7 @@ class _Comments extends React.Component {
         let e = this.state.error;
         let message;
         if (!e) {
-            message = defaultErrorMessage
+            message = defaultErrorMessage;
         } else {
             let details = errorToString(e);
             title = defaultErrorMessage;
@@ -301,75 +284,36 @@ class _Comments extends React.Component {
             comments = <div className={'no-comments'}>{this.tt('no_comments_exist')}</div>;
         }
 
-        let addCommentBox = (
-            <div className="comments-add">
-                <div className='comments-alert'>
-                    <Alert type={"info"}
-                           message = {<p><Trans
-                                        defaults={this.tt('use_at_char_for_mentions')}
-                                        components={[<strong>@</strong>]}
-                                    /></p>}
-                           dismissible={true}
-                           dismissed={this.state.alertDismissed}
-                           onDismiss={this.onAlertDismissed.bind(this)}
-                    />
-                    {this.state.failedPost
-                        ? this.renderError(this.tt('unable_to_post_comment'), true, () => {
-                            this.setState({failedPost: false})
-                        })
-                        : null}
-                </div>
-                <MentionsInput className="mentions mentions-min-height"
-                               value={this.state.commentToAdd}
-                               onChange={this.onInputChange.bind(this)}
-                               displayTransform={(id, display, type) => `@${display}`} allowSpaceInQuery={true}>
-                    <Mention trigger="@"
-                             data={(search, callback) => {
-                                 this.mentionsClient.fetchMatchingMentions(search).then(callback)
-                             }}
-                             renderSuggestion={this.renderSuggestion}
-                    />
-                </MentionsInput>
-                <div style={{display: 'table'}}>
-                    <Select
-                        label="Show my comment to"
-                        value={this.state.selectedVisibilityOption}
-                        options={this.state.commentVisibilityLevels}
-                        onChange={this.onVisibilityChange}
-                        searchable={false}
-                        clearable={false}
-                        optionComponent={CommentVisibilityOption}
-                    />
-                    <span className="input-group-btn" style={{display: 'table-cell'}}>
-                          <button
-                              disabled={!this.props.resourceUri || this.state.commentToAdd.trim() === '' || !this.state.selectedVisibilityOption}
-                              onClick={this.addComment.bind(this)} className="btn btn-default">
-                            {this.tt('btn_post')}
-                          </button>
-                      </span>
-                </div>
-            </div>
-        );
+        let addCommentBox = <div>
+            {this.state.failedPost
+                ? this.renderError(this.tt('unable_to_post_comment'), true, () => {
+                    this.safeSetState({failedPost: false});
+                })
+                : null}
+            <AddNewCommentForm
+                locale={this.props.locale}
+                initialValue={this.state.failedPostComment || this.props.initialValue}
+                accessToken={this.props.accessToken}
+                mentionsClient={this.mentionsClient}
+                resourceUri={this.props.resourceUri}
+                onPostComment={(comment) => this.postComment(comment)}/>
+        </div>;
 
-        return (
-            <VisibilitySensor partialVisibility={true} scrollCheck={true} onChange={this.fetchComments.bind(this)}>
-                <div>
-                    {this.props.newestFirst
-                        ? addCommentBox
-                        : null}
-                    <div className="comments">
-                        {comments}
-                    </div>
-                    {!this.props.newestFirst
-                        ? addCommentBox
-                        : null}
-                </div>
-            </VisibilitySensor>
-        );
+        return <div>
+            {this.props.newestFirst
+                ? addCommentBox
+                : null}
+            <div className="comments">
+                {comments}
+            </div>
+            {!this.props.newestFirst
+                ? addCommentBox
+                : null}
+        </div>;
     }
 }
 
-_Comments.propTypes = {
+Comments.propTypes = {
     locale: PropTypes.string,
     accessToken: PropTypes.string.isRequired,
     resourceUri: PropTypes.string.isRequired,
@@ -377,11 +321,11 @@ _Comments.propTypes = {
     editComments: PropTypes.bool,
     refreshInterval: PropTypes.number,
     commentCountRefreshed: PropTypes.func,
-    initialValue: PropTypes.string
+    initialValue: PropTypes.string,
 };
 
-_Comments.defaultProps = {
-    locale: 'eng'
+Comments.defaultProps = {
+    locale: 'eng',
 };
 
-export default translate("translations", {i18n: getI18nInstance()})(_Comments);
+export default translate('translations', {i18n: getI18nInstance()})(Comments);

@@ -1,4 +1,0 @@
-HTTP/1.1 403 FORBIDDEN
-Content-Type: application/json; charset=utf-8
-Access-Control-Allow-Origin: *
-
