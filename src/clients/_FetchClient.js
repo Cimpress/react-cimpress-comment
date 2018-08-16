@@ -24,8 +24,6 @@ export default class _FetchClient {
             config.body = JSON.stringify(jsonPayload);
         }
 
-        c
-
         return config;
     }
 }
