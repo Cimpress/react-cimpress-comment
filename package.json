@@ -1,6 +1,6 @@
 {
   "name": "react-cimpress-comment",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "Visualizes comment(s) for a particular platform resource",
   "main": "./lib/index.js",
   "scripts": {
@@ -55,6 +55,7 @@
   "dependencies": {
     "atob": "^2.1.1",
     "deepmerge": "^2.1.1",
+    "fetch-retry": "^2.0.0",
     "i18next": "^11.3.2",
     "md5": "^2.2.1",
     "prop-types": "^15.6.2",

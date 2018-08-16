@@ -63,7 +63,7 @@ class CommentsDrawerLink extends React.Component {
             .catch((err) => {
                 this.safeSetState({
                     fetchingData: false,
-                    unreadCommentsCount: 'n/a',
+                    unreadCommentsCount: '?',
                 });
             }));
     }

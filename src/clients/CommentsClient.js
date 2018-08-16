@@ -1,4 +1,5 @@
 import _FetchClient from './_FetchClient';
+const fetch = require('fetch-retry');
 
 const SERVICE_URL = (process && process.env ? process.env.COMMENT_SERVICE_URL : null) || 'https://comment.trdlnk.cimpress.io';
 
@@ -148,7 +149,6 @@ export default class CommentsClient extends _FetchClient {
     getUserInfo() {
         let init = this.getDefaultConfig('GET');
         let url = `${this.commentServiceUrl}/v0/resources/${this.encodedResourceUri}/userinfo`;
-
         return fetch(url, init)
             .then((response) => {
                 if (response.status === 200) {
