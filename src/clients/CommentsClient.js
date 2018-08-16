@@ -1,4 +1,5 @@
 import _FetchClient from './_FetchClient';
+
 const fetch = require('fetch-retry');
 
 const SERVICE_URL = (process && process.env ? process.env.COMMENT_SERVICE_URL : null) || 'https://comment.trdlnk.cimpress.io';
@@ -20,26 +21,6 @@ export default class CommentsClient extends _FetchClient {
         return `${this.commentServiceUrl}/v0/resources/${encodedResourceUri}/comments`;
     }
 
-    createResource() {
-        let url = `${this.commentServiceUrl}/v0/resources/${this.encodedResourceUri}`;
-        let init = this.getDefaultConfig('PUT', {
-            URI: this.resourceUri,
-        });
-
-        return fetch(url, init)
-            .then((response) => {
-                if (response.status >= 200 && response.status < 300) {
-                    return response.json();
-                } else if (response.status === 401) {
-                    throw new Error('Unauthorized');
-                } else if (response.status === 403) {
-                    throw new Error('Forbidden');
-                } else {
-                    throw new Error(`Unable to create resource (Status code: ${response.status})`);
-                }
-            });
-    }
-
     fetchComments() {
         let url = `${this.commentServiceUrl}/v0/resources/${this.encodedResourceUri}`;
         let init = this.getDefaultConfig('GET');
@@ -56,10 +37,10 @@ export default class CommentsClient extends _FetchClient {
                 } else if (response.status === 403) {
                     throw new Error('Forbidden');
                 } else if (response.status === 404) {
-                    return this.createResource().then((responseJson) => ({
-                        responseJson: responseJson.comments,
+                    return {
+                        responseJson: [],
                         userAccessLevel: response.headers.get('x-cimpress-resource-access-level'),
-                    }));
+                    };
                 } else {
                     throw new Error(`Unexpected status code ${response.status}`);
                 }
@@ -134,7 +115,7 @@ export default class CommentsClient extends _FetchClient {
 
         return fetch(url, init)
             .then((response) => {
-                if (response.status === 204) {
+                if (response.status === 204 || response.status === 404) {
                     return;
                 } else if (response.status === 401) {
                     throw new Error('Unauthorized');
@@ -157,6 +138,10 @@ export default class CommentsClient extends _FetchClient {
                     throw new Error('Unauthorized');
                 } else if (response.status === 403) {
                     throw new Error('Forbidden');
+                } else if (response.status === 404) {
+                    return {
+                        unreadCount: 0,
+                    };
                 } else {
                     throw new Error(`Unable to fetch user info (Status code: ${response.status})`);
                 }
