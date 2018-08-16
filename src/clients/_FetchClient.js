@@ -17,7 +17,7 @@ export default class _FetchClient {
             cache: 'default',
             retries: 3,
             retryDela: 500,
-            retryOn: [429, 500, 502, 503]
+            retryOn: [429, 500, 502, 503],
         };
 
         if (jsonPayload) {
