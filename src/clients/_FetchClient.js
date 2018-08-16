@@ -15,11 +15,16 @@ export default class _FetchClient {
             headers: headers,
             mode: 'cors',
             cache: 'default',
+            retries: 3,
+            retryDela: 500,
+            retryOn: [429, 500, 502, 503]
         };
 
         if (jsonPayload) {
             config.body = JSON.stringify(jsonPayload);
         }
+
+        c
 
         return config;
     }
