@@ -38,6 +38,21 @@ class AddNewCommentForm extends React.Component {
         this.resetSelectedVisibilityOption();
     }
 
+    componentDidUpdate(prevProps) {
+        let commentVisibilityLevels = JSON.stringify(this.state.commentVisibilityLevels);
+        let newCommentVisibilityLevels = JSON.stringify(getVisibilityLevels(this.tt.bind(this)));
+        if (commentVisibilityLevels !== newCommentVisibilityLevels) {
+            newCommentVisibilityLevels = JSON.parse(newCommentVisibilityLevels);
+            let newSelectedVisibilityOption = this.state.selectedVisibilityOption
+                ? newCommentVisibilityLevels.find((x) => x.value === this.state.selectedVisibilityOption.value)
+                : null;
+            this.setState({
+                commentVisibilityLevels: newCommentVisibilityLevels,
+                selectedVisibilityOption: newSelectedVisibilityOption,
+            });
+        }
+    }
+
     componentWillUnmount() {
         this._ismounted = false;
     }
