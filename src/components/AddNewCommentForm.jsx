@@ -44,7 +44,7 @@ class AddNewCommentForm extends React.Component {
         if (commentVisibilityLevels !== newCommentVisibilityLevels) {
             newCommentVisibilityLevels = JSON.parse(newCommentVisibilityLevels);
             let newSelectedVisibilityOption = this.state.selectedVisibilityOption
-                ? newCommentVisibilityLevels.find(x => x.value === this.state.selectedVisibilityOption.value)
+                ? newCommentVisibilityLevels.find((x) => x.value === this.state.selectedVisibilityOption.value)
                 : null;
             this.setState({
                 commentVisibilityLevels: newCommentVisibilityLevels,
