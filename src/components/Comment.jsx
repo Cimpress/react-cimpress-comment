@@ -165,9 +165,9 @@ class Comment extends React.Component {
             editMenu = this.renderEditMenu();
         }
 
-        this.state.commentObject.visibility = this.state.commentObject.visibility || 'internal';
-        let visibilityOption = this.props.commentVisibilityLevels.find((l) => l.value === this.state.commentObject.visibility);
-        let icon = <CommentVisibilityIcon icon={visibilityOption.icon} label={visibilityOption.label}/>;
+        const visibility = this.state.commentObject.visibility || 'internal';
+        const visibilityOption = this.props.commentVisibilityLevels.find((l) => l.value === visibility);
+        const icon = <CommentVisibilityIcon icon={visibilityOption.icon} label={visibilityOption.label}/>;
 
         let commentBody = (
             <div style={{position: 'relative'}}>
