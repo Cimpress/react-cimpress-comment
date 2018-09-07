@@ -1,0 +1,21 @@
+{
+    "translations": {
+        "show_my_comment_to": "Zeige meinen Kommentar zu",
+        "use_at_char_for_mentions": "Verwenden Sie <0>@</0>, um Personen zu erwähnen. Wir werden sie per E-Mail über diesen Kommentarthread informieren.",
+        "visibility_option_internal_label": "Nur autorisierte Personen",
+        "btn_post": "Post",
+        "Forbidden": "Verboten",
+        "unable_to_retrieve_comments": "Kommentare konnten nicht abgerufen werden.",
+        "unable_to_read_comment": "Der Kommentar konnte nicht abgerufen werden.",
+        "retrieving_comments": "Kommentare abrufen ...",
+        "no_comments_exist": "Noch keine Kommentare hier.",
+        "visibility_option_internal_description": "Diejenigen, die Zugriff auf die Ressource haben, die ich kommentiere",
+        "visibility_option_public_description": "Jede Person in Cimpress",
+        "by": "durch",
+        "modified": "geändert",
+        "unable_to_post_comment": "Nicht möglich einen Kommentar zu hinterlassen",
+        "visibility_option_public_label": "Jeder",
+        "btn_close": "Schließen",
+        "header_comments": "Bemerkungen"
+    }
+}

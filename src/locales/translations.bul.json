@@ -1,0 +1,21 @@
+{
+    "translations": {
+        "show_my_comment_to": "Коментарът да бъде видим до",
+        "use_at_char_for_mentions": "Използвайте <0>@</0> за да споменете някого. Те ще получат известие за вашия коментар.",
+        "visibility_option_internal_label": "Само упълномощени хора",
+        "btn_post": "Публикувай",
+        "Forbidden": "Недостатъчни права",
+        "unable_to_retrieve_comments": "Коментарите не могат да бъдат извлечени.",
+        "unable_to_read_comment": "Коментарът не може да бъде извлечен.",
+        "retrieving_comments": "Зареждане, моля изчакайте...",
+        "no_comments_exist": "Няма налични коментари.",
+        "visibility_option_internal_description": "Тези, които имат достъп до ресурса, който коментирам",
+        "visibility_option_public_description": "Всеки в Cimpress",
+        "by": "от",
+        "modified": "променено",
+        "unable_to_post_comment": "Добавянето на коментар беше неуспешно",
+        "visibility_option_public_label": "Всеки",
+        "btn_close": "Затвори",
+        "header_comments": "Коментари"
+    }
+}
