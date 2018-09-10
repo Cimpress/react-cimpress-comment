@@ -4,7 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [0.6.5] - 2018-09-05
+## [0.6.7] - 2018-09-07
+### Added
+- Auto focus the on the comment box when opening the Drawer
+
+## [0.6.6] - 2018-09-05
 ### Fixed
 - For old comments which don't have 'visibility' set we now default to 'internal'.
 
@@ -70,3 +74,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [0.3.5] - 2018-06-04
 ### Added
 - Added internationalization support
+

@@ -143,6 +143,7 @@ class AddNewCommentForm extends React.Component {
                     />
                 </div>
                 <MentionsInput
+                    autoFocus
                     className="mentions mentions-min-height"
                     value={this.state.commentToAdd}
                     onChange={(e, newValue) => this.safeSetState({commentToAdd: newValue})}
