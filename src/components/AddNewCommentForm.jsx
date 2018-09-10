@@ -127,8 +127,32 @@ class AddNewCommentForm extends React.Component {
     }
 
     render() {
+        const isMac = window.navigator.platform.includes('Mac');
+        const isMeta = (key) => (isMac && key.key === 'Meta') || (!isMac && key.key === 'Control');
+        const markMetaKeyUp = (locality) => (key) => {
+            if (isMeta(key)) {
+                locality.metaDown = false;
+            }
+        };
+        const performActionOnMetaEnter = (locality, action) => (key) => {
+            if (isMeta(key)) {
+                locality.metaDown = true;
+            } else if (locality.metaDown && key.key === 'Enter') {
+                action();
+            }
+        };
+        const postComment = (locality) => (key) => {
+            locality.props.onPostComment(locality.state.commentToAdd);
+            locality.safeSetState({commentToAdd: ''});
+        };
+
         return (
-            <div className="comments-add">
+            <div
+                className="comments-add"
+                onKeyDown={performActionOnMetaEnter(this, postComment(this))}
+                onKeyUp={markMetaKeyUp(this)}
+                tabIndex="0"
+            >
                 <div className='comments-alert'>
                     <Alert
                         type={'info'}
@@ -173,10 +197,7 @@ class AddNewCommentForm extends React.Component {
                         <button
                             className="btn btn-default"
                             disabled={!this.props.resourceUri || this.state.commentToAdd.trim() === '' || !this.state.selectedVisibilityOption}
-                            onClick={() => {
-                                this.props.onPostComment(this.state.commentToAdd);
-                                this.safeSetState({commentToAdd: ''});
-                            }}>
+                            onClick={postComment(this)}>
                             {this.tt('btn_post')}
                         </button>
                     </span>
