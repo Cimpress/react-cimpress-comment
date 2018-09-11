@@ -186,7 +186,7 @@ class AddNewCommentForm extends React.Component {
                     />
                     <span className="input-group-btn" style={{display: 'table-cell'}}>
                         <button
-                            className="btn btn-default"
+                            className="btn btn-primary"
                             disabled={!this.props.resourceUri || this.state.commentToAdd.trim() === '' || !this.state.selectedVisibilityOption}
                             onClick={postComment(this)}>
                             {this.tt('btn_post')}
