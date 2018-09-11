@@ -22,7 +22,25 @@ function errorToString(e) {
     return e.toString();
 }
 
+const isMac = window.navigator.platform.includes('Mac');
+const isMeta = (key) => (isMac && key.key === 'Meta') || (!isMac && key.key === 'Control');
+const markMetaKeyUp = (locality) => (key) => {
+    if (isMeta(key)) {
+        locality.metaDown = false;
+    }
+};
+const performActionOnMetaEnter = (locality, actionMetaEnter) => (key) => {
+    if (isMeta(key)) {
+        locality.metaDown = true;
+    } else if (locality.metaDown && key.key === 'Enter') {
+        actionMetaEnter();
+    }
+};
+
+
 export {
     getSubFromJWT,
     errorToString,
+    markMetaKeyUp,
+    performActionOnMetaEnter,
 };

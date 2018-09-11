@@ -14,7 +14,12 @@ import CustomizrClient from '../clients/CustomizrClient';
 
 import {getI18nInstance} from '../tools/i18n';
 import {translate, Trans} from 'react-i18next';
-import {getSubFromJWT} from '../tools/helper';
+import {
+    getSubFromJWT,
+    markMetaKeyUp,
+    performActionOnMetaEnter,
+} from '../tools/helper';
+
 
 class AddNewCommentForm extends React.Component {
     constructor(props) {
@@ -127,20 +132,6 @@ class AddNewCommentForm extends React.Component {
     }
 
     render() {
-        const isMac = window.navigator.platform.includes('Mac');
-        const isMeta = (key) => (isMac && key.key === 'Meta') || (!isMac && key.key === 'Control');
-        const markMetaKeyUp = (locality) => (key) => {
-            if (isMeta(key)) {
-                locality.metaDown = false;
-            }
-        };
-        const performActionOnMetaEnter = (locality, action) => (key) => {
-            if (isMeta(key)) {
-                locality.metaDown = true;
-            } else if (locality.metaDown && key.key === 'Enter') {
-                action();
-            }
-        };
         const postComment = (locality) => (key) => {
             locality.props.onPostComment(locality.state.commentToAdd);
             locality.safeSetState({commentToAdd: ''});

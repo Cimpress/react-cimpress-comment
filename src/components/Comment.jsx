@@ -7,12 +7,18 @@ import TimeAgo from 'react-timeago';
 import {reactTimeAgoFormatters} from '../locales/all';
 
 import CommentVisibilityIcon from './CommentVisibilityIcon';
-import {errorToString} from '../tools/helper';
 import {Mention, MentionsInput} from 'react-mentions';
 import {shapes} from '@cimpress/react-components';
 
 import {translate} from 'react-i18next';
 import {getI18nInstance} from '../tools/i18n';
+
+import {
+    errorToString,
+    markMetaKeyUp,
+    performActionOnMetaEnter,
+} from '../tools/helper';
+
 
 let {Spinner} = shapes;
 
@@ -114,7 +120,6 @@ class Comment extends React.Component {
         });
     }
 
-
     tt(key) {
         // eslint-disable-next-line react/prop-types
         const {t, locale} = this.props;
@@ -170,7 +175,12 @@ class Comment extends React.Component {
         const icon = <CommentVisibilityIcon icon={visibilityOption.icon} label={visibilityOption.label}/>;
 
         let commentBody = (
-            <div style={{position: 'relative'}}>
+            <div
+                onKeyDown={performActionOnMetaEnter(this, this.completeEditing.bind(this))}
+                onKeyUp={markMetaKeyUp(this)}
+                tabIndex="1"
+                style={{position: 'relative'}}
+            >
                 <MentionsInput
                     className={`mentions ${readonlyTextField ? 'disabled' : ''}`}
                     value={this.state.editedComment !== null ? this.state.editedComment : this.state.commentObject.comment}
