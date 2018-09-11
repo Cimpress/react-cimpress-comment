@@ -74,21 +74,21 @@ Publish a module: `$ npm publish`
 
 Make sure you have the up-to-date translation files by calling
 
-    CLIENT_ID="<here the client id>" CLIENT_SECRET="<here the client secret>" npm run translate
+    `CLIENT_ID="<here the client id>" CLIENT_SECRET="<here the client secret>" npm run translate`
 
 For developing you can use [storybook](https://github.com/storybooks/storybook)
 
-    npm run storybook
+    `npm run storybook`
 
 will run both the mockserver and the storybook UI.
 
 During and after development it is good to check or update [BackstopJS](https://github.com/garris/BackstopJS) data. Using the right commands, like
 
-    backstop test
+    `backstop test`
 
 to perform the generation of the test screenshots and their diffs to references and
 
-    backstop approve
+    `backstop approve`
 
 to promote images to references if the breaking changes are intended.
 

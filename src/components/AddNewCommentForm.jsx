@@ -14,7 +14,11 @@ import CustomizrClient from '../clients/CustomizrClient';
 
 import {getI18nInstance} from '../tools/i18n';
 import {translate, Trans} from 'react-i18next';
-import {getSubFromJWT} from '../tools/helper';
+import {
+    getSubFromJWT,
+    performActionOnMetaEnter,
+} from '../tools/helper';
+
 
 class AddNewCommentForm extends React.Component {
     constructor(props) {
@@ -127,8 +131,17 @@ class AddNewCommentForm extends React.Component {
     }
 
     render() {
+        const postComment = (locality) => (key) => {
+            locality.props.onPostComment(locality.state.commentToAdd);
+            locality.safeSetState({commentToAdd: ''});
+        };
+
         return (
-            <div className="comments-add">
+            <div
+                className="comments-add"
+                onKeyDown={performActionOnMetaEnter(postComment(this))}
+                tabIndex="0"
+            >
                 <div className='comments-alert'>
                     <Alert
                         type={'info'}
@@ -171,12 +184,9 @@ class AddNewCommentForm extends React.Component {
                     />
                     <span className="input-group-btn" style={{display: 'table-cell'}}>
                         <button
-                            className="btn btn-default"
+                            className="btn btn-primary"
                             disabled={!this.props.resourceUri || this.state.commentToAdd.trim() === '' || !this.state.selectedVisibilityOption}
-                            onClick={() => {
-                                this.props.onPostComment(this.state.commentToAdd);
-                                this.safeSetState({commentToAdd: ''});
-                            }}>
+                            onClick={postComment(this)}>
                             {this.tt('btn_post')}
                         </button>
                     </span>

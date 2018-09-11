@@ -22,7 +22,14 @@ function errorToString(e) {
     return e.toString();
 }
 
+const performActionOnMetaEnter = (actionMetaEnter) => (e) => {
+    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+        actionMetaEnter();
+    }
+};
+
 export {
     getSubFromJWT,
     errorToString,
+    performActionOnMetaEnter,
 };
