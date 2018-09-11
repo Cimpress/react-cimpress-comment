@@ -16,7 +16,6 @@ import {getI18nInstance} from '../tools/i18n';
 import {translate, Trans} from 'react-i18next';
 import {
     getSubFromJWT,
-    markMetaKeyUp,
     performActionOnMetaEnter,
 } from '../tools/helper';
 
@@ -140,8 +139,7 @@ class AddNewCommentForm extends React.Component {
         return (
             <div
                 className="comments-add"
-                onKeyDown={performActionOnMetaEnter(this, postComment(this))}
-                onKeyUp={markMetaKeyUp(this)}
+                onKeyDown={performActionOnMetaEnter(postComment(this))}
                 tabIndex="0"
             >
                 <div className='comments-alert'>

@@ -15,7 +15,6 @@ import {getI18nInstance} from '../tools/i18n';
 
 import {
     errorToString,
-    markMetaKeyUp,
     performActionOnMetaEnter,
 } from '../tools/helper';
 
@@ -176,8 +175,7 @@ class Comment extends React.Component {
 
         let commentBody = (
             <div
-                onKeyDown={performActionOnMetaEnter(this, this.completeEditing.bind(this))}
-                onKeyUp={markMetaKeyUp(this)}
+                onKeyDown={performActionOnMetaEnter(this.completeEditing.bind(this))}
                 tabIndex="1"
                 style={{position: 'relative'}}
             >
