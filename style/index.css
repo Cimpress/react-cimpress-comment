@@ -241,6 +241,6 @@ textarea {
     vertical-align: top;
 }
 
-div {
+div:focus {
     outline-style: none;
 }
