@@ -10,7 +10,7 @@ export default class _FetchClient {
         headers.append('Authorization', `Bearer ${this.accessToken}`);
         if (method !== 'GET') {
             headers.append('Content-Type', 'application/json');
-            headers.append('Comments-Component-Version', version);
+            headers.append('Comments-Client-Version', version);
         }
 
         let config = {
