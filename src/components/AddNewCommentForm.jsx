@@ -132,7 +132,7 @@ class AddNewCommentForm extends React.Component {
 
     render() {
         const postComment = (locality) => (key) => {
-            locality.props.onPostComment(locality.state.commentToAdd);
+            locality.props.onPostComment(locality.state.commentToAdd, locality.state.selectedVisibilityOption.value);
             locality.safeSetState({commentToAdd: ''});
         };
 
