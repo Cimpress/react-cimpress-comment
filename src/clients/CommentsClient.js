@@ -2,6 +2,7 @@ import _FetchClient from './_FetchClient';
 
 const fetch = require('fetch-retry');
 
+const version = require('../../package.json').version;
 const SERVICE_URL = (process && process.env ? process.env.COMMENT_SERVICE_URL : null) || 'https://comment.trdlnk.cimpress.io';
 
 export default class CommentsClient extends _FetchClient {
@@ -24,8 +25,9 @@ export default class CommentsClient extends _FetchClient {
     fetchComments() {
         let url = `${this.commentServiceUrl}/v0/resources/${this.encodedResourceUri}`;
         let init = this.getDefaultConfig('GET');
+        init.headers.append('x-cimpress-comments-client-version', version);
 
-        return fetch(url, init)
+      return fetch(url, init)
             .then((response) => {
                 if (response.status === 200) {
                     return response.json().then((responseJson) => ({
@@ -53,6 +55,7 @@ export default class CommentsClient extends _FetchClient {
             comment,
             visibility,
         });
+        init.headers.append('x-cimpress-comments-client-version', version);
 
         return fetch(url, init).then((response) => {
             if (response.status === 201) {
@@ -69,6 +72,7 @@ export default class CommentsClient extends _FetchClient {
 
     fetchComment(commentUri) {
         let init = this.getDefaultConfig('GET');
+        init.headers.append('x-cimpress-comments-client-version', version);
 
         return fetch(commentUri, init)
             .then((response) => {
@@ -88,7 +92,8 @@ export default class CommentsClient extends _FetchClient {
         let init = this.getDefaultConfig('PUT', {
             comment,
             visibility,
-        });
+        });version
+        init.headers.append('x-cimpress-comments-client-version', version);
 
         return fetch(commentUri, init)
             .then((response) => {
@@ -112,6 +117,7 @@ export default class CommentsClient extends _FetchClient {
         let init = this.getDefaultConfig('POST', {
             lastReadDate: date,
         });
+        init.headers.append('x-cimpress-comments-client-version', version);
 
         return fetch(url, init)
             .then((response) => {
@@ -129,6 +135,7 @@ export default class CommentsClient extends _FetchClient {
 
     getUserInfo() {
         let init = this.getDefaultConfig('GET');
+        init.headers.append('x-cimpress-comments-client-version', version);
         let url = `${this.commentServiceUrl}/v0/resources/${this.encodedResourceUri}/userinfo`;
         return fetch(url, init)
             .then((response) => {
