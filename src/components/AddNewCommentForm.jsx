@@ -132,7 +132,7 @@ class AddNewCommentForm extends React.Component {
 
     render() {
         const postComment = (locality) => (key) => {
-            locality.props.onPostComment(locality.state.commentToAdd);
+            locality.props.onPostComment(locality.state.commentToAdd, locality.state.selectedVisibilityOption.value);
             locality.safeSetState({commentToAdd: ''});
         };
 
@@ -175,7 +175,7 @@ class AddNewCommentForm extends React.Component {
                         value={this.state.selectedVisibilityOption}
                         options={this.state.commentVisibilityLevels}
                         onChange={(selectedVisibilityOption) => {
-                            this.customizrClient.updateSettings({selectedVisibility: selectedVisibilityOption.value});
+                            this.customizrClient.updateSettings({selectedVisibility: selectedVisibilityOption.value})
                             this.safeSetState({selectedVisibilityOption});
                         }}
                         searchable={false}

@@ -37,7 +37,6 @@ class Comments extends React.Component {
             failedPost: false,
             alertDismissed: true,
             commentVisibilityLevels: getVisibilityLevels(this.tt.bind(this)),
-            selectedVisibilityOption: null,
             userAccessLevel: null,
         };
     }
@@ -46,7 +45,7 @@ class Comments extends React.Component {
         this._ismounted = true;
         this.init();
         this.fetchComments();
-        this.resetSelectedVisibilityOption();
+        this.resetSelectedVisibilityOptions();
     }
 
     componentDidUpdate(prevProps) {
@@ -77,23 +76,12 @@ class Comments extends React.Component {
         this.commentsClient = new CommentsClient(this.props.accessToken, this.props.resourceUri);
     }
 
-    resetSelectedVisibilityOption() {
+    resetSelectedVisibilityOptions() {
         let newCommentVisibilityLevels = getVisibilityLevels(this.tt.bind(this), this.state.userAccessLevel);
-        let narrowestAvailableVisibilityOptionIndex = newCommentVisibilityLevels.every((l) => !l.disabled) ?
-            newCommentVisibilityLevels.length - 1 :
-            newCommentVisibilityLevels.findIndex((l) => l.disabled) - 1;
 
-        let preferredVisibilityOptionIndex = this.state.selectedVisibilityOption ?
-            newCommentVisibilityLevels.findIndex((l) => l.value === this.state.selectedVisibilityOption.value) :
-            newCommentVisibilityLevels.length - 1;
-
-        let selectedVisibilityOptionIndex = Math.min(narrowestAvailableVisibilityOptionIndex, preferredVisibilityOptionIndex);
-
-        if (this.state.commentVisibilityLevels !== newCommentVisibilityLevels ||
-            this.state.selectedVisibilityOption !== newCommentVisibilityLevels[selectedVisibilityOptionIndex]) {
+        if (this.state.commentVisibilityLevels !== newCommentVisibilityLevels) {
             this.safeSetState({
                 commentVisibilityLevels: newCommentVisibilityLevels,
-                selectedVisibilityOption: newCommentVisibilityLevels[selectedVisibilityOptionIndex],
             });
         }
     }
@@ -145,7 +133,7 @@ class Comments extends React.Component {
                         return acc;
                     }, {}),
                 }, () => {
-                    this.resetSelectedVisibilityOption();
+                    this.resetSelectedVisibilityOptions();
                 });
 
                 // mark all as read after 1s
@@ -162,7 +150,7 @@ class Comments extends React.Component {
             });
     }
 
-    postComment(comment) {
+    postComment(comment, visibilty) {
         if (!comment || comment.length === 0) {
             return;
         }
@@ -177,7 +165,7 @@ class Comments extends React.Component {
         let newCommentObjects = Object.assign({
             [tempId]: {
                 createdBy: this.jwtSub,
-                visibility: this.state.selectedVisibilityOption.value,
+                visibility: visibilty,
                 comment: comment,
             },
         }, this.state.commentObjects);
@@ -190,7 +178,7 @@ class Comments extends React.Component {
         });
 
         return this.commentsClient
-            .postComment(comment, this.state.selectedVisibilityOption.value)
+            .postComment(comment, visibilty)
             .then(() => {
                 this.safeSetState({
                     failedPost: false,
@@ -296,7 +284,8 @@ class Comments extends React.Component {
                 accessToken={this.props.accessToken}
                 mentionsClient={this.mentionsClient}
                 resourceUri={this.props.resourceUri}
-                onPostComment={(comment) => this.postComment(comment)}/>
+                onPostComment={(comment, visibilityOption) => this.postComment(comment, visibilityOption)}
+            />
         </div>;
 
         return <div>

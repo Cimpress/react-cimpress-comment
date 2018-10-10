@@ -78,10 +78,18 @@ function mockCommentsResourceUserInfo(fetchMock, resourceId, unreadCount) {
     });
 }
 
+function mockCommentsPostCommentWithStatus(fetchMock, resourceId, statusCode) {
+  return fetchMock.post(`${COMMENTS_URL}/v0/resources/${resourceId}/comments`, {
+    status: statusCode,
+    body: {},
+  });
+}
+
 function mockComments(fetchMock) {
     let m = fetchMock;
     m = mockCommentsResource(m, 'http%3A%2F%2Feda234a4-485f-4c0c-806d-1c9748994c00.com');
     m = mockCommentsGetResourceWithStatus(m, 'http%3A%2F%2Feda234a4-485f-4c0c-806d-1c9748994c00.com%2Fnon-existent', 404);
+    m = mockCommentsPostCommentWithStatus(m, 'http%3A%2F%2Feda234a4-485f-4c0c-806d-1c9748994c00.com', 201)
     return m;
 }
 
