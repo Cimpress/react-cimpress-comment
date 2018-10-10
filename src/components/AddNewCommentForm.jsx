@@ -175,7 +175,7 @@ class AddNewCommentForm extends React.Component {
                         value={this.state.selectedVisibilityOption}
                         options={this.state.commentVisibilityLevels}
                         onChange={(selectedVisibilityOption) => {
-                            this.customizrClient.updateSettings({selectedVisibility: selectedVisibilityOption.value})
+                            this.customizrClient.updateSettings({selectedVisibility: selectedVisibilityOption.value});
                             this.safeSetState({selectedVisibilityOption});
                         }}
                         searchable={false}
