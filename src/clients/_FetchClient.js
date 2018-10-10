@@ -10,7 +10,7 @@ export default class _FetchClient {
         headers.append('Authorization', `Bearer ${this.accessToken}`);
         if (method !== 'GET') {
             headers.append('Content-Type', 'application/json');
-            headers.append('Comments-Client-Version', version);
+            headers.append('x-cimpress-comments-client-version', version);
         }
 
         let config = {
