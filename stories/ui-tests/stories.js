@@ -1,27 +1,23 @@
 import React from 'react';
 import {storiesOf} from '@storybook/react';
-import Comments from '../src/Comments';
-import CommentsDrawerLink from '../src/CommentsDrawerLink';
+import Comments from '../../src/Comments';
+import CommentsDrawerLink from '../../src/CommentsDrawerLink';
 import fetchMock from 'fetch-mock';
 
+import './whiteBack.css';
+
+import {mockCustomizer} from './mockCustomizr';
 import {mockCoamPrincipals} from './mockCoam';
 import {mockComments} from './mockComment';
 
 let accessTokenOfTheUser = 'ew0KICAidHlwIjogIkpXVCIsDQogICJhbGciOiAiUlMyNTYiLA0KICAia2lkIjogIldlZndlRldFRldFZndlRVdGd2VmMjMzM3JFRldFRmV3ZmV3MzIzMiINCn0=.eyJzdWIiOiI0OWMwODdhYi0zZmVlLTQ5OTQtODZlNy1jNjNkMmI0N2FjOGIiLCJhdWQiOiJodHRwczovL2FwaS5jaW1wcmVzcy5pby8iLCJpYXQiOjQyMzQyMzQyMzQsImV4cCI6MjM0MzI0MzI0MjM0LCJhenAiOiJSRnJmRVJXRkVSZkZUNnZjcTc5eWxjSXVvbEZ6MmN3TiIsInNjb3BlIjoiIn0=.43tf3wcfww5f3ftd5wtw';
 
 function initMock() {
-    let m = fetchMock.restore()
-        .get('http://localhost:9102/v1/resources/https%3A%2F%2Fcomment.trdlnk.cimpress.io%2F/settings', {
-            status: 200,
-            body: {
-                mentionsUsageNotification: {
-                    alertDismissed: true,
-                },
-            },
-        });
+    // axios
+    mockCustomizer();
 
+    let m = fetchMock.restore();
     m = mockCoamPrincipals(m);
-
     m = mockComments(m, 'http%3A%2F%2Feda234a4-485f-4c0c-806d-1c9748994c00.com');
 
     return m;
@@ -66,7 +62,8 @@ storiesOf('Comments drawer with link', module)
     .add('Link and drawer open by default', () => {
         initMock();
         return <CommentsDrawerLink accessToken={'51d3ab44-efe1-4cc7-b0fa-6c86fa2ca134'}
-            resourceUri={'http://eda234a4-485f-4c0c-806d-1c9748994c00.com'} newestFirst={true}
+            resourceUri={'http://eda234a4-485f-4c0c-806d-1c9748994c00.com'}
+            newestFirst={true}
             opened={true}/>;
     })
     .add('Multiple links on one page', () => {

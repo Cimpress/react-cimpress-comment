@@ -1,20 +1,39 @@
 const fs = require('fs');
 const util = require('util');
 const {CimpressTranslationsClient} = require("cimpress-translations");
-const KmsAuthenticator = require("./auth0Authorizer");
 const iso639 = require('iso-639').iso_639_2;
 
 const SERVICE_ID = '60eff5ed-9ddf-483e-b60a-3135c3c87435';
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const TRANSLATIONS_PATH = __dirname + '/../src/locales';
+const rp = require('request-promise-native');
+
+async function getAccessToken() {
+
+    let options = {
+        method: "POST",
+        uri: `https://cimpress.auth0.com/oauth/token`,
+        body: {
+            client_id: CLIENT_ID,
+            client_secret: CLIENT_SECRET,
+            audience: "https://api.cimpress.io/",
+            grant_type: "client_credentials"
+        },
+        json: true
+    };
+
+    let parsedBody = await rp(options);
+
+    return parsedBody.access_token;
+}
+
 
 async function retrieveTranslations() {
 
     // Decrypt
     log('Retrieving Auth0 token...');
-    let authenticator = new KmsAuthenticator(CLIENT_ID, CLIENT_SECRET);
-    let token = await authenticator.getAccessToken();
+    let token = await getAccessToken();
 
     // Init translation client
     log(`Retrieving service ${SERVICE_ID} description.`);

@@ -1,4 +1,4 @@
-const COAM_URL = process.env.AUTH_SERVICE_URL;
+const COAM_URL = 'https://api.cimpress.io';
 
 const principals = [
     {

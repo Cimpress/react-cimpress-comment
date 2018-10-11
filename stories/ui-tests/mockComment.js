@@ -1,4 +1,4 @@
-const COMMENTS_URL = process.env.AUTH_SERVICE_URL;
+const COMMENTS_URL = 'https://comment.trdlnk.cimpress.io';
 
 const comments = [{
     'createdAt': '2018-02-10T14:04:59.595Z',
