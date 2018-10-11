@@ -9,6 +9,8 @@ function getSubFromJWT(jwt) {
 }
 
 function errorToString(e) {
+    console.log(e);
+    console.log(JSON.stringify(e))
     if (!e) {
         return '';
     }
