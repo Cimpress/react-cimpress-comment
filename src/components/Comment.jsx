@@ -7,6 +7,7 @@ import TimeAgo from 'react-timeago';
 import {reactTimeAgoFormatters} from '../locales/all';
 
 import CommentVisibilityIcon from './CommentVisibilityIcon';
+import CommentRefererIcon from './CommentRefererIcon';
 import {Mention, MentionsInput} from 'react-mentions';
 import {shapes} from '@cimpress/react-components';
 
@@ -17,8 +18,6 @@ import {
     errorToString,
     performActionOnMetaEnter,
 } from '../tools/helper';
-
-import refererUtils from '../tools/refererUtils';
 
 
 let {Spinner} = shapes;
@@ -173,7 +172,6 @@ class Comment extends React.Component {
 
         const visibility = this.state.commentObject.visibility || 'internal';
         const visibilityOption = this.props.commentVisibilityLevels.find((l) => l.value === visibility);
-        const icon = <CommentVisibilityIcon icon={visibilityOption.icon} label={visibilityOption.label}/>;
 
         let commentBody = (
             <div
@@ -196,15 +194,6 @@ class Comment extends React.Component {
             </div>
         );
 
-        let refererLabel = refererUtils.makeIntoLabel(this.state.commentObject.referer);
-        let commentRefererElement = refererLabel ? (
-            <span>
-                @ <a href={this.state.commentObject.referer} target="_blank" rel="noopener noreferrer">
-                    {refererLabel}
-                </a>
-            </span>
-        ) : null;
-
         let commentCreator = <div className={'comment-creator'}>
             {`${this.state.createdByName || this.state.commentObject.createdBy}`}
             {this.state.commentObject.createdAt ? <span>,&nbsp;</span> : null}
@@ -219,8 +208,8 @@ class Comment extends React.Component {
                     date={this.state.commentObject.updatedAt}
                     formatter={reactTimeAgoFormatters[this.props.locale]}/></span>
                 : null}
-            {icon}
-            {commentRefererElement}
+            <CommentVisibilityIcon icon={visibilityOption.icon} label={visibilityOption.label}/>
+            <CommentRefererIcon referer={this.state.commentObject.referer}/>
         </div>;
 
         let error = this.renderError(this.state.error, this.tt('unable_to_read_comment'));

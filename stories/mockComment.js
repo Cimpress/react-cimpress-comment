@@ -11,7 +11,7 @@ const comments = [{
     'updatedAt': '2018-02-10T14:04:59.595Z',
 }, {
     'createdAt': '2018-02-10T12:15:55.531Z',
-    'referer': 'notAUrlReferer',
+    'referer': 'http://localhost:9001/abc',
     'visibility': 'internal',
     'comment': 'Second comment @[John Doe](b636a568-b51e-4653-903c-01e7bd5a5086) might be longer @[John Does](b636a568-b51e-4653-903c-01e71d5a5a)',
     'id': '7e6395b0-01c9-11e8-952c-85c7cdb92fcc',

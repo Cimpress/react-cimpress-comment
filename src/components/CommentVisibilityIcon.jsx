@@ -1,5 +1,5 @@
 import '../../style/index.css';
-import '../../style/visibilityIcon.css';
+import '../../style/icon.css';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Tooltip} from '@cimpress/react-components';
@@ -7,7 +7,7 @@ import {Tooltip} from '@cimpress/react-components';
 class CommentVisibilityIcon extends React.Component {
     render() {
         let icon = (
-            <div className={`visibility-icon-icon fa fa-${this.props.icon}`}/>
+            <div className={`comment-header-icon fa fa-${this.props.icon}`}/>
         );
 
         return (
