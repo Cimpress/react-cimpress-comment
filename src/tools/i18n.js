@@ -1,7 +1,7 @@
 import i18n from 'i18next';
 import {reactI18nextModule} from 'react-i18next';
 
-import {resources} from '../locales/all';
+let languages = require('../locales/translations.json');
 
 let i18nInstance = null;
 
@@ -15,7 +15,7 @@ function getI18nInstance() {
 
                 fallbackLng: 'eng',
 
-                resources: resources,
+                resources: languages,
 
                 ns: ['translations'],
                 defaultNS: 'translations',

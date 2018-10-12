@@ -1,0 +1,128 @@
+{
+    "deu": {
+        "translations": {
+            "show_my_comment_to": "Zeige meinen Kommentar zu",
+            "use_at_char_for_mentions": "Verwenden Sie <0>@</0>, um Personen zu erwähnen. Wir werden sie per E-Mail über diesen Kommentarthread informieren.",
+            "visibility_option_internal_label": "Nur autorisierte Personen",
+            "btn_post": "Post",
+            "Forbidden": "Verboten",
+            "unable_to_retrieve_comments": "Kommentare konnten nicht abgerufen werden.",
+            "unable_to_read_comment": "Der Kommentar konnte nicht abgerufen werden.",
+            "retrieving_comments": "Kommentare abrufen ...",
+            "no_comments_exist": "Noch keine Kommentare hier.",
+            "visibility_option_internal_description": "Diejenigen, die Zugriff auf die Ressource haben, die ich kommentiere",
+            "visibility_option_public_description": "Jede Person in Cimpress",
+            "by": "durch",
+            "modified": "geändert",
+            "unable_to_post_comment": "Nicht möglich einen Kommentar zu hinterlassen",
+            "visibility_option_public_label": "Jeder",
+            "btn_close": "Schließen",
+            "header_comments": "Bemerkungen"
+        }
+    },
+    "eng": {
+        "translations": {
+            "show_my_comment_to": "Show my comment to",
+            "use_at_char_for_mentions": "Use <0>@</0> character to mention people. We will notify them via email about this comment thread.",
+            "visibility_option_internal_label": "Only authorized people",
+            "btn_post": "Post",
+            "Forbidden": "Forbidden",
+            "unable_to_retrieve_comments": "Unable to retrieve comments.",
+            "unable_to_read_comment": "Unable to retrieve comment.",
+            "retrieving_comments": "Retrieving comments...",
+            "no_comments_exist": "No comments here yet.",
+            "visibility_option_internal_description": "Those who have access to the resource I'm commenting on",
+            "visibility_option_public_description": "Every person in Cimpress",
+            "by": "by",
+            "modified": "modified",
+            "unable_to_post_comment": "Unable to post comment",
+            "visibility_option_public_label": "Everyone",
+            "btn_close": "Close",
+            "header_comments": "Comments"
+        }
+    },
+    "fra": {
+        "translations": {
+            "show_my_comment_to": "Montrer mon commentaire à",
+            "use_at_char_for_mentions": "Utilisez le caractère <0>@</0> pour mentionner les personnes. Nous les informerons par e-mail de ce sujet.",
+            "visibility_option_internal_label": "Seules les personnes autorisées",
+            "btn_post": "Poster",
+            "Forbidden": "Interdit",
+            "unable_to_retrieve_comments": "Impossible de récupérer des commentaires.",
+            "unable_to_read_comment": "Impossible de récupérer le commentaire.",
+            "retrieving_comments": "Récupération des commentaires ...",
+            "no_comments_exist": "Pas encore de commentaires ici.",
+            "visibility_option_internal_description": "Ceux qui ont accès à la ressource que je commente",
+            "visibility_option_public_description": "Chaque personne dans Cimpress",
+            "by": "par",
+            "modified": "modifié",
+            "unable_to_post_comment": "Impossible de poster un commentaire",
+            "visibility_option_public_label": "Toutes les personnes",
+            "btn_close": "Fermer",
+            "header_comments": "Commentaires"
+        }
+    },
+    "spa": {
+        "translations": {
+            "show_my_comment_to": "Mostrar mi comentario a",
+            "use_at_char_for_mentions": "Usa el personaje <strong> @ </ strong> para mencionar a las personas. Los notificaremos por correo electrónico sobre este hilo de comentarios.",
+            "visibility_option_internal_label": "Solo personas autorizadas",
+            "btn_post": "Enviar",
+            "Forbidden": "Prohibido",
+            "unable_to_retrieve_comments": "No se pueden recuperar los comentarios.",
+            "unable_to_read_comment": "No se puede recuperar el comentario.",
+            "retrieving_comments": "Recuperando comentarios ...",
+            "no_comments_exist": "No hay comentarios aquí todavía.",
+            "visibility_option_internal_description": "Aquellos que tienen acceso al recurso que estoy comentando",
+            "visibility_option_public_description": "Cada persona en Cimpress",
+            "by": "por",
+            "modified": "modificado",
+            "unable_to_post_comment": "No disponible para dejar comentario",
+            "visibility_option_public_label": "Todo el mundo",
+            "btn_close": "Cerca",
+            "header_comments": "Comentarios"
+        }
+    },
+    "pol": {
+        "translations": {
+            "show_my_comment_to": "Kto może zobaczyć mój komentarz",
+            "use_at_char_for_mentions": "Użyj znaku <strong>@</ strong>, by wspomnieć konkretne osoby w swoim komentarzu, a powiadomimy je o nim przy pomocy e-mail'a.",
+            "visibility_option_internal_label": "Tylko użytkownicy z uprawnieniami do zasobu",
+            "btn_post": "Wyślij",
+            "Forbidden": "Dostęp zabroniony",
+            "unable_to_retrieve_comments": "Nie udało się pobrać komentarzy.",
+            "unable_to_read_comment": "Nie można pobrać komentarzy.",
+            "retrieving_comments": "Trwa pobieranie komentarzy ...",
+            "no_comments_exist": "Nie ma jeszcze żadnych komentarzy.",
+            "visibility_option_internal_description": "Użytkownicy mający dostęp do odczytywania zasobu który jest przedmiotem komentowania",
+            "visibility_option_public_description": "Każda osoba posiadająca konto na platformie",
+            "by": "przez",
+            "modified": "zmodyfikowany",
+            "unable_to_post_comment": "Nie można opublikować komentarza",
+            "visibility_option_public_label": "Wszyscy",
+            "btn_close": "Zamknij",
+            "header_comments": "Komentarze"
+        }
+    },
+    "bul": {
+        "translations": {
+            "show_my_comment_to": "Коментарът да бъде видим до",
+            "use_at_char_for_mentions": "Използвайте <0>@</0> за да споменете някого. Те ще получат известие за вашия коментар.",
+            "visibility_option_internal_label": "Само упълномощени хора",
+            "btn_post": "Публикувай",
+            "Forbidden": "Недостатъчни права",
+            "unable_to_retrieve_comments": "Коментарите не могат да бъдат извлечени.",
+            "unable_to_read_comment": "Коментарът не може да бъде извлечен.",
+            "retrieving_comments": "Зареждане, моля изчакайте...",
+            "no_comments_exist": "Няма налични коментари.",
+            "visibility_option_internal_description": "Тези, които имат достъп до ресурса, който коментирам",
+            "visibility_option_public_description": "Всеки в Cimpress",
+            "by": "от",
+            "modified": "променено",
+            "unable_to_post_comment": "Добавянето на коментар беше неуспешно",
+            "visibility_option_public_label": "Всеки",
+            "btn_close": "Затвори",
+            "header_comments": "Коментари"
+        }
+    }
+}
