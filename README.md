@@ -74,22 +74,25 @@ Publish a module: `$ npm publish`
 
 Make sure you have the up-to-date translation files by calling
 
-    `CLIENT_ID="<here the client id>" CLIENT_SECRET="<here the client secret>" npm run translate`
+    CLIENT_ID="<here the client id>" CLIENT_SECRET="<here the client secret>" npm run translate
 
 For developing you can use [storybook](https://github.com/storybooks/storybook)
 
-    `npm run storybook`
+    npm run start
 
-will run both the mockserver and the storybook UI.
+This will run an instance of Storybook integrated with Auth0 and providing the components in this package in environment
+as close as possible to production. It is useful to manually play with the components and validate if the features you
+are working on are as you'd like them to be from UX point of view.
 
-During and after development it is good to check or update [BackstopJS](https://github.com/garris/BackstopJS) data. Using the right commands, like
+In some case, modelling a special condition is hard without mocking. The package also provides an alternative and isolated
+Storybook environment where all external dependencies are mocked. This is extremely useful to validate a certain behavior
+in particular situation.
+    
+    npm sun storybook
+    
+This command will run the Storybook in the background. You can later stop it by running `npm run storybookstop`.
 
-    `backstop test`
+During and after development it is good to check or update [BackstopJS](https://github.com/garris/BackstopJS) data. 
+Running the UI tests is done by `backstop test` ***after*** executing `npm run storybook`.
 
-to perform the generation of the test screenshots and their diffs to references and
-
-    `backstop approve`
-
-to promote images to references if the breaking changes are intended.
-
-Make sure you have backstop installed `npm install -g backstopjs` or use the one in `node_modules`.
+Note: Make sure you have backstop installed `npm install -g backstopjs` or use the one in `node_modules`.
