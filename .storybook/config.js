@@ -1,8 +1,11 @@
-import { configure } from '@storybook/react';
+import {configure} from '@storybook/react';
 
 function loadStories() {
-  require('../stories/index.js');
-  // You can require as many stories as you need.
+    if (process.env.LOCAL_DEVELOPMENT === 'yes') {
+        require('../stories/development/stories');
+    } else {
+        require('../stories/ui-tests/stories');
+    }
 }
 
 configure(loadStories, module);

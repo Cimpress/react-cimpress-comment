@@ -10,7 +10,7 @@ import {getVisibilityLevels} from '../tools/visibility';
 import {Mention, MentionsInput} from 'react-mentions';
 import {Alert, Select} from '@cimpress/react-components';
 
-import CustomizrClient from '../clients/CustomizrClient';
+import {CustomizrClient} from 'cimpress-customizr';
 
 import {getI18nInstance} from '../tools/i18n';
 import {translate, Trans} from 'react-i18next';
@@ -24,7 +24,10 @@ class AddNewCommentForm extends React.Component {
     constructor(props) {
         super(props);
 
-        this.customizrClient = new CustomizrClient(props.accessToken);
+        this.customizrClient = new CustomizrClient({
+            resource: `https://comment.trdlnk.cimpress.io/`,
+        });
+
         this.jwtSub = getSubFromJWT(this.props.accessToken);
 
         this.state = {
@@ -69,7 +72,8 @@ class AddNewCommentForm extends React.Component {
 
     init() {
         // Get the settings (it won't make a network call as the data is cached!
-        this.customizrClient.fetchSettings()
+        this.customizrClient
+            .getSettings(this.props.accessToken)
             .then((json) => {
                 let newAlertDismissed = json.mentionsUsageNotification && json.mentionsUsageNotification.alertDismissed === true;
                 let newSelectedVisibilityOption = this.state.commentVisibilityLevels.find((l) => l.value === json.selectedVisibility);
@@ -83,9 +87,6 @@ class AddNewCommentForm extends React.Component {
                     });
                 }
             });
-
-        // Creating these clients is inexpensive and do not clear caching
-        this.customizrClient = new CustomizrClient(this.props.accessToken);
     }
 
     resetSelectedVisibilityOption() {
@@ -110,11 +111,12 @@ class AddNewCommentForm extends React.Component {
     }
 
     onAlertDismissed() {
-        this.customizrClient.updateSettings({
-            mentionsUsageNotification: {
-                alertDismissed: true,
-            },
-        });
+        this.customizrClient
+            .putSettings(this.props.accessToken, {
+                mentionsUsageNotification: {
+                    alertDismissed: true,
+                },
+            });
         this.safeSetState({
             alertDismissed: true,
         });
@@ -175,7 +177,8 @@ class AddNewCommentForm extends React.Component {
                         value={this.state.selectedVisibilityOption}
                         options={this.state.commentVisibilityLevels}
                         onChange={(selectedVisibilityOption) => {
-                            this.customizrClient.updateSettings({selectedVisibility: selectedVisibilityOption.value});
+                            this.customizrClient
+                                .putSettings(this.props.accessToken, {selectedVisibility: selectedVisibilityOption.value});
                             this.safeSetState({selectedVisibilityOption});
                         }}
                         searchable={false}

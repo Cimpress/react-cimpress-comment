@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import '../../style/index.css';
 
 import TimeAgo from 'react-timeago';
-import {reactTimeAgoFormatters} from '../locales/all';
+import {reactTimeAgoFormatters} from '../locales/reactTimeAgoFormatters';
 
 import CommentVisibilityIcon from './CommentVisibilityIcon';
 import {Mention, MentionsInput} from 'react-mentions';
