@@ -1,7 +1,5 @@
 import _FetchClient from './_FetchClient';
 
-const AUTH_SERVICE_URL = (process && process.env ? process.env.AUTH_SERVICE_URL : null) || 'https://api.cimpress.io';
-
 const mentionsUserCache = {};
 
 export default class MentionsClient extends _FetchClient {
@@ -10,11 +8,11 @@ export default class MentionsClient extends _FetchClient {
     }
 
     fetchMatchingMentions(query) {
-        if (!query || query.length == 0) {
+        if (!query || query.length === 0) {
             return Promise.resolve([]);
         }
 
-        let url = `${AUTH_SERVICE_URL}/auth/access-management/v1/principals?q=${query}`;
+        let url = `https://api.cimpress.io/auth/access-management/v1/principals?q=${query}`;
         let init = this.getDefaultConfig('GET');
 
         return fetch(url, init)
@@ -34,7 +32,7 @@ export default class MentionsClient extends _FetchClient {
             return mentionsUserCache[userId];
         }
 
-        let url = `${AUTH_SERVICE_URL}/auth/access-management/v1/principals/${userId}`;
+        let url = `https://api.cimpress.io/auth/access-management/v1/principals/${userId}`;
         let init = this.getDefaultConfig('GET');
 
         let promiseToGetUser = fetch(url, init)

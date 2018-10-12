@@ -1,4 +1,4 @@
-const COMMENTS_URL = process.env.AUTH_SERVICE_URL;
+const COMMENTS_URL = 'https://comment.trdlnk.cimpress.io';
 
 const comments = [{
     'createdAt': '2018-02-10T14:04:59.595Z',
@@ -65,6 +65,7 @@ function mockCommentsResource(fetchMock, resourceId, unreadCount = 3) {
     let m = fetchMock;
     m = mockCommentsGetResource(m, resourceId);
     m = mockCommentsResourceUserInfo(m, resourceId, unreadCount);
+    m = mockCommentsResourceRead(m, resourceId);
     m = mockCommentsGetResourceComments(m, resourceId);
     for (let i = 0; i < comments.length; i++) {
         m = mockCommentsGetComment(m, resourceId, comments[i].id);
@@ -76,23 +77,30 @@ function mockCommentsResourceUserInfo(fetchMock, resourceId, unreadCount) {
     return fetchMock.get(`${COMMENTS_URL}/v0/resources/${resourceId}/userinfo`, {
         status: 200,
         body: {
-            unreadCount: unreadCount
+            unreadCount: unreadCount,
         },
     });
 }
 
+function mockCommentsResourceRead(fetchMock, resourceId) {
+    return fetchMock.post(`${COMMENTS_URL}/v0/resources/${resourceId}/read`, {
+        status: 204,
+        body: {},
+    });
+}
+
 function mockCommentsPostCommentWithStatus(fetchMock, resourceId, statusCode) {
-  return fetchMock.post(`${COMMENTS_URL}/v0/resources/${resourceId}/comments`, {
-    status: statusCode,
-    body: {},
-  });
+    return fetchMock.post(`${COMMENTS_URL}/v0/resources/${resourceId}/comments`, {
+        status: statusCode,
+        body: {},
+    });
 }
 
 function mockComments(fetchMock) {
     let m = fetchMock;
     m = mockCommentsResource(m, 'http%3A%2F%2Feda234a4-485f-4c0c-806d-1c9748994c00.com');
     m = mockCommentsGetResourceWithStatus(m, 'http%3A%2F%2Feda234a4-485f-4c0c-806d-1c9748994c00.com%2Fnon-existent', 404);
-    m = mockCommentsPostCommentWithStatus(m, 'http%3A%2F%2Feda234a4-485f-4c0c-806d-1c9748994c00.com', 201)
+    m = mockCommentsPostCommentWithStatus(m, 'http%3A%2F%2Feda234a4-485f-4c0c-806d-1c9748994c00.com', 201);
     return m;
 }
 

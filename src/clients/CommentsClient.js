@@ -3,12 +3,11 @@ import _FetchClient from './_FetchClient';
 const fetch = require('fetch-retry');
 
 const version = require('../../package.json').version;
-const SERVICE_URL = (process && process.env ? process.env.COMMENT_SERVICE_URL : null) || 'https://comment.trdlnk.cimpress.io';
 
 export default class CommentsClient extends _FetchClient {
     constructor(accessToken, resourceUri, commentServiceUrl) {
         super(accessToken);
-        this.commentServiceUrl = commentServiceUrl || SERVICE_URL;
+        this.commentServiceUrl = commentServiceUrl || 'https://comment.trdlnk.cimpress.io';
         this.resourceUri = resourceUri;
         this.encodedResourceUri = encodeURIComponent(resourceUri);
     }

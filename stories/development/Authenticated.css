@@ -1,0 +1,11 @@
+body {
+    padding: 10px
+}
+
+.active-user-box {
+    padding: 5px;
+    border: 1px solid #eee;
+    background: #fff;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
+}
