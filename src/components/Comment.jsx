@@ -7,6 +7,7 @@ import TimeAgo from 'react-timeago';
 import {reactTimeAgoFormatters} from '../locales/reactTimeAgoFormatters';
 
 import CommentVisibilityIcon from './CommentVisibilityIcon';
+import CommentRefererIcon from './CommentRefererIcon';
 import {Mention, MentionsInput} from 'react-mentions';
 import {shapes} from '@cimpress/react-components';
 
@@ -171,7 +172,6 @@ class Comment extends React.Component {
 
         const visibility = this.state.commentObject.visibility || 'internal';
         const visibilityOption = this.props.commentVisibilityLevels.find((l) => l.value === visibility);
-        const icon = <CommentVisibilityIcon icon={visibilityOption.icon} label={visibilityOption.label}/>;
 
         let commentBody = (
             <div
@@ -208,7 +208,8 @@ class Comment extends React.Component {
                     date={this.state.commentObject.updatedAt}
                     formatter={reactTimeAgoFormatters[this.props.locale]}/></span>
                 : null}
-            {icon}
+            <CommentVisibilityIcon icon={visibilityOption.icon} label={visibilityOption.label}/>
+            <CommentRefererIcon referer={this.state.commentObject.referer}/>
         </div>;
 
         let error = this.renderError(this.state.error, this.tt('unable_to_read_comment'));
