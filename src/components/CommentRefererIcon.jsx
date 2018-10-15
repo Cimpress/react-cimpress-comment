@@ -20,7 +20,7 @@ class CommentRefererIcon extends React.Component {
         let label = originatesHere ?
             (<span>Comment created in this UI</span>) :
             (<span>
-                Comment created at:<br/>
+                Comment created at<br/>
                 <a>{refererUtils.makeIntoLabel(referer)}</a><br/>
                 Click the icon to follow the link.
             </span>);
@@ -34,7 +34,7 @@ class CommentRefererIcon extends React.Component {
                 <Tooltip
                     direction="top"
                     contents={label}
-                    tooltipStyle={{minWidth: '100em'}}>
+                    className="rcc-tooltip-wide">
                     {icon}
                 </Tooltip>
             </a>
