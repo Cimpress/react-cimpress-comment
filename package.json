@@ -32,7 +32,7 @@
   "author": "Rafał Nowosielski <rafal@nowosielski.email>",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@cimpress/react-components": "^3.2.3",
+    "@cimpress/react-components": "^5.7.1",
     "@storybook/addon-knobs": "^3.4.11",
     "@storybook/react": "^3.3.11",
     "auth0-sso-login": "^3.0.123",
