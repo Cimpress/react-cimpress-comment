@@ -196,10 +196,14 @@ class Comment extends React.Component {
 
         let commentCreator = <div className={'comment-creator'}>
             {`${this.state.createdByName || this.state.commentObject.createdBy}`}
-            {this.state.commentObject.createdAt ? <span>,&nbsp;</span> : null}
-            <TimeAgo
-                date={this.state.commentObject.createdAt}
-                formatter={reactTimeAgoFormatters[this.props.locale]}/>
+            {this.state.commentObject.createdAt ?
+                <React.Fragment>
+                    <span>,&nbsp;</span>
+                    <TimeAgo
+                        date={this.state.commentObject.createdAt}
+                        formatter={reactTimeAgoFormatters[this.props.locale]}/>
+                </React.Fragment>
+                : null}
             {this.state.commentObject.createdAt !== this.state.commentObject.updatedAt && this.state.commentObject.updatedAt
                 ?
                 <span>, {this.tt('modified')} {(this.state.commentObject.updatedBy !== this.state.commentObject.createdBy)
