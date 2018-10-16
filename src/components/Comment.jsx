@@ -196,7 +196,7 @@ class Comment extends React.Component {
 
         let commentCreator = <div className={'comment-creator'}>
             {`${this.state.createdByName || this.state.commentObject.createdBy}`}
-            {this.state.commentObject.createdAt ? 
+            {this.state.commentObject.createdAt ?
                 <React.Fragment>
                     <span>,&nbsp;</span>
                     <TimeAgo
