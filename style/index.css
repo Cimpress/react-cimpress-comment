@@ -32,7 +32,8 @@
 }
 
 .no-comments {
-    padding-left: 3px;
+    padding: 3px;
+    background-color: white;
 }
 
 .comment-creator {
@@ -246,5 +247,22 @@ div:focus {
 }
 
 .rcc-tooltip-wide .tooltip-inner {
-    max-width: 35em; 
+    max-width: 35em;
+}
+
+.rcw-main {
+    display: block;
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+    padding-left: 4px;
+}
+
+.comments-add .form-group {
+    margin-bottom: 2px !important;
+}
+
+.comments-add {
+    background-color: white;
+    margin: 0;
+    padding: 0;
 }

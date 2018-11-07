@@ -14,6 +14,15 @@ export default class CommentsClient extends _FetchClient {
 
     getResourceUri(resourceUri) {
         if (!resourceUri) {
+            return `${this.commentServiceUrl}/v0/resources/${this.encodedResourceUri}`;
+        }
+
+        let encodedResourceUri = encodeURIComponent(resourceUri);
+        return `${this.commentServiceUrl}/v0/resources/${encodedResourceUri}`;
+    }
+
+    getResourceCommentsUri(resourceUri) {
+        if (!resourceUri) {
             return `${this.commentServiceUrl}/v0/resources/${this.encodedResourceUri}/comments`;
         }
 

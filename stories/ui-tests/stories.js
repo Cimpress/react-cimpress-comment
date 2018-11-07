@@ -7,6 +7,7 @@ import fetchMock from 'fetch-mock';
 import {mockCustomizer} from './mockCustomizr';
 import {mockCoamPrincipals} from './mockCoam';
 import {mockComments} from './mockComment';
+import {mockBaywatch} from './mockBaywatch';
 
 let accessTokenOfTheUser = 'ew0KICAidHlwIjogIkpXVCIsDQogICJhbGciOiAiUlMyNTYiLA0KICAia2lkIjogIldlZndlRldFRldFZndlRVdGd2VmMjMzM3JFRldFRmV3ZmV3MzIzMiINCn0=.eyJzdWIiOiI0OWMwODdhYi0zZmVlLTQ5OTQtODZlNy1jNjNkMmI0N2FjOGIiLCJhdWQiOiJodHRwczovL2FwaS5jaW1wcmVzcy5pby8iLCJpYXQiOjQyMzQyMzQyMzQsImV4cCI6MjM0MzI0MzI0MjM0LCJhenAiOiJSRnJmRVJXRkVSZkZUNnZjcTc5eWxjSXVvbEZ6MmN3TiIsInNjb3BlIjoiIn0=.43tf3wcfww5f3ftd5wtw';
 
@@ -17,7 +18,7 @@ function initMock() {
     let m = fetchMock.restore();
     m = mockCoamPrincipals(m);
     m = mockComments(m, 'http%3A%2F%2Feda234a4-485f-4c0c-806d-1c9748994c00.com');
-
+    m = mockBaywatch(m);
     return m;
 }
 
