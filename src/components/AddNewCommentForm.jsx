@@ -18,7 +18,7 @@ import {
     getSubFromJWT,
     performActionOnMetaEnter,
 } from '../tools/helper';
-
+import {WatchButton, WatchLabel} from 'react-cimpress-baywatch';
 
 class AddNewCommentForm extends React.Component {
     constructor(props) {
@@ -138,6 +138,10 @@ class AddNewCommentForm extends React.Component {
             locality.safeSetState({commentToAdd: ''});
         };
 
+        let watchLink = <WatchLabel accessToken={this.props.accessToken} resourceUri={this.props.commentsClient.getResourceUri()}
+            locale={this.props.locale} labelOnSubscriptionActive={'Stop watching this thread'}
+            labelOnSubscriptionInactive={'Watch this thread'}/>
+
         return (
             <div
                 className="comments-add"
@@ -157,6 +161,7 @@ class AddNewCommentForm extends React.Component {
                         onDismiss={this.onAlertDismissed.bind(this)}
                     />
                 </div>
+                { this.props.newestFirst ? null : watchLink }
                 <MentionsInput
                     autoFocus
                     className="mentions mentions-min-height"
@@ -194,6 +199,7 @@ class AddNewCommentForm extends React.Component {
                         </button>
                     </span>
                 </div>
+                { this.props.newestFirst ? watchLink : null }
             </div>
         );
     }
@@ -204,9 +210,10 @@ AddNewCommentForm.propTypes = {
     accessToken: PropTypes.string.isRequired,
     resourceUri: PropTypes.string.isRequired,
     initialValue: PropTypes.string,
-
+    newestFirst: PropTypes.bool,
     onPostComment: PropTypes.func,
     mentionsClient: PropTypes.any,
+    commentsClient: PropTypes.any,
 };
 
 AddNewCommentForm.defaultProps = {
