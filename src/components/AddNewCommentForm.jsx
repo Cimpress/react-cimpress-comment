@@ -18,7 +18,7 @@ import {
     getSubFromJWT,
     performActionOnMetaEnter,
 } from '../tools/helper';
-import {WatchButton, WatchLabel} from 'react-cimpress-baywatch';
+import {WatchLabel} from 'react-cimpress-baywatch';
 
 class AddNewCommentForm extends React.Component {
     constructor(props) {
@@ -140,14 +140,13 @@ class AddNewCommentForm extends React.Component {
 
         let watchLink = <WatchLabel accessToken={this.props.accessToken} resourceUri={this.props.commentsClient.getResourceUri()}
             locale={this.props.locale} labelOnSubscriptionActive={'Stop watching this thread'}
-            labelOnSubscriptionInactive={'Watch this thread'}/>
+            labelOnSubscriptionInactive={'Watch this thread'}/>;
 
         return (
             <div
                 className="comments-add"
                 onKeyDown={performActionOnMetaEnter(postComment(this))}
-                tabIndex="0"
-            >
+                tabIndex="0">
                 <div className='comments-alert'>
                     <Alert
                         type={'info'}
