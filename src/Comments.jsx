@@ -204,8 +204,8 @@ class Comments extends React.Component {
     renderLoading() {
         return (
             <div>
-                <div className="inline-spinner"><Spinner size={20}/></div>
-                <div className="inline-spinner">{this.tt('retrieving_comments')}</div>
+                <div className='inline-spinner'><Spinner size={20}/></div>
+                <div className='inline-spinner'>{this.tt('retrieving_comments')}</div>
             </div>
         );
     }
@@ -217,7 +217,7 @@ class Comments extends React.Component {
     }
 
     renderComments(commentIds) {
-        let uri = this.commentsClient.getResourceUri();
+        let uri = this.commentsClient.getResourceCommentsUri();
 
         return commentIds.map((commentId, index) => {
             let className = 'comment ' + ((index % 2 === 0) ? 'comment-even' : 'comment-odd');
@@ -283,7 +283,9 @@ class Comments extends React.Component {
                 initialValue={this.state.failedPostComment || this.props.initialValue}
                 accessToken={this.props.accessToken}
                 mentionsClient={this.mentionsClient}
+                commentsClient={this.commentsClient}
                 resourceUri={this.props.resourceUri}
+                newestFirst={this.props.newestFirst}
                 onPostComment={(comment, visibilityOption) => this.postComment(comment, visibilityOption)}
             />
         </div>;
@@ -292,7 +294,7 @@ class Comments extends React.Component {
             {this.props.newestFirst
                 ? addCommentBox
                 : null}
-            <div className="comments">
+            <div className='comments'>
                 {comments}
             </div>
             {!this.props.newestFirst
