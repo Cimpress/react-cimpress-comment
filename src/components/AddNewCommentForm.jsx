@@ -139,8 +139,8 @@ class AddNewCommentForm extends React.Component {
         };
 
         let watchLink = <WatchLabel accessToken={this.props.accessToken} resourceUri={this.props.commentsClient.getResourceUri()}
-            locale={this.props.locale} labelOnSubscriptionActive={'Stop watching this thread'}
-            labelOnSubscriptionInactive={'Watch this thread'}/>;
+            locale={this.props.locale} labelOnSubscriptionActive={this.tt('stop_watching_this_thread')}
+            labelOnSubscriptionInactive={this.tt('watch_this_thread')}/>;
 
         return (
             <div
