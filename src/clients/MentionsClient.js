@@ -12,14 +12,15 @@ export default class MentionsClient extends _FetchClient {
             return Promise.resolve([]);
         }
 
-        let url = `https://api.cimpress.io/auth/access-management/v1/principals?q=${query}`;
+        let url = `https://api.cimpress.io/auth/access-management/v1/search/canonicalPrincipals/bySubstring?q=${query}`;
         let init = this.getDefaultConfig('GET');
 
         return fetch(url, init)
             .then((response) => {
                 if (response.status === 200) {
-                    return response.json().then((responseJson) => responseJson.principals.map((p) => {
-                        return {id: p.user_id, display: p.name, email: p.email};
+                    return response.json().then((responseJson) => responseJson.canonical_principals.map((p) => {
+                        const profile = p.profiles[0] || {};
+                        return {id: profile.user_id || p.canonical_principal, display: profile.name, email: p.canonical_principal};
                     }));
                 } else {
                     throw new Error(`Unable to fetch principals for query: ${query}`);
