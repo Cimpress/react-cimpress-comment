@@ -1,6 +1,6 @@
 {
   "name": "react-cimpress-comment",
-  "version": "0.8.6",
+  "version": "0.8.7",
   "description": "Visualizes comment(s) for a particular platform resource",
   "main": "./lib/index.js",
   "scripts": {
@@ -62,13 +62,13 @@
   },
   "dependencies": {
     "atob": "^2.1.1",
-    "cimpress-customizr": "^1.1.1",
+    "cimpress-customizr": "~1",
     "deepmerge": "^2.1.1",
     "fetch-retry": "^2.0.0",
     "i18next": "^11.3.2",
     "md5": "^2.2.1",
     "prop-types": "^15.6.2",
-    "react-cimpress-baywatch": "0.0.5",
+    "react-cimpress-baywatch": "~0",
     "react-i18next": "^7.6.1",
     "react-mentions": "^1.2.2",
     "react-portal": "^4.1.5",
