@@ -159,6 +159,10 @@ class Comment extends React.Component {
         return <div onClick={() => this.safeSetState({editMode: true})} className={'mentions-edit fa fa-edit'}/>;
     }
 
+    renderSuggestion(entry, search, highlightedDisplay, index) {
+        return <span>{highlightedDisplay} <i><small>{entry.email}</small></i></span>;
+    }
+
     render() {
         let editMenu;
         let readonlyTextField;
@@ -187,7 +191,9 @@ class Comment extends React.Component {
                     readOnly={readonlyTextField}>
                     <Mention trigger="@" data={(search, callback) => {
                         this.props.mentionsClient.fetchMatchingMentions(search).then(callback);
-                    }}/>
+                    }}
+                    renderSuggestion={this.renderSuggestion}
+                    />
                 </MentionsInput>
                 {this.renderError(this.state.errorPut, this.tt('unable_to_edit_comment'))}
                 {editMenu}
