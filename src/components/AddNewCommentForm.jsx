@@ -5,6 +5,7 @@ import '../../style/index.css';
 import '../../style/select.css';
 
 import CommentVisibilityOption from './CommentVisibilityOption';
+import renderCoamMentionSuggestion from '../renderers/renderCoamMentionSuggestion';
 
 import {getVisibilityLevels} from '../tools/visibility';
 import {Mention, MentionsInput} from 'react-mentions';
@@ -128,10 +129,6 @@ class AddNewCommentForm extends React.Component {
         return t(key, {lng: locale});
     }
 
-    renderSuggestion(entry, search, highlightedDisplay, index) {
-        return <span>{highlightedDisplay} <i><small>{entry.email}</small></i></span>;
-    }
-
     render() {
         const postComment = (locality) => (key) => {
             locality.props.onPostComment(locality.state.commentToAdd, locality.state.selectedVisibilityOption.value);
@@ -172,7 +169,7 @@ class AddNewCommentForm extends React.Component {
                         data={(search, callback) => {
                             this.props.mentionsClient.fetchMatchingMentions(search).then(callback);
                         }}
-                        renderSuggestion={this.renderSuggestion}
+                        renderSuggestion={renderCoamMentionSuggestion}
                     />
                 </MentionsInput>
                 <div style={{display: 'table'}}>
