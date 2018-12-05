@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [0.8.6] - 2018-12-05
+### Fixed
+- Do not use reactI18nextModule module from react-i18next when initializing i18n instance
+
+## [0.8.5] - 2018-12-05
+### Added
+- Use canonical users for mentions
+
 ## [0.8.4] - 2018-11-29
 ### Fixed
 - Comments components wasn't reloading comments if the token or resourceUrl changed in the meantime.
