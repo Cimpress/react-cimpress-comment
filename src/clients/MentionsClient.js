@@ -1,11 +1,10 @@
-import _FetchClient from './_FetchClient';
 import {findPrincipals, getPrincipal} from 'coam-client';
 
 const mentionsUserCache = {};
 
-export default class MentionsClient extends _FetchClient {
+export default class MentionsClient {
     constructor(accessToken) {
-        super(accessToken.replace('Bearer ', ''));
+        this.accessToken = accessToken.replace('Bearer ', '');
     }
 
     fetchMatchingMentions(query) {
@@ -17,7 +16,7 @@ export default class MentionsClient extends _FetchClient {
                         result.push({
                             id: profile.user_id || p.canonical_principal, 
                             display: profile.name || profile.email || p.canonical_principal, 
-                            email: profile.email || p.canonical_principal})
+                            email: profile.name ? profile.email || p.canonical_principal : null})
                     }
                     return result;
                 },[]);
