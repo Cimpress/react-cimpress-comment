@@ -15,10 +15,9 @@ import {CustomizrClient} from 'cimpress-customizr';
 
 import {getI18nInstance} from '../tools/i18n';
 import {translate, Trans} from 'react-i18next';
-import {
-    getSubFromJWT,
-    performActionOnMetaEnter,
-} from '../tools/helper';
+import {getSubFromJWT, performActionOnMetaEnter} from '../tools/helper';
+import {fetchMatchingMentions} from '../clients/mentions';
+
 import {WatchLabel} from 'react-cimpress-baywatch';
 
 class AddNewCommentForm extends React.Component {
@@ -167,7 +166,7 @@ class AddNewCommentForm extends React.Component {
                     <Mention
                         trigger="@"
                         data={(search, callback) => {
-                            this.props.mentionsClient.fetchMatchingMentions(search).then(callback);
+                            fetchMatchingMentions(this.props.accessToken, search).then(callback);
                         }}
                         renderSuggestion={renderCoamMentionSuggestion}
                     />
@@ -208,7 +207,6 @@ AddNewCommentForm.propTypes = {
     initialValue: PropTypes.string,
     newestFirst: PropTypes.bool,
     onPostComment: PropTypes.func,
-    mentionsClient: PropTypes.any,
     commentsClient: PropTypes.any,
 };
 

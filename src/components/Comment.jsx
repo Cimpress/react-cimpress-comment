@@ -14,12 +14,8 @@ import {shapes} from '@cimpress/react-components';
 
 import {translate} from 'react-i18next';
 import {getI18nInstance} from '../tools/i18n';
-
-import {
-    errorToString,
-    performActionOnMetaEnter,
-} from '../tools/helper';
-
+import {errorToString, performActionOnMetaEnter} from '../tools/helper';
+import {fetchUserName, fetchMatchingMentions} from '../clients/mentions';
 
 let {Spinner} = shapes;
 
@@ -67,8 +63,7 @@ class Comment extends React.Component {
     }
 
     fetchUserName(userId, stateToUpdate) {
-        this.props.mentionsClient
-            .fetchUserName(userId)
+        fetchUserName(this.props.accessToken, userId)
             .then((responseJson) => {
                 this.safeSetState({
                     [stateToUpdate]: responseJson.profile.name,
@@ -187,7 +182,8 @@ class Comment extends React.Component {
                     displayTransform={(id, display, type) => `@${display}`} allowSpaceInQuery={true}
                     readOnly={readonlyTextField}>
                     <Mention trigger="@" data={(search, callback) => {
-                        this.props.mentionsClient.fetchMatchingMentions(search).then(callback);
+                        fetchMatchingMentions(this.props.accessToken, search)
+                            .then(callback);
                     }}
                     renderSuggestion={renderCoamMentionSuggestion}
                     />
@@ -235,6 +231,7 @@ class Comment extends React.Component {
 
 Comment.propTypes = {
     locale: PropTypes.string,
+    accessToken: PropTypes.string,
     className: PropTypes.string,
     jwtSub: PropTypes.string,
     commentUri: PropTypes.string,
@@ -242,7 +239,6 @@ Comment.propTypes = {
     editComments: PropTypes.bool,
 
     commentVisibilityLevels: PropTypes.array,
-    mentionsClient: PropTypes.any,
     commentsClient: PropTypes.any,
 };
 
