@@ -12,14 +12,14 @@ export default class MentionsClient {
             .then((principals) => {
                 return principals.reduce((result, p) => {
                     const profile = p.profiles[0] || {};
-                    if(!p.canonical_principal.endsWith('@clients')){
+                    if (!p.canonical_principal.endsWith('@clients')) {
                         result.push({
-                            id: profile.user_id || p.canonical_principal, 
-                            display: profile.name || profile.email || p.canonical_principal, 
-                            email: profile.name ? profile.email || p.canonical_principal : null})
+                            id: profile.user_id || p.canonical_principal,
+                            display: profile.name || profile.email || p.canonical_principal,
+                            email: profile.name ? profile.email || p.canonical_principal : null});
                     }
                     return result;
-                },[]);
+                }, []);
             })
             .catch((err) => {
                 // eslint-disable-next-line no-console
