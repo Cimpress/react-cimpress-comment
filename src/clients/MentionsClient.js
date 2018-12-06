@@ -16,7 +16,7 @@ export default class MentionsClient extends _FetchClient {
                     if(!p.canonical_principal.endsWith('@clients')){
                         result.push({
                             id: profile.user_id || p.canonical_principal, 
-                            display: profile.name || p.canonical_principal, 
+                            display: profile.name || profile.email || p.canonical_principal, 
                             email: profile.email || p.canonical_principal})
                     }
                     return result;
