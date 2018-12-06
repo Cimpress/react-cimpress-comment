@@ -1,30 +1,31 @@
 import _FetchClient from './_FetchClient';
+import {findPrincipals, getPrincipal} from 'coam-client';
 
 const mentionsUserCache = {};
 
 export default class MentionsClient extends _FetchClient {
     constructor(accessToken) {
-        super(accessToken);
+        super(accessToken.replace('Bearer ', ''));
     }
 
     fetchMatchingMentions(query) {
-        if (!query || query.length === 0) {
-            return Promise.resolve([]);
-        }
-
-        let url = `https://api.cimpress.io/auth/access-management/v1/search/canonicalPrincipals/bySubstring?q=${query}`;
-        let init = this.getDefaultConfig('GET');
-
-        return fetch(url, init)
-            .then((response) => {
-                if (response.status === 200) {
-                    return response.json().then((responseJson) => responseJson.canonical_principals.map((p) => {
-                        const profile = p.profiles[0] || {};
-                        return {id: profile.user_id || p.canonical_principal, display: profile.name, email: p.canonical_principal};
-                    }));
-                } else {
-                    throw new Error(`Unable to fetch principals for query: ${query}`);
-                }
+        return findPrincipals(this.accessToken, query)
+            .then((principals) => {
+                return principals.reduce((result, p) => {
+                    const profile = p.profiles[0] || {};
+                    if(!p.canonical_principal.endsWith('@clients')){
+                        result.push({
+                            id: profile.user_id || p.canonical_principal, 
+                            display: profile.name || p.canonical_principal, 
+                            email: profile.email || p.canonical_principal})
+                    }
+                    return result;
+                },[]);
+            })
+            .catch((err) => {
+                // eslint-disable-next-line no-console
+                console.error(err);
+                throw new Error(`Unable to fetch principals for query: ${query}`);
             });
     }
 
@@ -33,18 +34,11 @@ export default class MentionsClient extends _FetchClient {
             return mentionsUserCache[userId];
         }
 
-        let url = `https://api.cimpress.io/auth/access-management/v1/principals/${userId}`;
-        let init = this.getDefaultConfig('GET');
-
-        let promiseToGetUser = fetch(url, init)
-            .then((response) => {
-                if (response.status === 200) {
-                    return response.json();
-                }
-                throw new Error(response.status);
-            }).catch((err) => {
+        let promiseToGetUser = getPrincipal(this.accessToken, userId)
+            .catch((err) => {
                 // eslint-disable-next-line no-console
                 console.error(err);
+                throw err;
             });
 
         mentionsUserCache[userId] = promiseToGetUser;
