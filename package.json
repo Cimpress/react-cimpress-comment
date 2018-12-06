@@ -63,6 +63,7 @@
   "dependencies": {
     "atob": "^2.1.1",
     "cimpress-customizr": "~1",
+    "coam-client": "^0.1.2",
     "deepmerge": "^2.1.1",
     "fetch-retry": "^2.0.0",
     "i18next": "^11.3.2",
