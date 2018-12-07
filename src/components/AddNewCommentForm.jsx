@@ -5,6 +5,7 @@ import '../../style/index.css';
 import '../../style/select.css';
 
 import CommentVisibilityOption from './CommentVisibilityOption';
+import renderCoamMentionSuggestion from '../renderers/renderCoamMentionSuggestion';
 
 import {getVisibilityLevels} from '../tools/visibility';
 import {Mention, MentionsInput} from 'react-mentions';
@@ -14,10 +15,9 @@ import {CustomizrClient} from 'cimpress-customizr';
 
 import {getI18nInstance} from '../tools/i18n';
 import {translate, Trans} from 'react-i18next';
-import {
-    getSubFromJWT,
-    performActionOnMetaEnter,
-} from '../tools/helper';
+import {getSubFromJWT, performActionOnMetaEnter} from '../tools/helper';
+import {fetchMatchingMentions} from '../clients/mentions';
+
 import {WatchLabel} from 'react-cimpress-baywatch';
 
 class AddNewCommentForm extends React.Component {
@@ -128,10 +128,6 @@ class AddNewCommentForm extends React.Component {
         return t(key, {lng: locale});
     }
 
-    renderSuggestion(entry, search, highlightedDisplay, index) {
-        return <span>{highlightedDisplay} <i><small>{entry.email}</small></i></span>;
-    }
-
     render() {
         const postComment = (locality) => (key) => {
             locality.props.onPostComment(locality.state.commentToAdd, locality.state.selectedVisibilityOption.value);
@@ -170,9 +166,9 @@ class AddNewCommentForm extends React.Component {
                     <Mention
                         trigger="@"
                         data={(search, callback) => {
-                            this.props.mentionsClient.fetchMatchingMentions(search).then(callback);
+                            fetchMatchingMentions(this.props.accessToken, search).then(callback);
                         }}
-                        renderSuggestion={this.renderSuggestion}
+                        renderSuggestion={renderCoamMentionSuggestion}
                     />
                 </MentionsInput>
                 <div style={{display: 'table'}}>
@@ -211,7 +207,6 @@ AddNewCommentForm.propTypes = {
     initialValue: PropTypes.string,
     newestFirst: PropTypes.bool,
     onPostComment: PropTypes.func,
-    mentionsClient: PropTypes.any,
     commentsClient: PropTypes.any,
 };
 

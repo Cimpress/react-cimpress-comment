@@ -1,5 +1,3 @@
-const COAM_URL = 'https://api.cimpress.io';
-
 const principals = [
     {
         'name': 'John Doe',
@@ -36,33 +34,31 @@ function getPrincipalResponse(name) {
     };
 }
 
-function mockCoamGetPrincipal(fetchMock, principalId, name) {
-    return fetchMock.get(`${COAM_URL}/auth/access-management/v1/principals/${principalId}`,
+function mockCoamGetPrincipal(m, principalId, name) {
+    m.get(new RegExp(`https://api.cimpress.io/auth/access-management/v1/principals/${principalId}\\?(.*)`),
         {
             status: 200,
-            body: getPrincipalResponse(name),
+            body: JSON.stringify(getPrincipalResponse(name)),
         }
     );
 }
 
-function mockCoamGetPrincipals(fetchMock, principals) {
-    return fetchMock.get(`${COAM_URL}/auth/access-management/v1/principals`,
+function mockCoamGetPrincipals(m, principals) {
+    m.get(new RegExp(`https://api.cimpress.io/auth/access-management/v1/principals\\?(.*)`),
         {
             status: 200,
-            body: {
+            body: JSON.stringify({
                 'principals': principals,
-            },
+            }),
         }
     );
 }
 
-function mockCoamPrincipals(fetchMock) {
-    let m = fetchMock;
-    mockCoamGetPrincipals(fetchMock, principals);
+function mockCoamPrincipals(m) {
+    mockCoamGetPrincipals(m, principals);
     for (let i = 0; i < principals.length; i++) {
-        m = mockCoamGetPrincipal(m, principals[i].user_id, principals[i].name);
+        mockCoamGetPrincipal(m, principals[i].user_id, principals[i].name);
     }
-    return m;
 }
 
 export {

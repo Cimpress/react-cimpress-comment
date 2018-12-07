@@ -10,7 +10,6 @@ import {getVisibilityLevels} from './tools/visibility';
 import {Alert, shapes} from '@cimpress/react-components';
 
 import CommentsClient from './clients/CommentsClient';
-import MentionsClient from './clients/MentionsClient';
 
 import {getI18nInstance} from './tools/i18n';
 import {translate} from 'react-i18next';
@@ -24,7 +23,6 @@ class Comments extends React.Component {
         super(props);
 
         this.commentsClient = new CommentsClient(props.accessToken, props.resourceUri);
-        this.mentionsClient = new MentionsClient(props.accessToken);
         this.jwtSub = getSubFromJWT(this.props.accessToken);
 
         this.state = {
@@ -51,7 +49,6 @@ class Comments extends React.Component {
     componentDidUpdate(prevProps) {
         this.jwtSub = getSubFromJWT(this.props.accessToken);
         if (this.props.accessToken !== prevProps.accessToken) {
-            this.mentionsClient = new MentionsClient(this.props.accessToken);
             this.jwtSub = getSubFromJWT(this.props.accessToken);
         }
         if (this.props.resourceUri !== prevProps.resourceUri) {
@@ -77,7 +74,6 @@ class Comments extends React.Component {
         this._refreshIntervalHandle = setInterval(() => this.fetchComments(), Math.max((this.props.refreshInterval || 60) * 1000, 5000));
 
         // Creating these clients is inexpensive and do not clear caching
-        this.mentionsClient = new MentionsClient(this.props.accessToken);
         this.commentsClient = new CommentsClient(this.props.accessToken, this.props.resourceUri);
     }
 
@@ -223,15 +219,16 @@ class Comments extends React.Component {
 
     renderComments(commentIds) {
         let uri = this.commentsClient.getResourceCommentsUri();
+        let jwt = getSubFromJWT(this.props.accessToken);
 
         return commentIds.map((commentId, index) => {
             let className = 'comment ' + ((index % 2 === 0) ? 'comment-even' : 'comment-odd');
             return <Comment
                 key={commentId}
                 locale={this.props.locale}
+                accessToken={this.props.accessToken}
                 className={className}
-                jwtSub={getSubFromJWT(this.props.accessToken)}
-                mentionsClient={this.mentionsClient}
+                jwtSub={jwt}
                 commentsClient={this.commentsClient}
                 commentUri={`${uri}/${commentId}`}
                 comment={this.state.commentObjects[commentId]}
@@ -287,7 +284,6 @@ class Comments extends React.Component {
                 locale={this.props.locale}
                 initialValue={this.state.failedPostComment || this.props.initialValue}
                 accessToken={this.props.accessToken}
-                mentionsClient={this.mentionsClient}
                 commentsClient={this.commentsClient}
                 resourceUri={this.props.resourceUri}
                 newestFirst={this.props.newestFirst}
