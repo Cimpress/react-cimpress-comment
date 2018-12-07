@@ -219,6 +219,7 @@ class Comments extends React.Component {
 
     renderComments(commentIds) {
         let uri = this.commentsClient.getResourceCommentsUri();
+        let jwt = getSubFromJWT(this.props.accessToken);
 
         return commentIds.map((commentId, index) => {
             let className = 'comment ' + ((index % 2 === 0) ? 'comment-even' : 'comment-odd');
@@ -227,7 +228,7 @@ class Comments extends React.Component {
                 locale={this.props.locale}
                 accessToken={this.props.accessToken}
                 className={className}
-                jwtSub={getSubFromJWT(this.props.accessToken)}
+                jwtSub={jwt}
                 commentsClient={this.commentsClient}
                 commentUri={`${uri}/${commentId}`}
                 comment={this.state.commentObjects[commentId]}

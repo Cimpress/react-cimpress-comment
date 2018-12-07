@@ -88,7 +88,7 @@ In some case, modelling a special condition is hard without mocking. The package
 Storybook environment where all external dependencies are mocked. This is extremely useful to validate a certain behavior
 in particular situation.
     
-    npm sun storybook
+    npm run storybook
     
 This command will run the Storybook in the background. You can later stop it by running `npm run storybookstop`.
 
