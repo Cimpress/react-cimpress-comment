@@ -65,7 +65,6 @@ class Comment extends React.Component {
     fetchUserName(userId, stateToUpdate) {
         fetchUserName(this.props.accessToken, userId)
             .then((responseJson) => {
-                console.log(userId, responseJson);
                 this.safeSetState({
                     [stateToUpdate]: responseJson.profile.name,
                 });
