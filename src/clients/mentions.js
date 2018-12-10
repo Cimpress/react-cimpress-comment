@@ -1,8 +1,9 @@
 import {findPrincipals, getPrincipal} from 'coam-client';
+import debounce from 'debounce-promise';
 
 const mentionsUserCache = {};
 
-const fetchMatchingMentions = (accessToken, query) => {
+const _fetchMatchingMentions = (accessToken, query) => {
     return findPrincipals(accessToken, query)
         .then((principals) => {
             return principals.reduce((result, p) => {
@@ -19,9 +20,11 @@ const fetchMatchingMentions = (accessToken, query) => {
         .catch((err) => {
             // eslint-disable-next-line no-console
             console.error(err);
-            throw new Error(`Unable to fetch principals for query: ${query}`);
+            return Promise.reject(new Error(`Unable to fetch principals for query: ${query}`));
         });
 };
+
+const fetchMatchingMentions = debounce(_fetchMatchingMentions, 300);
 
 const fetchUserName = (accessToken, userId) => {
     if (mentionsUserCache[userId]) {
