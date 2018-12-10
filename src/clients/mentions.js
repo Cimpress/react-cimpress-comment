@@ -24,7 +24,7 @@ const _fetchMatchingMentions = (accessToken, query) => {
         });
 };
 
-const fetchMatchingMentions =  debounce(_fetchMatchingMentions, 500);
+const fetchMatchingMentions =  debounce(_fetchMatchingMentions, 300);
 
 const fetchUserName = (accessToken, userId) => {
     if (mentionsUserCache[userId]) {
