@@ -154,7 +154,7 @@ export default class CommentsClient {
         let url = `${this.commentServiceUrl}/v0/resources/${this.encodedResourceUri}/userinfo`;
         return this.fetchComments()
             .then((comments) => {
-                if(comments.length){
+                if(comments.responseJson.length){
                     return fetch(url, this.getDefaultConfig('GET'));
                 }
                 return Promise.resolve({status: 404});

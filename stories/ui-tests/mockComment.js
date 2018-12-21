@@ -57,7 +57,11 @@ function mockCommentsGetResource(fetchMock, resourceId) {
 function mockCommentsGetResourceWithStatus(fetchMock, resourceId, statusCode) {
     return fetchMock.get(`${COMMENTS_URL}/v0/resources?uri=${resourceId}`, {
         status: statusCode,
-        body: [],
+        body: [{
+            URI: resourceId,
+            comments: comments,
+            eTag: 5,
+        }],
     });
 }
 
