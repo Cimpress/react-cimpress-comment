@@ -153,7 +153,12 @@ export default class CommentsClient {
     getUserInfo() {
         let url = `${this.commentServiceUrl}/v0/resources/${this.encodedResourceUri}/userinfo`;
         return this.fetchComments()
-            .then(() => fetch(url, this.getDefaultConfig('GET')))
+            .then((comments) => {
+                if(comments.length){
+                    return fetch(url, this.getDefaultConfig('GET'));
+                }
+                return Promise.resolve({status: 404});
+            })
             .then((response) => {
                 if (response.status === 200) {
                     return response.json();
