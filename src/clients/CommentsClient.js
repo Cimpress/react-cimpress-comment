@@ -60,7 +60,7 @@ export default class CommentsClient {
                             responseJson: comments,
                             userAccessLevel: response.headers.get('x-cimpress-resource-access-level'),
                         };
-                    });      
+                    });
                 } else if (response.status === 401) {
                     throw new Error('Unauthorized');
                 } else if (response.status === 403) {
