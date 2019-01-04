@@ -44,20 +44,20 @@ function mockCommentsGetResourceComments(fetchMock, resourceId) {
 }
 
 function mockCommentsGetResource(fetchMock, resourceId) {
-    return fetchMock.get(`${COMMENTS_URL}/v0/resources/${resourceId}`, {
+    return fetchMock.get(`${COMMENTS_URL}/v0/resources?uri=${resourceId}`, {
         status: 200,
-        body: {
+        body: [{
             URI: resourceId,
             comments: comments,
             eTag: 5,
-        },
+        }],
     });
 }
 
 function mockCommentsGetResourceWithStatus(fetchMock, resourceId, statusCode) {
-    return fetchMock.get(`${COMMENTS_URL}/v0/resources/${resourceId}`, {
+    return fetchMock.get(`${COMMENTS_URL}/v0/resources?uri=${resourceId}`, {
         status: statusCode,
-        body: {},
+        body: [],
     });
 }
 
@@ -99,7 +99,7 @@ function mockCommentsPostCommentWithStatus(fetchMock, resourceId, statusCode) {
 function mockComments(fetchMock) {
     let m = fetchMock;
     m = mockCommentsResource(m, 'http%3A%2F%2Feda234a4-485f-4c0c-806d-1c9748994c00.com');
-    m = mockCommentsGetResourceWithStatus(m, 'http%3A%2F%2Feda234a4-485f-4c0c-806d-1c9748994c00.com%2Fnon-existent', 404);
+    m = mockCommentsGetResourceWithStatus(m, 'http%3A%2F%2Feda234a4-485f-4c0c-806d-1c9748994c00.com%2Fnon-existent', 200);
     m = mockCommentsPostCommentWithStatus(m, 'http%3A%2F%2Feda234a4-485f-4c0c-806d-1c9748994c00.com', 201);
     return m;
 }

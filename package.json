@@ -1,6 +1,6 @@
 {
   "name": "react-cimpress-comment",
-  "version": "0.8.9",
+  "version": "0.9.0",
   "description": "Visualizes comment(s) for a particular platform resource",
   "main": "./lib/index.js",
   "scripts": {

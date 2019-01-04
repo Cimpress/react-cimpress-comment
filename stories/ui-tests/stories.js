@@ -97,7 +97,7 @@ storiesOf('Comments drawer with link', module)
 storiesOf('Errors', module)
     .add('With get comments returning 403', () => {
         initMock()
-            .get('https://comment.trdlnk.cimpress.io/v0/resources/http%3A%2F%2Feda234a4-485f-4c0c-806d-1c9748994c00.com%2F403', {
+            .get('https://comment.trdlnk.cimpress.io/v0/resources?uri=http%3A%2F%2Feda234a4-485f-4c0c-806d-1c9748994c00.com%2F403', {
                 status: 403,
             }, {
                 overwriteRoutes: true,

@@ -49,24 +49,22 @@ export default class CommentsClient {
     }
 
     fetchComments() {
-        let url = `${this.commentServiceUrl}/v0/resources/${this.encodedResourceUri}`;
+        let url = `${this.commentServiceUrl}/v0/resources?uri=${this.encodedResourceUri}`;
 
         return fetch(url, this.getDefaultConfig('GET'))
             .then((response) => {
                 if (response.status === 200) {
-                    return response.json().then((responseJson) => ({
-                        responseJson: responseJson.comments,
-                        userAccessLevel: response.headers.get('x-cimpress-resource-access-level'),
-                    }));
+                    return response.json().then((responseJson) => {
+                        const comments = responseJson.length ? responseJson[0].comments : [];
+                        return {
+                            responseJson: comments,
+                            userAccessLevel: response.headers.get('x-cimpress-resource-access-level'),
+                        };
+                    });
                 } else if (response.status === 401) {
                     throw new Error('Unauthorized');
                 } else if (response.status === 403) {
                     throw new Error('Forbidden');
-                } else if (response.status === 404) {
-                    return {
-                        responseJson: [],
-                        userAccessLevel: response.headers.get('x-cimpress-resource-access-level'),
-                    };
                 } else {
                     throw new Error(`Unexpected status code ${response.status}`);
                 }
@@ -154,7 +152,13 @@ export default class CommentsClient {
 
     getUserInfo() {
         let url = `${this.commentServiceUrl}/v0/resources/${this.encodedResourceUri}/userinfo`;
-        return fetch(url, this.getDefaultConfig('GET'))
+        return this.fetchComments()
+            .then((comments) => {
+                if (comments.responseJson.length) {
+                    return fetch(url, this.getDefaultConfig('GET'));
+                }
+                return Promise.resolve({status: 404});
+            })
             .then((response) => {
                 if (response.status === 200) {
                     return response.json();
