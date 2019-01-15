@@ -72,34 +72,21 @@ class AddNewCommentForm extends React.Component {
 
     init() {
         // Get the settings (it won't make a network call as the data is cached!
-        if (this.props.enforceVisibilityLevel) {
-            let newSelectedVisibilityOption = this.state.commentVisibilityLevels.find((l) => l.value === this.props.enforceVisibilityLevel);
-            // Only update the state if there is change
-            if (this.state.selectedVisibilityOption !== newSelectedVisibilityOption) {
-                this.safeSetState({
-                    alertDismissed: true,
-                    selectedVisibilityOption: newSelectedVisibilityOption,
-                }, () => {
-                    this.resetSelectedVisibilityOption();
-                });
-            }
-        } else {
-            this.customizrClient
-                .getSettings(this.props.accessToken)
-                .then((json) => {
-                    let newAlertDismissed = json.mentionsUsageNotification && json.mentionsUsageNotification.alertDismissed === true;
-                    let newSelectedVisibilityOption = this.state.commentVisibilityLevels.find((l) => l.value === json.selectedVisibility);
-                    // Only update the state if there is change
-                    if (this.state.alertDismissed !== newAlertDismissed || this.state.selectedVisibilityOption !== newSelectedVisibilityOption) {
-                        this.safeSetState({
-                            alertDismissed: newAlertDismissed,
-                            selectedVisibilityOption: newSelectedVisibilityOption,
-                        }, () => {
-                            this.resetSelectedVisibilityOption();
-                        });
-                    }
-                });
-        }
+        this.customizrClient
+            .getSettings(this.props.accessToken)
+            .then((json) => {
+                let newAlertDismissed = json.mentionsUsageNotification && json.mentionsUsageNotification.alertDismissed === true;
+                let newSelectedVisibilityOption = this.state.commentVisibilityLevels.find((l) => l.value === (this.props.enforceVisibilityLevel || json.selectedVisibility));
+                // Only update the state if there is change
+                if (this.state.alertDismissed !== newAlertDismissed || this.state.selectedVisibilityOption !== newSelectedVisibilityOption) {
+                    this.safeSetState({
+                        alertDismissed: newAlertDismissed,
+                        selectedVisibilityOption: newSelectedVisibilityOption,
+                    }, () => {
+                        this.resetSelectedVisibilityOption();
+                    });
+                }
+            });
     }
 
     resetSelectedVisibilityOption() {
