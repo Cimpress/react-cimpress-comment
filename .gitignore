@@ -6,3 +6,4 @@ backstop_data/html_report
 backstop_data/ci_report
 mockserver.pid
 prepare.sh
+.idea

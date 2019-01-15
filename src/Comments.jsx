@@ -287,6 +287,8 @@ class Comments extends React.Component {
                 commentsClient={this.commentsClient}
                 resourceUri={this.props.resourceUri}
                 newestFirst={this.props.newestFirst}
+                showVisibilityLevels={this.props.showVisibilityLevels}
+                enforceVisibilityLevel={this.props.enforceVisibilityLevel}
                 onPostComment={(comment, visibilityOption) => this.postComment(comment, visibilityOption)}
             />
         </div>;
@@ -314,10 +316,13 @@ Comments.propTypes = {
     refreshInterval: PropTypes.number,
     commentCountRefreshed: PropTypes.func,
     initialValue: PropTypes.string,
+    showVisibilityLevels: PropTypes.bool,
+    enforceVisibilityLevel: PropTypes.oneOf(['public', 'internal']),
 };
 
 Comments.defaultProps = {
     locale: 'eng',
+    showVisibilityLevels: true,
 };
 
 export default translate('translations', {i18n: getI18nInstance()})(Comments);
