@@ -1,6 +1,6 @@
 import React from 'react';
 import {storiesOf} from '@storybook/react';
-import {withKnobs, text, boolean, selectV2} from '@storybook/addon-knobs';
+import {withKnobs, text, boolean, object} from '@storybook/addon-knobs';
 import Authenticated from './Authenticated';
 import auth from './auth';
 
@@ -15,10 +15,17 @@ storiesOf('Production-like', module)
                 <div className={'card-block'}>
                     <Comments
                         accessToken={auth.getAccessToken()}
-                        resourceUri={text('resourceUri', 'https://stereotype.trdlnk.cimpress.io/v1/templates/123123')}
-                        newestFirst={boolean('newestFirst', true)}
-                        editComments={boolean('newestFirst', true)}
-                        showVisibilityLevels={boolean('showVisibilityLevels', true)}
+                        resourceUri={text('resourceUri', 'https://stereotype.trdlnk.cimpress.io/v1/templates/123123', 'Settings')}
+                        newestFirst={boolean('newestFirst', true, 'Settings')}
+                        editComments={boolean('newestFirst', true, 'Settings')}
+                        showVisibilityLevels={boolean('showVisibilityLevels', true, 'Settings')}
+                        textOverrides={{
+                            placeholder: text('placeholder', null, 'Text Overrides'),
+                            subscribe: text('subscribe', null, 'Text Overrides'),
+                            unsubscribe: text('unsubscribe', null, 'Text Overrides'),
+                            postComment: text('postComment', null, 'Text Overrides'),
+
+                        }}
                     />
                 </div>
             </div>

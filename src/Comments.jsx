@@ -289,6 +289,7 @@ class Comments extends React.Component {
                 newestFirst={this.props.newestFirst}
                 showVisibilityLevels={this.props.showVisibilityLevels}
                 enforceVisibilityLevel={this.props.enforceVisibilityLevel}
+                textOverrides={this.props.textOverrides}
                 onPostComment={(comment, visibilityOption) => this.postComment(comment, visibilityOption)}
             />
         </div>;
@@ -318,6 +319,12 @@ Comments.propTypes = {
     initialValue: PropTypes.string,
     showVisibilityLevels: PropTypes.bool,
     enforceVisibilityLevel: PropTypes.oneOf(['public', 'internal']),
+    textOverrides: PropTypes.shape({
+        placeholder: PropTypes.string,
+        subscribe: PropTypes.string,
+        unsubscribe: PropTypes.string,
+        postComment: PropTypes.string,
+    }),
 };
 
 Comments.defaultProps = {
