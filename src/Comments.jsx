@@ -330,6 +330,12 @@ Comments.propTypes = {
 Comments.defaultProps = {
     locale: 'eng',
     showVisibilityLevels: true,
+    textOverrides: {
+        placeholder: null,
+        subscribe: null,
+        unsubscribe: null,
+        postComment: null,
+    },
 };
 
 export default translate('translations', {i18n: getI18nInstance()})(Comments);
