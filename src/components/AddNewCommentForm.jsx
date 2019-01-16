@@ -135,15 +135,15 @@ class AddNewCommentForm extends React.Component {
         };
 
         let watchLink = <WatchLabel accessToken={this.props.accessToken} resourceUri={this.props.commentsClient.getResourceUri()}
-            locale={this.props.locale} labelOnSubscriptionActive={this.tt('stop_watching_this_thread')}
-            labelOnSubscriptionInactive={this.tt('watch_this_thread')}/>;
+            locale={this.props.locale} labelOnSubscriptionActive={this.props.textOverrides.unsubscribe || this.tt('stop_watching_this_thread')}
+            labelOnSubscriptionInactive={this.props.textOverrides.subscribe || this.tt('watch_this_thread')}/>;
 
         let postButton = (
             <button
                 className="btn btn-primary"
                 disabled={!this.props.resourceUri || this.state.commentToAdd.trim() === '' || !this.state.selectedVisibilityOption}
                 onClick={postComment(this)}>
-                {this.tt('btn_post')}
+                {this.props.textOverrides.postComment || this.tt('btn_post')}
             </button>
         );
 
@@ -192,7 +192,8 @@ class AddNewCommentForm extends React.Component {
                         className="mentions mentions-min-height"
                         value={this.state.commentToAdd}
                         onChange={(e, newValue) => this.safeSetState({commentToAdd: newValue})}
-                        displayTransform={(id, display, type) => `@${display}`} allowSpaceInQuery={true}>
+                        displayTransform={(id, display, type) => `@${display}`} allowSpaceInQuery={true}
+                        placeholder={this.props.textOverrides.placeholder}>
                         <Mention
                             trigger="@"
                             data={(search, callback) => {
@@ -220,6 +221,12 @@ AddNewCommentForm.propTypes = {
     commentsClient: PropTypes.any,
     showVisibilityLevels: PropTypes.bool,
     enforceVisibilityLevel: PropTypes.oneOf(['public', 'internal']),
+    textOverrides: PropTypes.shape({
+        placeholder: PropTypes.string,
+        subscribe: PropTypes.string,
+        unsubscribe: PropTypes.string,
+        postComment: PropTypes.string,
+    }),
 };
 
 AddNewCommentForm.defaultProps = {
