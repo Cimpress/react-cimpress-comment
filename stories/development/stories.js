@@ -1,6 +1,6 @@
 import React from 'react';
 import {storiesOf} from '@storybook/react';
-import {withKnobs, text, boolean} from '@storybook/addon-knobs';
+import {withKnobs, text, boolean, selectV2} from '@storybook/addon-knobs';
 import Authenticated from './Authenticated';
 import auth from './auth';
 
@@ -18,6 +18,7 @@ storiesOf('Production-like', module)
                         resourceUri={text('resourceUri', 'https://stereotype.trdlnk.cimpress.io/v1/templates/123123')}
                         newestFirst={boolean('newestFirst', true)}
                         editComments={boolean('newestFirst', true)}
+                        showVisibilityLevels={boolean('showVisibilityLevels', true)}
                     />
                 </div>
             </div>

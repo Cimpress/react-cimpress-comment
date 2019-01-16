@@ -76,7 +76,7 @@ class AddNewCommentForm extends React.Component {
             .getSettings(this.props.accessToken)
             .then((json) => {
                 let newAlertDismissed = json.mentionsUsageNotification && json.mentionsUsageNotification.alertDismissed === true;
-                let newSelectedVisibilityOption = this.state.commentVisibilityLevels.find((l) => l.value === json.selectedVisibility);
+                let newSelectedVisibilityOption = this.state.commentVisibilityLevels.find((l) => l.value === (this.props.enforceVisibilityLevel || json.selectedVisibility));
                 // Only update the state if there is change
                 if (this.state.alertDismissed !== newAlertDismissed || this.state.selectedVisibilityOption !== newSelectedVisibilityOption) {
                     this.safeSetState({
@@ -138,6 +138,35 @@ class AddNewCommentForm extends React.Component {
             locale={this.props.locale} labelOnSubscriptionActive={this.tt('stop_watching_this_thread')}
             labelOnSubscriptionInactive={this.tt('watch_this_thread')}/>;
 
+        let postButton = (
+            <button
+                className="btn btn-primary"
+                disabled={!this.props.resourceUri || this.state.commentToAdd.trim() === '' || !this.state.selectedVisibilityOption}
+                onClick={postComment(this)}>
+                {this.tt('btn_post')}
+            </button>
+        );
+
+        let visibilityLevels = (
+            <div style={{display: 'table'}}>
+                <Select
+                    label={this.tt('show_my_comment_to')}
+                    value={this.state.selectedVisibilityOption}
+                    options={this.state.commentVisibilityLevels}
+                    onChange={(selectedVisibilityOption) => {
+                        this.customizrClient
+                            .putSettings(this.props.accessToken, {selectedVisibility: selectedVisibilityOption.value});
+                        this.safeSetState({selectedVisibilityOption});
+                    }}
+                    searchable={false}
+                    clearable={false}
+                    optionComponent={CommentVisibilityOption}
+                />
+                <span className="input-group-btn" style={{display: 'table-cell'}}>
+                    { postButton }
+                </span>
+            </div>);
+
         return (
             <div
                 className="comments-add"
@@ -157,43 +186,24 @@ class AddNewCommentForm extends React.Component {
                     />
                 </div>
                 { this.props.newestFirst ? null : watchLink }
-                <MentionsInput
-                    autoFocus
-                    className="mentions mentions-min-height"
-                    value={this.state.commentToAdd}
-                    onChange={(e, newValue) => this.safeSetState({commentToAdd: newValue})}
-                    displayTransform={(id, display, type) => `@${display}`} allowSpaceInQuery={true}>
-                    <Mention
-                        trigger="@"
-                        data={(search, callback) => {
-                            fetchMatchingMentions(this.props.accessToken, search).then(callback);
-                        }}
-                        renderSuggestion={renderCoamMentionSuggestion}
-                    />
-                </MentionsInput>
-                <div style={{display: 'table'}}>
-                    <Select
-                        label={this.tt('show_my_comment_to')}
-                        value={this.state.selectedVisibilityOption}
-                        options={this.state.commentVisibilityLevels}
-                        onChange={(selectedVisibilityOption) => {
-                            this.customizrClient
-                                .putSettings(this.props.accessToken, {selectedVisibility: selectedVisibilityOption.value});
-                            this.safeSetState({selectedVisibilityOption});
-                        }}
-                        searchable={false}
-                        clearable={false}
-                        optionComponent={CommentVisibilityOption}
-                    />
-                    <span className="input-group-btn" style={{display: 'table-cell'}}>
-                        <button
-                            className="btn btn-primary"
-                            disabled={!this.props.resourceUri || this.state.commentToAdd.trim() === '' || !this.state.selectedVisibilityOption}
-                            onClick={postComment(this)}>
-                            {this.tt('btn_post')}
-                        </button>
-                    </span>
+                <div className={this.props.showVisibilityLevels ? null : 'post-button-inline'}>
+                    <MentionsInput
+                        autoFocus
+                        className="mentions mentions-min-height"
+                        value={this.state.commentToAdd}
+                        onChange={(e, newValue) => this.safeSetState({commentToAdd: newValue})}
+                        displayTransform={(id, display, type) => `@${display}`} allowSpaceInQuery={true}>
+                        <Mention
+                            trigger="@"
+                            data={(search, callback) => {
+                                fetchMatchingMentions(this.props.accessToken, search).then(callback);
+                            }}
+                            renderSuggestion={renderCoamMentionSuggestion}
+                        />
+                    </MentionsInput>
+                    { this.props.showVisibilityLevels ? null : postButton }
                 </div>
+                { this.props.showVisibilityLevels ? visibilityLevels : null }
                 { this.props.newestFirst ? watchLink : null }
             </div>
         );
@@ -208,6 +218,8 @@ AddNewCommentForm.propTypes = {
     newestFirst: PropTypes.bool,
     onPostComment: PropTypes.func,
     commentsClient: PropTypes.any,
+    showVisibilityLevels: PropTypes.bool,
+    enforceVisibilityLevel: PropTypes.oneOf(['public', 'internal']),
 };
 
 AddNewCommentForm.defaultProps = {
