@@ -4,9 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [0.9.3] - 2019-01.25
+## [0.9.3] - 2019-01-25
 ### Change
-- Make it possible to disable the autoFocus by using the `disableAutofocus` prop.
+- Make it possible to disable the autofocus by using the `disableAutofocus` prop.
 
 ## [0.9.2] - 2019-01.16
 ### Change
