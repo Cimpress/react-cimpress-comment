@@ -232,6 +232,7 @@ AddNewCommentForm.propTypes = {
 
 AddNewCommentForm.defaultProps = {
     locale: 'eng',
+    autoFocus: true,
 };
 
 export default translate('translations', {i18n: getI18nInstance()})(AddNewCommentForm);
