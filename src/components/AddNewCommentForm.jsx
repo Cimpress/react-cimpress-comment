@@ -188,7 +188,7 @@ class AddNewCommentForm extends React.Component {
                 { this.props.newestFirst ? null : watchLink }
                 <div className={this.props.showVisibilityLevels ? null : 'post-button-inline'}>
                     <MentionsInput
-                        autoFocus={!this.props.disableAutofocus}
+                        autoFocus={this.props.autoFocus}
                         className="mentions mentions-min-height"
                         value={this.state.commentToAdd}
                         onChange={(e, newValue) => this.safeSetState({commentToAdd: newValue})}
@@ -220,7 +220,7 @@ AddNewCommentForm.propTypes = {
     onPostComment: PropTypes.func,
     commentsClient: PropTypes.any,
     showVisibilityLevels: PropTypes.bool,
-    disableAutofocus: PropTypes.bool,
+    autoFocus: PropTypes.bool,
     enforceVisibilityLevel: PropTypes.oneOf(['public', 'internal']),
     textOverrides: PropTypes.shape({
         placeholder: PropTypes.string,
