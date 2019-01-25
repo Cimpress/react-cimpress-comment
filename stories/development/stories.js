@@ -19,6 +19,7 @@ storiesOf('Production-like', module)
                         newestFirst={boolean('newestFirst', true, 'Settings')}
                         editComments={boolean('newestFirst', true, 'Settings')}
                         showVisibilityLevels={boolean('showVisibilityLevels', true, 'Settings')}
+                        disableAutofocus={boolean('disableAutofocus', false, 'Settings')}
                         textOverrides={{
                             placeholder: text('placeholder', null, 'Text Overrides'),
                             subscribe: text('subscribe', null, 'Text Overrides'),
