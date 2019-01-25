@@ -288,6 +288,7 @@ class Comments extends React.Component {
                 resourceUri={this.props.resourceUri}
                 newestFirst={this.props.newestFirst}
                 showVisibilityLevels={this.props.showVisibilityLevels}
+                autoFocus={this.props.autoFocus}
                 enforceVisibilityLevel={this.props.enforceVisibilityLevel}
                 textOverrides={this.props.textOverrides}
                 onPostComment={(comment, visibilityOption) => this.postComment(comment, visibilityOption)}
@@ -318,6 +319,7 @@ Comments.propTypes = {
     commentCountRefreshed: PropTypes.func,
     initialValue: PropTypes.string,
     showVisibilityLevels: PropTypes.bool,
+    autoFocus: PropTypes.bool,
     enforceVisibilityLevel: PropTypes.oneOf(['public', 'internal']),
     textOverrides: PropTypes.shape({
         placeholder: PropTypes.string,
@@ -330,6 +332,7 @@ Comments.propTypes = {
 Comments.defaultProps = {
     locale: 'eng',
     showVisibilityLevels: true,
+    autoFocus: true,
     textOverrides: {
         placeholder: null,
         subscribe: null,
