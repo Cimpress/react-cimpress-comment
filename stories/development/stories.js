@@ -48,7 +48,7 @@ storiesOf('Production-like', module)
             </div>
         </Authenticated>;
     })
-    .add('GroupChat', () => {
+    .add('CommentChat', () => {
         return <Authenticated>
             <div className={'card'}>
                 <div className={'card-block'}>
