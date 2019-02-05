@@ -59,9 +59,7 @@ class CommentAuthor extends React.Component {
 
     render() {
         let name = `${this.state.createdByName || this.props.createdBy}`;
-        return <div className={this.props.className}>
-            {name}
-        </div>;
+        return <span className={this.props.className}>{name}</span>;
     }
 }
 

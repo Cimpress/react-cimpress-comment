@@ -6,7 +6,7 @@ import auth from './auth';
 
 import Comments from '../../src/Comments';
 import CommentsDrawerLink from '../../src/CommentsDrawerLink';
-import GroupChat from '../../src/GroupChat';
+import GroupChat from '../../src/CommentChat';
 
 storiesOf('Production-like', module)
     .addDecorator(withKnobs)
@@ -18,7 +18,7 @@ storiesOf('Production-like', module)
                         accessToken={auth.getAccessToken()}
                         resourceUri={text('resourceUri', 'https://stereotype.trdlnk.cimpress.io/v1/templates/123123', 'Settings')}
                         newestFirst={boolean('newestFirst', true, 'Settings')}
-                        editComments={boolean('newestFirst', true, 'Settings')}
+                        editComments={boolean('editComments', true, 'Settings')}
                         showVisibilityLevels={boolean('showVisibilityLevels', true, 'Settings')}
                         autoFocus={boolean('autoFocus', true, 'Settings')}
                         textOverrides={{

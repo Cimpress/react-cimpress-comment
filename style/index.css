@@ -1,6 +1,9 @@
 .comment {
     padding-top: 5px;
     padding-bottom: 5px;
+    display: grid;
+    grid-template-columns: 50px auto;
+    grid-gap: 5px
 }
 
 .comment .alert {
@@ -37,10 +40,10 @@
     background-color: white;
 }
 
-.comment-creator {
+.comment-author, .comment-creator {
     display: inline-block;
     margin-left: 3px;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
     font-size: 10px;
     max-width: 500px;
     color: #4e4e4e
@@ -300,13 +303,10 @@ div:focus {
 
 .comment-author-avatar {
     float: left;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    border-radius: 25%;
     margin-right: 5px;
     display: inline-block;
-}
-
-.comment-body {
     margin-top: 5px;
 }

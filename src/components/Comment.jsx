@@ -159,7 +159,7 @@ class Comment extends React.Component {
                             fetchMatchingMentions(this.props.accessToken, search).then(callback);
                         }
                     }
-                    renderSuggestion={renderCoamMentionSuggestion}/>
+                        renderSuggestion={renderCoamMentionSuggestion}/>
                 </MentionsInput>
                 {this.renderError(this.state.errorPut, this.tt('unable_to_edit_comment'))}
                 {editMenu}
@@ -172,6 +172,7 @@ class Comment extends React.Component {
         }
 
         let header = this.props.header;
+        let avatar = null;
         if (typeof header === 'undefined') {
             let commentCreator = <CommentAuthor
                 accessToken={this.props.accessToken}
@@ -182,25 +183,31 @@ class Comment extends React.Component {
                 createdBy={this.state.commentObject.createdBy}
                 createdAt={this.state.commentObject.createdAt}
                 updatedBy={this.state.commentObject.updatedBy}
-                updatedAt={this.state.commentObject.updatedAt} />;
+                updatedAt={this.state.commentObject.updatedAt}/>;
 
             let additionalCommentIndicators = <span className={'comment-creator'}>
                 <CommentVisibilityIcon icon={visibilityOption.icon} label={visibilityOption.label}/>
                 <CommentRefererIcon referer={this.state.commentObject.referer}/>
             </span>;
 
-            let avatar = <CommentAuthorAvatar userId={this.state.commentObject.createdBy}
+            avatar = <CommentAuthorAvatar userId={this.state.commentObject.createdBy}
                 accessToken={this.props.accessToken}/>;
 
-            header = <React.Fragment>{avatar}{commentCreator}{commentTime ? <span className={'comment-creator'}>,&nbsp;</span>: null}{commentTime}{additionalCommentIndicators}</React.Fragment>;
+            header = <span className={'comment-creator'}>{commentCreator}{commentTime ?
+                <span>,&nbsp;</span> : null}{commentTime}{additionalCommentIndicators}</span>;
         }
 
         return <div className={this.props.className}>
-            {header}
-            <div className={'comment-body'}>
-                {commentBody}
+            <div>
+                {avatar}
             </div>
-            {this.props.footer}
+            <div>
+                {header}
+                <div className={'comment-body'}>
+                    {commentBody}
+                </div>
+                {this.props.footer}
+            </div>
         </div>;
     }
 }

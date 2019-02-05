@@ -51,7 +51,7 @@ class Comments extends React.Component {
         if (this.props.accessToken !== prevProps.accessToken) {
             this.jwtSub = getSubFromJWT(this.props.accessToken);
         }
-        if (this.props.resourceUri !== prevProps.resourceUri) {
+        if (this.props.resourceUri !== prevProps.resourceUri || this.props.newestFirst !== prevProps.newestFirst) {
             this.commentsClient = new CommentsClient(this.props.accessToken, this.props.resourceUri);
             this.fetchComments();
         }
@@ -130,6 +130,7 @@ class Comments extends React.Component {
                         }
                     }).map((c) => c.id),
                     commentObjects: responseJson.reduce((acc, curr) => {
+                        curr.commen
                         acc[curr.id] = curr;
                         return acc;
                     }, {}),

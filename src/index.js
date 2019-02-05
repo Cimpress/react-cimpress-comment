@@ -1,6 +1,6 @@
 import _Comments from './Comments';
 import _CommentsDrawerLink from './CommentsDrawerLink';
-import _GroupChat from './GroupChat';
+import _GroupChat from './CommentChat';
 
 export class Comments extends _Comments {
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import '../style/index.css';
 import '../style/select.css';
-import '../style/chat-bubble.css';
+import '../style/chat.css';
 
 import Comment from './components/Comment';
 import Comments from './Comments';
@@ -14,7 +14,7 @@ import {getSubFromJWT} from './tools/helper';
 import CommentAuthor from './components/CommentAuthor';
 import CommentTime from './components/CommentTime';
 
-class GroupChat extends Comments {
+class CommentChat extends Comments {
     renderComments(commentIds) {
         let uri = this.commentsClient.getResourceCommentsUri();
         let jwt = getSubFromJWT(this.props.accessToken);
@@ -64,7 +64,7 @@ class GroupChat extends Comments {
     }
 }
 
-GroupChat.propTypes = {
+CommentChat.propTypes = {
     locale: PropTypes.string,
     accessToken: PropTypes.string.isRequired,
     resourceUri: PropTypes.string.isRequired,
@@ -84,7 +84,7 @@ GroupChat.propTypes = {
     }),
 };
 
-GroupChat.defaultProps = {
+CommentChat.defaultProps = {
     locale: 'eng',
     showVisibilityLevels: true,
     autoFocus: true,
@@ -96,4 +96,4 @@ GroupChat.defaultProps = {
     },
 };
 
-export default translate('translations', {i18n: getI18nInstance()})(GroupChat);
+export default translate('translations', {i18n: getI18nInstance()})(CommentChat);

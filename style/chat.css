@@ -44,8 +44,16 @@
 
 .me.bubble {
     background-color: #c8edf4;
-    margin: 5px auto 5px 5px;
+    margin: 5px auto 1px 5px;
     padding-right: 5px;
+}
+
+.me .mentions__suggestions__item--focused {
+    background-color: #DDF4F8;
+}
+
+.you .mentions__suggestions__item--focused {
+    background-color: #FAEDF8;
 }
 
 .me.bubble:after {
@@ -72,8 +80,6 @@
     background-color: #c8edf4;
 }
 
-/* you */
-
 .you .mentions {
     padding-bottom: 2px;
 }
@@ -84,6 +90,10 @@
     margin-right: 5px;
     margin-bottom: 2px;
     font-weight: bold;
+}
+
+.me.comment-author, .you.comment-author {
+    margin-top: 5px;
 }
 
 .you.comment-creator {
