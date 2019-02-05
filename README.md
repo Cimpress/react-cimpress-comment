@@ -96,3 +96,7 @@ During and after development it is good to check or update [BackstopJS](https://
 Running the UI tests is done by `backstop test` ***after*** executing `npm run storybook`.
 
 Note: Make sure you have backstop installed `npm install -g backstopjs` or use the one in `node_modules`.
+
+To approve the changes to reference images run `node_modules/.bin/backstop approve` on the `results` branch and make 
+sure to merge the reference images back to the respective branch
+`
