@@ -8,12 +8,15 @@ import {getI18nInstance} from '../tools/i18n';
 import {translate} from 'react-i18next';
 
 import {fetchUserName} from '../clients/mentions';
+import UserAvatar from 'react-user-avatar';
+import '../../style/avatar.css';
 
 class CommentAuthorAvatar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             avatar: null,
+            name: 'default',
         };
     }
 
@@ -23,6 +26,7 @@ class CommentAuthorAvatar extends React.Component {
             .then((responseJson) => {
                 this.safeSetState({
                     avatar: responseJson.profile.picture,
+                    name: responseJson.profile.name,
                 });
             });
     }
@@ -38,20 +42,14 @@ class CommentAuthorAvatar extends React.Component {
     }
 
     render() {
-        return (this.state.avatar)
-            ? <img src={this.state.avatar} alt="" className={this.props.className}/>
-            : null;
+        return <UserAvatar src={this.state.avatar} size={48} name={this.state.name} />;
     }
 }
 
 CommentAuthorAvatar.propTypes = {
-    className: PropTypes.string,
     accessToken: PropTypes.string,
     userId: PropTypes.string,
 };
 
-CommentAuthorAvatar.defaultProps = {
-    className: 'comment-author-avatar',
-};
 
 export default translate('translations', {i18n: getI18nInstance()})(CommentAuthorAvatar);
