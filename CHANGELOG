@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2019-02-05
+### Change
+- Improve presentation of chat by adding the avatar
+- Providing additional component 'CommentChat' to visualize comments as a group chat
+- Improvements in layout and minor bug fixes
+
 ## [0.9.3] - 2019-01-25
 ### Change
 - Make it possible to control the autofocus of the component by using the `autoFocus` prop.
