@@ -1,0 +1,94 @@
+.chat {
+    display: flex;
+    flex-flow: column wrap;
+    flex: 1 1 auto;
+}
+
+.bubble {
+    border-radius: 10px;
+    display: flex;
+    padding: 5px 6px;
+    position: relative;
+    vertical-align: top;
+    width: fit-content;
+}
+
+.bubble::before {
+    content: "\00a0";
+    display: flex;
+    height: 16px;
+    position: absolute;
+    top: 11px;
+    transform: rotate(29deg) skew(-35deg);
+    -moz-transform: rotate(29deg) skew(-35deg);
+    -ms-transform: rotate(29deg) skew(-35deg);
+    -o-transform: rotate(29deg) skew(-35deg);
+    -webkit-transform: rotate(29deg) skew(-35deg);
+    width: 20px;
+}
+
+.bubble.you > .comment-body {
+    display: flex;
+    justify-content: flex-end;
+    align-content: flex-end;
+    flex-flow: row
+}
+
+.mentions-ok, .mentions-cancel, .mentions-edit {
+    background-color: transparent;
+}
+
+.you .mentions__highlighter > strong {
+    background-color: #f9c2dd;
+    border-radius: 5px;
+    padding-left: 1px;
+    padding-right: 1px;
+}
+
+.you .comment-creator, .me .comment-creator {
+    color: #2d2c2c;
+    margin-left: 0px;
+    font-weight: bold;
+}
+
+.me .mentions__highlighter > strong {
+    background-color: #98e1ea;
+    border-radius: 5px;
+    padding-left: 1px;
+    padding-right: 1px;
+}
+
+.me .mentions__suggestions__list {
+    background-color: #c8edf4;
+}
+
+.me {
+    background-color: #c8edf4;
+    display: inline-block;
+    margin: 5px auto 5px 5px;
+}
+
+.me::before {
+    background-color: #c8edf4;
+    left: -9px;
+}
+
+.you .mentions__suggestions__list {
+    background-color: #f4d9f0;
+}
+
+.you {
+    background-color: #f4d9f0;
+    display: inline-block;
+    margin: 5px 5px 5px auto;
+}
+
+.you::before {
+    background-color: #f4d9f0;
+    right: -9px;
+}
+
+.comment-creator.me, .comment-creator.you {
+    background-color: inherit;
+}
+

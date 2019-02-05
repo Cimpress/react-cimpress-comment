@@ -220,7 +220,6 @@ class Comments extends React.Component {
     renderComments(commentIds) {
         let uri = this.commentsClient.getResourceCommentsUri();
         let jwt = getSubFromJWT(this.props.accessToken);
-
         return commentIds.map((commentId, index) => {
             let className = 'comment ' + ((index % 2 === 0) ? 'comment-even' : 'comment-odd');
             return <Comment
@@ -235,10 +234,6 @@ class Comments extends React.Component {
                 editComments={this.props.editComments}
                 commentVisibilityLevels={this.state.commentVisibilityLevels}/>;
         });
-    }
-
-    renderSuggestion(entry, search, highlightedDisplay, index) {
-        return <span>{highlightedDisplay} <i><small>{entry.email}</small></i></span>;
     }
 
     renderError(defaultErrorMessage, dismissible = false, onDismiss) {
@@ -265,7 +260,7 @@ class Comments extends React.Component {
         if (!this.props.resourceUri) {
             comments = (<p>{this.tt('incorrect_component_setup')}</p>);
         } else if (this.state.commentsIds.length > 0) {
-            comments = this.renderComments(this.state.commentsIds);
+            comments = this.props.renderComments ? this.props.renderComments.bind(this)(this.state.commentsIds) : this.renderComments(this.state.commentsIds);
         } else if (this.state.loading) {
             comments = this.renderLoading();
         } else if (this.state.failed) {
@@ -321,6 +316,7 @@ Comments.propTypes = {
     showVisibilityLevels: PropTypes.bool,
     autoFocus: PropTypes.bool,
     enforceVisibilityLevel: PropTypes.oneOf(['public', 'internal']),
+    renderComments: PropTypes.func,
     textOverrides: PropTypes.shape({
         placeholder: PropTypes.string,
         subscribe: PropTypes.string,

@@ -6,6 +6,7 @@ import auth from './auth';
 
 import Comments from '../../src/Comments';
 import CommentsDrawerLink from '../../src/CommentsDrawerLink';
+import GroupChat from '../../src/GroupChat';
 
 storiesOf('Production-like', module)
     .addDecorator(withKnobs)
@@ -37,6 +38,21 @@ storiesOf('Production-like', module)
             <div className={'card'}>
                 <div className={'card-block'}>
                     <CommentsDrawerLink
+                        locale={text('locale', 'eng')}
+                        accessToken={auth.getAccessToken()}
+                        resourceUri={text('resourceUri', 'https://stereotype.trdlnk.cimpress.io/v1/templates/123123')}
+                        newestFirst={boolean('newestFirst', true)}
+                        editComments={boolean('newestFirst', true)}
+                    />
+                </div>
+            </div>
+        </Authenticated>;
+    })
+    .add('GroupChat', () => {
+        return <Authenticated>
+            <div className={'card'}>
+                <div className={'card-block'}>
+                    <GroupChat
                         locale={text('locale', 'eng')}
                         accessToken={auth.getAccessToken()}
                         resourceUri={text('resourceUri', 'https://stereotype.trdlnk.cimpress.io/v1/templates/123123')}
