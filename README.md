@@ -33,10 +33,6 @@ render() {
   }
 ```
 
-which will result in something like
-
-![Demo](./demo.gif)
-
 There is also a variant of the component that places the comments in a drawer, and provides a button with comment count as a badge that opens the drawer.
 
 `import { CommentsDrawerLink } from 'react-cimpress-comment'`
@@ -50,8 +46,6 @@ There is also a variant of the component that places the comments in a drawer, a
           </div>
         );
       }
-
-![Demo](./demo-drawer.gif)
 
 Optional props:
 - `header` allows overwriting the header/title part

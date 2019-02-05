@@ -159,7 +159,7 @@ class Comment extends React.Component {
                             fetchMatchingMentions(this.props.accessToken, search).then(callback);
                         }
                     }
-                        renderSuggestion={renderCoamMentionSuggestion}/>
+                    renderSuggestion={renderCoamMentionSuggestion}/>
                 </MentionsInput>
                 {this.renderError(this.state.errorPut, this.tt('unable_to_edit_comment'))}
                 {editMenu}

@@ -130,7 +130,6 @@ class Comments extends React.Component {
                         }
                     }).map((c) => c.id),
                     commentObjects: responseJson.reduce((acc, curr) => {
-                        curr.commen
                         acc[curr.id] = curr;
                         return acc;
                     }, {}),
