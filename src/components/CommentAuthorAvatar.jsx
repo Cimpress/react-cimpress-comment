@@ -43,7 +43,7 @@ class CommentAuthorAvatar extends React.Component {
 
     render() {
         return <UserAvatar src={this.state.avatar} size={48} name={this.state.name}
-            colors={['#0088a9', '#f0553a', '#3a414c']}/>;
+            colors={['#0088a9']}/>;
     }
 }
 
