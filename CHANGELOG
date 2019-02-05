@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [1.0.1] - 2019-02-05
 ### Change
+- Fix how the avatar placeholder is presented when commetns are loading.
+
+## [1.0.1] - 2019-02-05
+### Added
 - Improve presentation of chat by adding the avatar
 - Providing additional component 'CommentChat' to visualize comments as a group chat
 - Improvements in layout and minor bug fixes
