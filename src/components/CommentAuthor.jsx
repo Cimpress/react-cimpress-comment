@@ -74,7 +74,7 @@ CommentAuthor.propTypes = {
 
 CommentAuthor.defaultProps = {
     locale: 'eng',
-    className: 'comment-creator',
+    className: 'comment-author',
 };
 
 export default translate('translations', {i18n: getI18nInstance()})(CommentAuthor);

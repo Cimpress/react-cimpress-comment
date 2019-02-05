@@ -28,7 +28,7 @@ class GroupChat extends Comments {
                 <React.Fragment>
                     <CommentAuthor
                         accessToken={this.props.accessToken}
-                        className={`comment-creator ${chatParty}`}
+                        className={`comment-author ${chatParty}`}
                         createdBy={currentCommentObject.createdBy}/>
                 </React.Fragment>;
             let timeFooter =
