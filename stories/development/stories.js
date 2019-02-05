@@ -57,7 +57,7 @@ storiesOf('Production-like', module)
                         accessToken={auth.getAccessToken()}
                         resourceUri={text('resourceUri', 'https://stereotype.trdlnk.cimpress.io/v1/templates/123123')}
                         newestFirst={boolean('newestFirst', true)}
-                        editComments={boolean('newestFirst', true)}
+                        editComments={boolean('editComments', false)}
                     />
                 </div>
             </div>

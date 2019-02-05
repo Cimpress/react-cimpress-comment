@@ -40,22 +40,14 @@
 
 .you .mentions__highlighter > strong {
     background-color: #f9c2dd;
-    border-radius: 5px;
-    padding-left: 1px;
-    padding-right: 1px;
-}
-
-.you .comment-creator, .me .comment-creator {
-    color: #2d2c2c;
-    margin-left: 0px;
-    font-weight: bold;
+    border-radius: 4px;
+    padding: 0px 1px 2px 1px;
 }
 
 .me .mentions__highlighter > strong {
     background-color: #98e1ea;
-    border-radius: 5px;
-    padding-left: 1px;
-    padding-right: 1px;
+    border-radius: 4px;
+    padding: 0px 1px 2px 1px;
 }
 
 .me .mentions__suggestions__list {
@@ -88,7 +80,16 @@
     right: -9px;
 }
 
-.comment-creator.me, .comment-creator.you {
+.comment-creator.me {
     background-color: inherit;
+}
+
+.comment-creator.you {
+    background-color: inherit;
+    justify-content: flex-end;
+    align-content: flex-end;
+    flex-flow: row;
+    margin-left: auto;
+    display: flex;
 }
 

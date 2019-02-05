@@ -5,7 +5,9 @@ import '../../style/index.css';
 
 import CommentVisibilityIcon from './CommentVisibilityIcon';
 import CommentRefererIcon from './CommentRefererIcon';
+import CommentAuthorAvatar from './CommentAuthorAvatar';
 import CommentAuthor from './CommentAuthor';
+import CommentTime from './CommentTime';
 
 import {Mention, MentionsInput} from 'react-mentions';
 import renderCoamMentionSuggestion from '../renderers/renderCoamMentionSuggestion';
@@ -15,8 +17,6 @@ import {translate} from 'react-i18next';
 import {getI18nInstance} from '../tools/i18n';
 import {errorToString, performActionOnMetaEnter} from '../tools/helper';
 import {fetchMatchingMentions} from '../clients/mentions';
-import * as client from '../clients/mentions';
-import CommentAuthorAvatar from './CommentAuthorAvatar';
 
 let {Spinner} = shapes;
 
@@ -166,33 +166,41 @@ class Comment extends React.Component {
             </div>
         );
 
-        let commentCreator = this.props.showAuthor ? <CommentAuthor
-            createdBy={this.state.commentObject.createdBy}
-            createdAt={this.state.commentObject.createdAt}
-            updatedBy={this.state.commentObject.updatedBy}
-            updatedAt={this.state.commentObject.updatedAt}/> : null;
-
-        let additionalCommentIndicators = <span className={'comment-creator'}>
-            {this.props.showCommentVisibility ?
-                <CommentVisibilityIcon icon={visibilityOption.icon} label={visibilityOption.label}/> : null}
-            {this.props.showCommentReferrer ? <CommentRefererIcon referer={this.state.commentObject.referer}/> : null}
-        </span>;
-
         let error = this.renderError(this.state.error, this.tt('unable_to_read_comment'));
         if (error) {
             return <div className={this.props.className}>{error}</div>;
         }
 
-        let avatar = null;
-        if (this.props.showAvatar) {
-            avatar = <CommentAuthorAvatar userId={this.state.commentObject.createdBy} accessToken={this.props.accessToken}/>
+        let header = this.props.header;
+        if (typeof header === 'undefined') {
+            let commentCreator = <CommentAuthor
+                accessToken={this.props.accessToken}
+                createdBy={this.state.commentObject.createdBy}/>;
+
+            let commentTime = <CommentTime
+                accessToken={this.props.accessToken}
+                createdBy={this.state.commentObject.createdBy}
+                createdAt={this.state.commentObject.createdAt}
+                updatedBy={this.state.commentObject.updatedBy}
+                updatedAt={this.state.commentObject.updatedAt} />;
+
+            let additionalCommentIndicators = <span className={'comment-creator'}>
+                <CommentVisibilityIcon icon={visibilityOption.icon} label={visibilityOption.label}/>
+                <CommentRefererIcon referer={this.state.commentObject.referer}/>
+            </span>;
+
+            let avatar = <CommentAuthorAvatar userId={this.state.commentObject.createdBy}
+                accessToken={this.props.accessToken}/>;
+
+            header = <React.Fragment>{avatar}{commentCreator}{commentTime ? <span className={'comment-creator'}>,&nbsp;</span>: null}{commentTime}{additionalCommentIndicators}</React.Fragment>;
         }
 
         return <div className={this.props.className}>
-            {avatar}{commentCreator}{additionalCommentIndicators}
+            {header}
             <div className={'comment-body'}>
                 {commentBody}
             </div>
+            {this.props.footer}
         </div>;
     }
 }
@@ -205,11 +213,8 @@ Comment.propTypes = {
     commentUri: PropTypes.string,
     comment: PropTypes.object,
     editComments: PropTypes.bool,
-    showAuthor: PropTypes.bool,
-    showAvatar: PropTypes.bool,
-    showCommentVisibility: PropTypes.bool,
-    showCommentReferrer: PropTypes.bool,
-
+    header: PropTypes.node,
+    footer: PropTypes.node,
     commentVisibilityLevels: PropTypes.array,
     commentsClient: PropTypes.any,
 };
@@ -217,10 +222,6 @@ Comment.propTypes = {
 Comment.defaultProps = {
     locale: 'eng',
     className: 'comment',
-    showAuthor: true,
-    showAvatar: false,
-    showCommentVisibility: true,
-    showCommentReferrer: true,
 };
 
 export default translate('translations', {i18n: getI18nInstance()})(Comment);

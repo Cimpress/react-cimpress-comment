@@ -12,9 +12,9 @@ import {getI18nInstance} from './tools/i18n';
 import {translate} from 'react-i18next';
 import {getSubFromJWT} from './tools/helper';
 import CommentAuthor from './components/CommentAuthor';
+import CommentTime from './components/CommentTime';
 
 class GroupChat extends Comments {
-
     renderComments(commentIds) {
         let uri = this.commentsClient.getResourceCommentsUri();
         let jwt = getSubFromJWT(this.props.accessToken);
@@ -24,15 +24,24 @@ class GroupChat extends Comments {
             let currentCommentObject = this.state.commentObjects[commentId];
             let chatParty = currentCommentObject.createdBy === jwt ? 'me' : 'you';
             let className = `bubble ${chatParty}`;
-            let authorHeader = <CommentAuthor
-                className={`comment-creator ${chatParty}`}
-                createdBy={currentCommentObject.createdBy}
-                createdAt={currentCommentObject.createdAt}
-                updatedBy={currentCommentObject.updatedBy}
-                updatedAt={currentCommentObject.updatedAt}
-                previousCreatedBy={previousCommentObject ? previousCommentObject.createdBy : null}/>
-            return <React.Fragment>
-                {authorHeader}
+            let authorHeader =
+                <React.Fragment>
+                    <CommentAuthor
+                        accessToken={this.props.accessToken}
+                        className={`comment-creator ${chatParty}`}
+                        createdBy={currentCommentObject.createdBy}/>
+                </React.Fragment>;
+            let timeFooter =
+                <CommentTime
+                    accessToken={this.props.accessToken}
+                    className={`comment-creator ${chatParty}`}
+                    createdBy={currentCommentObject.createdBy}
+                    createdAt={currentCommentObject.createdAt}
+                    updatedBy={currentCommentObject.updatedBy}
+                    updatedAt={currentCommentObject.updatedAt} />;
+            let implicit = (!previousCommentObject || previousCommentObject.createdBy !== currentCommentObject.createdBy);
+            return <React.Fragment key={commentId}>
+                {implicit ? authorHeader : null}
                 <Comment
                     key={commentId}
                     locale={this.props.locale}
@@ -44,10 +53,9 @@ class GroupChat extends Comments {
                     comment={this.state.commentObjects[commentId]}
                     editComments={this.props.editComments}
                     commentVisibilityLevels={this.state.commentVisibilityLevels}
-                    showCommentVisibility={false}
-                    showCommentReferrer={false}
-                    showAuthor={false}
-                /></React.Fragment>
+                    header={null}
+                    footer={timeFooter}
+                /></React.Fragment>;
         });
     }
 

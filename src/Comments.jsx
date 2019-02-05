@@ -222,6 +222,7 @@ class Comments extends React.Component {
         let jwt = getSubFromJWT(this.props.accessToken);
         return commentIds.map((commentId, index) => {
             let className = 'comment ' + ((index % 2 === 0) ? 'comment-even' : 'comment-odd');
+
             return <Comment
                 key={commentId}
                 locale={this.props.locale}
@@ -232,7 +233,9 @@ class Comments extends React.Component {
                 commentUri={`${uri}/${commentId}`}
                 comment={this.state.commentObjects[commentId]}
                 editComments={this.props.editComments}
-                commentVisibilityLevels={this.state.commentVisibilityLevels}/>;
+                commentVisibilityLevels={this.state.commentVisibilityLevels}
+                showAvatar={this.props.showAvatar}
+            />;
         });
     }
 
@@ -317,6 +320,7 @@ Comments.propTypes = {
     autoFocus: PropTypes.bool,
     enforceVisibilityLevel: PropTypes.oneOf(['public', 'internal']),
     renderComments: PropTypes.func,
+    showAvatar: PropTypes.bool,
     textOverrides: PropTypes.shape({
         placeholder: PropTypes.string,
         subscribe: PropTypes.string,
@@ -328,6 +332,7 @@ Comments.propTypes = {
 Comments.defaultProps = {
     locale: 'eng',
     showVisibilityLevels: true,
+    showAvatar: false,
     autoFocus: true,
     textOverrides: {
         placeholder: null,

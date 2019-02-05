@@ -38,11 +38,12 @@
 }
 
 .comment-creator {
+    display: inline-block;
     margin-left: 3px;
     margin-bottom: 4px;
     font-size: 10px;
     max-width: 500px;
-    color: #c4cdd6
+    color: #4e4e4e
 }
 
 .comment-creator-inner {
@@ -298,6 +299,7 @@ div:focus {
 }
 
 .comment-author-avatar {
+    float: left;
     width: 24px;
     height: 24px;
     border-radius: 50%;
