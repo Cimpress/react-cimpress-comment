@@ -1,0 +1,135 @@
+.chat {
+    display: flex;
+    flex-flow: column wrap;
+    flex: 1 1 auto;
+}
+
+.mentions-ok, .mentions-cancel, .mentions-edit {
+    background-color: transparent;
+}
+
+.bubble {
+    border-radius: 6px;
+    padding: 0px;
+    position: relative;
+    vertical-align: top;
+    width: fit-content;
+}
+
+/* me */
+
+.me .mentions {
+    padding-bottom: 2px;
+}
+
+.me .mentions__control {
+    margin-left: 4px;
+}
+
+.me.comment-author {
+    text-align: left;
+    max-width: unset;
+    margin-left: 5px;
+    margin-bottom: 2px;
+    font-weight: bold;
+}
+
+.me.comment-creator {
+    text-align: left;
+    max-width: unset;
+    margin-left: 5px;
+    margin-bottom: 2px;
+    display: block;
+}
+
+.me.bubble {
+    background-color: #c8edf4;
+    margin: 5px auto 1px 5px;
+    padding-right: 5px;
+}
+
+.me .mentions__suggestions__item--focused {
+    background-color: #DDF4F8;
+}
+
+.you .mentions__suggestions__item--focused {
+    background-color: #FAEDF8;
+}
+
+.me.bubble:after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 2px;
+    width: 0;
+    height: 0;
+    border: 11px solid transparent;
+    border-right-color: #c8edf4;
+    border-left: 0;
+    margin-top: 0px;
+    margin-left: -11px;
+}
+
+.me .mentions__highlighter > strong {
+    background-color: #DDF4F8;
+    border-radius: 4px;
+    padding: 0px 1px 2px 1px;
+}
+
+.me .mentions__suggestions__list {
+    background-color: #c8edf4;
+}
+
+.you .mentions {
+    padding-bottom: 2px;
+}
+
+.you.comment-author {
+    text-align: right;
+    max-width: unset;
+    margin-right: 5px;
+    margin-bottom: 2px;
+    font-weight: bold;
+}
+
+.me.comment-author, .you.comment-author {
+    margin-top: 5px;
+}
+
+.you.comment-creator {
+    text-align: right;
+    max-width: unset;
+    margin-right: 5px;
+    margin-bottom: 2px;
+    display: block;
+}
+
+.you.bubble {
+    background-color: #f4d9f0;
+    margin: 2px 5px 2px auto;
+    padding-left: 5px;
+}
+
+.you.bubble:after {
+    content: '';
+    position: absolute;
+    right: 4px;
+    top: 2px;
+    width: 0;
+    height: 0;
+    border: 11px solid transparent;
+    border-left-color: #f4d9f0;
+    border-right: 0;
+    margin-top: 0px;
+    margin-right: -11px;
+}
+
+.you .mentions__highlighter > strong {
+    background-color: #FAEDF8;
+    border-radius: 4px;
+    padding: 0px 1px 2px 1px;
+}
+
+.you .mentions__suggestions__list {
+    background-color: #f4d9f0;
+}

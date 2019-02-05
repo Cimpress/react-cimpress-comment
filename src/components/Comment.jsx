@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 
 import '../../style/index.css';
 
-import TimeAgo from 'react-timeago';
-import {reactTimeAgoFormatters} from '../locales/reactTimeAgoFormatters';
-
 import CommentVisibilityIcon from './CommentVisibilityIcon';
 import CommentRefererIcon from './CommentRefererIcon';
+import CommentAuthorAvatar from './CommentAuthorAvatar';
+import CommentAuthor from './CommentAuthor';
+import CommentTime from './CommentTime';
+
 import {Mention, MentionsInput} from 'react-mentions';
 import renderCoamMentionSuggestion from '../renderers/renderCoamMentionSuggestion';
 import {shapes} from '@cimpress/react-components';
@@ -15,32 +16,19 @@ import {shapes} from '@cimpress/react-components';
 import {translate} from 'react-i18next';
 import {getI18nInstance} from '../tools/i18n';
 import {errorToString, performActionOnMetaEnter} from '../tools/helper';
-import {fetchUserName, fetchMatchingMentions} from '../clients/mentions';
+import {fetchMatchingMentions} from '../clients/mentions';
 
 let {Spinner} = shapes;
 
 class Comment extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
             editMode: false,
             editedComment: null,
             savingComment: !props.comment.createdAt && !props.comment.updatedAt,
             commentObject: props.comment,
         };
-    }
-
-    fetchUserNames() {
-        if (this.state.updatedByName === undefined && this.state.commentObject.updatedBy) {
-            this.fetchUserName(this.state.commentObject.updatedBy, 'updatedByName');
-        }
-        if (this.state.createdByName === undefined && this.state.commentObject.createdBy) {
-            this.fetchUserName(this.state.commentObject.createdBy, 'createdByName');
-        }
-        if (this.state.jwtSubName === undefined && this.props.jwtSub) {
-            this.fetchUserName(this.props.jwtSub, 'jwtSubName');
-        }
     }
 
     safeSetState(data, callback) {
@@ -51,24 +39,10 @@ class Comment extends React.Component {
 
     componentDidMount() {
         this._ismounted = true;
-        this.fetchUserNames();
     }
 
     componentWillUnmount() {
         this._ismounted = false;
-    }
-
-    componentDidUpdate() {
-        this.fetchUserNames();
-    }
-
-    fetchUserName(userId, stateToUpdate) {
-        fetchUserName(this.props.accessToken, userId)
-            .then((responseJson) => {
-                this.safeSetState({
-                    [stateToUpdate]: responseJson.profile.name,
-                });
-            });
     }
 
     change(event, newValue, newPlainTextValue, mentions) {
@@ -160,7 +134,7 @@ class Comment extends React.Component {
         let readonlyTextField;
         if (this.state.savingComment === true) {
             readonlyTextField = true;
-            editMenu = <div className={'mentions-edit'}><Spinner size={20}/></div>;
+            editMenu = <div className={'mentions-edit'}><Spinner size={18}/></div>;
         } else {
             readonlyTextField = !this.state.editMode;
             editMenu = this.renderEditMenu();
@@ -173,57 +147,66 @@ class Comment extends React.Component {
             <div
                 onKeyDown={performActionOnMetaEnter(this.completeEditing.bind(this))}
                 tabIndex="1"
-                style={{position: 'relative'}}
-            >
+                style={{position: 'relative', display: 'flex', flexFlow: 'row'}}>
                 <MentionsInput
                     className={`mentions ${readonlyTextField ? 'disabled' : ''}`}
                     value={this.state.editedComment !== null ? this.state.editedComment : this.state.commentObject.comment}
                     onChange={this.change.bind(this)}
                     displayTransform={(id, display, type) => `@${display}`} allowSpaceInQuery={true}
                     readOnly={readonlyTextField}>
-                    <Mention trigger="@" data={(search, callback) => {
-                        fetchMatchingMentions(this.props.accessToken, search)
-                            .then(callback);
-                    }}
-                    renderSuggestion={renderCoamMentionSuggestion}
-                    />
+                    <Mention trigger="@" data={
+                        (search, callback) => {
+                            fetchMatchingMentions(this.props.accessToken, search).then(callback);
+                        }
+                    }
+                    renderSuggestion={renderCoamMentionSuggestion}/>
                 </MentionsInput>
                 {this.renderError(this.state.errorPut, this.tt('unable_to_edit_comment'))}
                 {editMenu}
             </div>
         );
 
-        let commentCreator = <div className={'comment-creator'}>
-            {`${this.state.createdByName || this.state.commentObject.createdBy}`}
-            {this.state.commentObject.createdAt ?
-                <React.Fragment>
-                    <span>,&nbsp;</span>
-                    <TimeAgo
-                        date={this.state.commentObject.createdAt}
-                        formatter={reactTimeAgoFormatters[this.props.locale]}/>
-                </React.Fragment>
-                : null}
-            {this.state.commentObject.createdAt !== this.state.commentObject.updatedAt && this.state.commentObject.updatedAt
-                ?
-                <span>, {this.tt('modified')} {(this.state.commentObject.updatedBy !== this.state.commentObject.createdBy)
-                    ? `${this.tt('by')} ${this.state.updatedByName || this.state.commentObject.updatedBy}`
-                    : null} <TimeAgo
-                    date={this.state.commentObject.updatedAt}
-                    formatter={reactTimeAgoFormatters[this.props.locale]}/></span>
-                : null}
-            <CommentVisibilityIcon icon={visibilityOption.icon} label={visibilityOption.label}/>
-            <CommentRefererIcon referer={this.state.commentObject.referer}/>
-        </div>;
-
         let error = this.renderError(this.state.error, this.tt('unable_to_read_comment'));
         if (error) {
-            return <div className={this.props.className || 'comment'}>{error}</div>;
+            return <div className={this.props.className}>{error}</div>;
         }
 
-        return <div className={this.props.className || 'comment'}>
-            {commentCreator}
-            <div className={'comment-body'}>
-                {commentBody}
+        let header = this.props.header;
+        let avatar = null;
+        if (typeof header === 'undefined') {
+            let commentCreator = <CommentAuthor
+                accessToken={this.props.accessToken}
+                createdBy={this.state.commentObject.createdBy}/>;
+
+            let commentTime = <CommentTime
+                accessToken={this.props.accessToken}
+                createdBy={this.state.commentObject.createdBy}
+                createdAt={this.state.commentObject.createdAt}
+                updatedBy={this.state.commentObject.updatedBy}
+                updatedAt={this.state.commentObject.updatedAt}/>;
+
+            let additionalCommentIndicators = <span className={'comment-creator'}>
+                <CommentVisibilityIcon icon={visibilityOption.icon} label={visibilityOption.label}/>
+                <CommentRefererIcon referer={this.state.commentObject.referer}/>
+            </span>;
+
+            avatar = <CommentAuthorAvatar userId={this.state.commentObject.createdBy}
+                accessToken={this.props.accessToken}/>;
+
+            header = <span className={'comment-creator'}>{commentCreator}{commentTime ?
+                <span>,&nbsp;</span> : null}{commentTime}{additionalCommentIndicators}</span>;
+        }
+
+        return <div className={this.props.className}>
+            <div>
+                {avatar}
+            </div>
+            <div>
+                {header}
+                <div className={'comment-body'}>
+                    {commentBody}
+                </div>
+                {this.props.footer}
             </div>
         </div>;
     }
@@ -237,13 +220,15 @@ Comment.propTypes = {
     commentUri: PropTypes.string,
     comment: PropTypes.object,
     editComments: PropTypes.bool,
-
+    header: PropTypes.node,
+    footer: PropTypes.node,
     commentVisibilityLevels: PropTypes.array,
     commentsClient: PropTypes.any,
 };
 
 Comment.defaultProps = {
     locale: 'eng',
+    className: 'comment',
 };
 
 export default translate('translations', {i18n: getI18nInstance()})(Comment);

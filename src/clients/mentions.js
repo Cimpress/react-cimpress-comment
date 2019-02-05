@@ -35,6 +35,7 @@ const fetchUserName = (accessToken, userId) => {
         .catch((err) => {
             // eslint-disable-next-line no-console
             console.error(err);
+            mentionsUserCache[userId] = null;
             throw err;
         });
 

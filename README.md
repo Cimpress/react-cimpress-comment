@@ -33,10 +33,6 @@ render() {
   }
 ```
 
-which will result in something like
-
-![Demo](./demo.gif)
-
 There is also a variant of the component that places the comments in a drawer, and provides a button with comment count as a badge that opens the drawer.
 
 `import { CommentsDrawerLink } from 'react-cimpress-comment'`
@@ -50,8 +46,6 @@ There is also a variant of the component that places the comments in a drawer, a
           </div>
         );
       }
-
-![Demo](./demo-drawer.gif)
 
 Optional props:
 - `header` allows overwriting the header/title part
@@ -96,3 +90,7 @@ During and after development it is good to check or update [BackstopJS](https://
 Running the UI tests is done by `backstop test` ***after*** executing `npm run storybook`.
 
 Note: Make sure you have backstop installed `npm install -g backstopjs` or use the one in `node_modules`.
+
+To approve the changes to reference images run `node_modules/.bin/backstop approve` on the `results` branch and make 
+sure to merge the reference images back to the respective branch
+`

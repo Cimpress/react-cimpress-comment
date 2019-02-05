@@ -16,7 +16,6 @@ script:
 - npm run storybook
 - sleep 20 && echo "done waiting"
 - node_modules/.bin/backstop test
-- node_modules/.bin/backstop approve
 - npm run-script build
 after_script:
 - "./push.sh"

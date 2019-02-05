@@ -1,11 +1,15 @@
 .comment {
     padding-top: 5px;
     padding-bottom: 5px;
+    display: grid;
+    grid-template-columns: 50px auto;
+    grid-gap: 5px
 }
 
 .comment .alert {
     margin-bottom: 0px;
 }
+
 
 .comment-editable {
     cursor: pointer;
@@ -36,12 +40,13 @@
     background-color: white;
 }
 
-.comment-creator {
+.comment-author, .comment-creator {
+    display: inline-block;
     margin-left: 3px;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
     font-size: 10px;
     max-width: 500px;
-    color: #c4cdd6
+    color: #4e4e4e
 }
 
 .comment-creator-inner {
@@ -99,7 +104,7 @@
 }
 
 .mentions__highlighter[style], .mentions__input[style] {
-    padding: 5px 40px 5px 5px !important;
+    padding: 5px 5px 5px 5px !important;
     font-size: 14px !important;
     color: #3a414c;
     box-sizing: border-box !important;
@@ -116,6 +121,9 @@
 }
 
 .mentions {
+    display: flex;
+    flex-flow: row;
+    flex: 1;
     max-width: 100%;
     overflow-y: hidden;
     padding-bottom: 6px;
@@ -129,7 +137,6 @@
 .mentions__control {
     position: relative;
     z-index: 0;
-    display: inline-flex;
     border-collapse: separate;
     width: 100%;
     max-width: 100%;
@@ -203,35 +210,48 @@ textarea {
 }
 
 .mentions-edit {
-    position: absolute;
+    margin-left: auto;
+    position: relative;
+    justify-content: flex-end;
+    align-content: flex-end;
     font-size: 18px;
-    top: 6px;
+    top: 8px;
     right: 0px;
     background-color: white;
     padding-left: 5px;
     cursor: pointer;
+    flex-grow: 0;
+    flex-shrink: 0;
 }
 
 .mentions-ok {
-    position: absolute;
+    justify-content: flex-end;
+    align-content: flex-end;
+    margin-left: auto;
+    position: relative;
     font-size: 18px;
     top: 5px;
-    right: 20px;
     color: green;
     background-color: white;
-    padding-left: 5px;
+    padding-left: 2px;
     cursor: pointer;
+    flex-grow: 0;
+    flex-shrink: 0;
 }
 
 .mentions-cancel {
-    position: absolute;
-    font-size: 15px;
-    top: 7px;
-    right: 5px;
+    justify-content: flex-end;
+    align-content: flex-end;
+    margin-left: auto;
+    position: relative;
+    font-size: 20px;
+    top: 5px;
     color: red;
     background-color: white;
-    padding-left: 5px;
+    padding-left: 2px;
     cursor: pointer;
+    flex-grow: 0;
+    flex-shrink: 0;
 }
 
 .mentions__highlighter > strong {
