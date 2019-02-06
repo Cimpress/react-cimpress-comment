@@ -4,9 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [1.0.1] - 2019-02-05
+## [1.0.3] - 2019-02-05
 ### Change
-- Fix how the avatar placeholder is presented when commetns are loading.
+- Provide a prop to let the user decide if own messages should be on left or on right.
+
+## [1.0.2] - 2019-02-05
+### Change
+- Fix how the avatar placeholder is presented when comments are loading.
 
 ## [1.0.1] - 2019-02-05
 ### Added
