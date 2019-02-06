@@ -23,10 +23,10 @@ class CommentChat extends Comments {
             let previousCommentObject = index - 1 >= 0 ? this.state.commentObjects[array[index - 1]] : null;
             let currentCommentObject = this.state.commentObjects[commentId];
             let chatParty;
-            if (this.props.positionSelf === 'left') {
-                chatParty = currentCommentObject.createdBy === jwt ? 'left' : 'right';
-            } else if (this.props.positionSelf === 'right') {
+            if (this.props.positionSelf === 'right') {
                 chatParty = currentCommentObject.createdBy === jwt ? 'right' : 'left';
+            } else {
+                chatParty = currentCommentObject.createdBy === jwt ? 'left' : 'right';
             }
             let className = `bubble ${chatParty}`;
             let authorHeader =
