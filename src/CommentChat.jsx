@@ -22,7 +22,12 @@ class CommentChat extends Comments {
         return commentIds.map((commentId, index, array) => {
             let previousCommentObject = index - 1 >= 0 ? this.state.commentObjects[array[index - 1]] : null;
             let currentCommentObject = this.state.commentObjects[commentId];
-            let chatParty = currentCommentObject.createdBy === jwt ? 'me' : 'you';
+            let chatParty;
+            if (this.props.positionSelf === 'left') {
+                chatParty = currentCommentObject.createdBy === jwt ? 'left' : 'right';
+            } else if (this.props.positionSelf === 'right') {
+                chatParty = currentCommentObject.createdBy === jwt ? 'right' : 'left';
+            }
             let className = `bubble ${chatParty}`;
             let authorHeader =
                 <React.Fragment>
@@ -76,6 +81,7 @@ CommentChat.propTypes = {
     showVisibilityLevels: PropTypes.bool,
     autoFocus: PropTypes.bool,
     enforceVisibilityLevel: PropTypes.oneOf(['public', 'internal']),
+    positionSelf: PropTypes.oneOf(['left', 'right']),
     textOverrides: PropTypes.shape({
         placeholder: PropTypes.string,
         subscribe: PropTypes.string,
@@ -88,6 +94,7 @@ CommentChat.defaultProps = {
     locale: 'eng',
     showVisibilityLevels: true,
     autoFocus: true,
+    positionSelf: 'left',
     textOverrides: {
         placeholder: null,
         subscribe: null,

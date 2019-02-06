@@ -1,6 +1,6 @@
 import React from 'react';
 import {storiesOf} from '@storybook/react';
-import {withKnobs, text, boolean, object} from '@storybook/addon-knobs';
+import {withKnobs, text, boolean, select} from '@storybook/addon-knobs';
 import Authenticated from './Authenticated';
 import auth from './auth';
 
@@ -58,6 +58,10 @@ storiesOf('Production-like', module)
                         resourceUri={text('resourceUri', 'https://stereotype.trdlnk.cimpress.io/v1/templates/123123')}
                         newestFirst={boolean('newestFirst', true)}
                         editComments={boolean('editComments', false)}
+                        positionSelf={select('positionSelf', {
+                            left: 'left',
+                            right: 'right',
+                        }, 'left')}
                     />
                 </div>
             </div>

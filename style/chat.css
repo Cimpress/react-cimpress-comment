@@ -6,6 +6,7 @@
 
 .mentions-ok, .mentions-cancel, .mentions-edit {
     background-color: transparent;
+    text-align: center;
 }
 
 .bubble {
@@ -18,15 +19,15 @@
 
 /* me */
 
-.me .mentions {
+.left .mentions {
     padding-bottom: 2px;
 }
 
-.me .mentions__control {
+.left .mentions__control {
     margin-left: 4px;
 }
 
-.me.comment-author {
+.left.comment-author {
     text-align: left;
     max-width: unset;
     margin-left: 5px;
@@ -34,7 +35,7 @@
     font-weight: bold;
 }
 
-.me.comment-creator {
+.left.comment-creator {
     text-align: left;
     max-width: unset;
     margin-left: 5px;
@@ -42,21 +43,22 @@
     display: block;
 }
 
-.me.bubble {
+.left.bubble {
     background-color: #c8edf4;
     margin: 5px auto 1px 5px;
     padding-right: 5px;
+    padding-top: 2px;
 }
 
-.me .mentions__suggestions__item--focused {
+.left .mentions__suggestions__item--focused {
     background-color: #DDF4F8;
 }
 
-.you .mentions__suggestions__item--focused {
+.right .mentions__suggestions__item--focused {
     background-color: #FAEDF8;
 }
 
-.me.bubble:after {
+.left.bubble:after {
     content: '';
     position: absolute;
     left: 4px;
@@ -70,21 +72,21 @@
     margin-left: -11px;
 }
 
-.me .mentions__highlighter > strong {
+.left .mentions__highlighter > strong {
     background-color: #DDF4F8;
     border-radius: 4px;
     padding: 0px 1px 2px 1px;
 }
 
-.me .mentions__suggestions__list {
+.left .mentions__suggestions__list {
     background-color: #c8edf4;
 }
 
-.you .mentions {
+.right .mentions {
     padding-bottom: 2px;
 }
 
-.you.comment-author {
+.right.comment-author {
     text-align: right;
     max-width: unset;
     margin-right: 5px;
@@ -92,11 +94,11 @@
     font-weight: bold;
 }
 
-.me.comment-author, .you.comment-author {
+.left.comment-author, .right.comment-author {
     margin-top: 5px;
 }
 
-.you.comment-creator {
+.right.comment-creator {
     text-align: right;
     max-width: unset;
     margin-right: 5px;
@@ -104,13 +106,16 @@
     display: block;
 }
 
-.you.bubble {
+.right.bubble {
     background-color: #f4d9f0;
     margin: 2px 5px 2px auto;
     padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 2px;
+
 }
 
-.you.bubble:after {
+.right.bubble:after {
     content: '';
     position: absolute;
     right: 4px;
@@ -124,12 +129,12 @@
     margin-right: -11px;
 }
 
-.you .mentions__highlighter > strong {
+.right .mentions__highlighter > strong {
     background-color: #FAEDF8;
     border-radius: 4px;
     padding: 0px 1px 2px 1px;
 }
 
-.you .mentions__suggestions__list {
+.right .mentions__suggestions__list {
     background-color: #f4d9f0;
 }
