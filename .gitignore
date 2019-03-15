@@ -7,3 +7,4 @@ backstop_data/ci_report
 mockserver.pid
 prepare.sh
 .idea
+.DS_Store
