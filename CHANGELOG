@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.0.5] - 2019-03-19
+### Fixes
+- Fix a bug causing some resources to be untranslated
+
 ## [1.0.4] - 2019-03-15
 ### Change
 - Updating coam-client to resolve some issues that happen when communication with COAM.

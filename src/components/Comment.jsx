@@ -179,6 +179,7 @@ class Comment extends React.Component {
                 createdBy={this.state.commentObject.createdBy}/>;
 
             let commentTime = <CommentTime
+                locale={this.props.locale}
                 accessToken={this.props.accessToken}
                 createdBy={this.state.commentObject.createdBy}
                 createdAt={this.state.commentObject.createdAt}
