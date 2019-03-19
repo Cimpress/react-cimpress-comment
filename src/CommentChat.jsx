@@ -39,6 +39,7 @@ class CommentChat extends Comments {
             let timeFooter =
                 <CommentTime
                     accessToken={this.props.accessToken}
+                    locale={this.props.locale}
                     className={`comment-creator ${chatParty}`}
                     createdBy={currentCommentObject.createdBy}
                     createdAt={currentCommentObject.createdAt}

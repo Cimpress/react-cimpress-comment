@@ -15,6 +15,7 @@ storiesOf('Production-like', module)
             <div className={'card'}>
                 <div className={'card-block'}>
                     <Comments
+                        locale={text('locale', null, 'eng')}
                         accessToken={auth.getAccessToken()}
                         resourceUri={text('resourceUri', 'https://stereotype.trdlnk.cimpress.io/v1/templates/123123', 'Settings')}
                         newestFirst={boolean('newestFirst', true, 'Settings')}
