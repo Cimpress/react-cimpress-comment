@@ -205,7 +205,7 @@ class Comments extends React.Component {
     renderLoading() {
         return (
             <div>
-                <div className='inline-spinner'><Spinner size={20}/></div>
+                <div className='inline-spinner'><Spinner size={'small'}/></div>
                 <div className='inline-spinner'>{this.tt('retrieving_comments')}</div>
             </div>
         );

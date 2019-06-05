@@ -134,7 +134,7 @@ class Comment extends React.Component {
         let readonlyTextField;
         if (this.state.savingComment === true) {
             readonlyTextField = true;
-            editMenu = <div className={'mentions-edit'}><Spinner size={18}/></div>;
+            editMenu = <div className={'mentions-edit'}><Spinner size={'small'}/></div>;
         } else {
             readonlyTextField = !this.state.editMode;
             editMenu = this.renderEditMenu();
