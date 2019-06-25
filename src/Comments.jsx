@@ -202,6 +202,16 @@ class Comments extends React.Component {
             });
     }
 
+    handleDelete(comment) {
+      let newCommentObjects = Object.assign({}, this.state.commentObjects);
+      delete newCommentObjects[comment.id];
+
+      this.safeSetState({
+          commentsIds: this.state.commentsIds.filter((id) => id !== comment.id),
+          commentObjects: newCommentObjects
+      });
+    }
+
     renderLoading() {
         return (
             <div>
@@ -233,6 +243,8 @@ class Comments extends React.Component {
                 commentUri={`${uri}/${commentId}`}
                 comment={this.state.commentObjects[commentId]}
                 editComments={this.props.editComments}
+                deleteComments={this.props.deleteComments}
+                onDelete={this.handleDelete.bind(this)}
                 commentVisibilityLevels={this.state.commentVisibilityLevels}
                 showAvatar={this.props.showAvatar}
             />;
@@ -313,6 +325,7 @@ Comments.propTypes = {
     resourceUri: PropTypes.string.isRequired,
     newestFirst: PropTypes.bool,
     editComments: PropTypes.bool,
+    deleteComments: PropTypes.bool,
     refreshInterval: PropTypes.number,
     commentCountRefreshed: PropTypes.func,
     initialValue: PropTypes.string,
