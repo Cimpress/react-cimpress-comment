@@ -146,7 +146,9 @@ class Comment extends React.Component {
                     ? <div onClick={this.completeEditing.bind(this)} className={'fa fa-check mentions-ok'}/>
                     : null}
                 {<div onClick={this.exitEditing.bind(this)} className={'fa fa-times mentions-cancel'}/>}
-                {<div onClick={this.deleteComment.bind(this)} className={'fa fa-trash mentions-delete'}/>}
+                {this.props.deleteComments
+                    ? <div onClick={this.deleteComment.bind(this)} className={'fa fa-trash mentions-delete'}/>
+                    : null}
             </div>);
         }
 
