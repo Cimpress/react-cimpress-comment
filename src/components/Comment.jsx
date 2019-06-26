@@ -1,5 +1,3 @@
-let iii = 0;
-
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -85,7 +83,7 @@ class Comment extends React.Component {
 
     deleteComment() {
         this.safeSetState({
-            updatingComment: true
+            updatingComment: true,
         });
 
         this.props.commentsClient

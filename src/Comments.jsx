@@ -203,13 +203,13 @@ class Comments extends React.Component {
     }
 
     handleDelete(comment) {
-      let newCommentObjects = Object.assign({}, this.state.commentObjects);
-      delete newCommentObjects[comment.id];
+        let newCommentObjects = Object.assign({}, this.state.commentObjects);
+        delete newCommentObjects[comment.id];
 
-      this.safeSetState({
-          commentsIds: this.state.commentsIds.filter((id) => id !== comment.id),
-          commentObjects: newCommentObjects
-      });
+        this.safeSetState({
+            commentsIds: this.state.commentsIds.filter((id) => id !== comment.id),
+            commentObjects: newCommentObjects,
+        });
     }
 
     renderLoading() {
