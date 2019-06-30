@@ -80,7 +80,7 @@ storiesOf('Production-like', module)
                         locale={text('locale', null, 'eng')}
                         accessToken={auth.getAccessToken()}
                         resourceUri={text('resourceUri', 'https://stereotype.trdlnk.cimpress.io/v1/templates/123123', 'Settings')}
-                        onClick={() => console.log("ow")}
+                        onClick={(data) => alert(JSON.stringify(data, null, 4))}
                         refreshInterval={5}
                         hideWhenNoUnreadComments={boolean('hideWhenNoUnreadComments', false)}
                     />
