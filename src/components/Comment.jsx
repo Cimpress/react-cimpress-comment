@@ -31,6 +31,10 @@ class Comment extends React.Component {
         };
     }
 
+    get canModify() {
+        return this.props.editComments || this.props.deleteComments;
+    }
+
     safeSetState(data, callback) {
         if (this._ismounted) {
             this.setState(data, callback);
@@ -127,7 +131,7 @@ class Comment extends React.Component {
     }
 
     renderEditMenu() {
-        if (!this.props.editComments) {
+        if (!this.canModify) {
             // editing disabled
             return null;
         }
@@ -137,16 +141,15 @@ class Comment extends React.Component {
             return null;
         }
 
-
         if (this.state.editMode) {
             return (<div>
                 {(this.state.editedComment !== null && this.state.editedComment !== this.state.commentObject.comment && this.state.editedComment !== '')
                     ? <div onClick={this.completeEditing.bind(this)} className={'fa fa-check mentions-ok'}/>
                     : null}
-                {<div onClick={this.exitEditing.bind(this)} className={'fa fa-times mentions-cancel'}/>}
                 {this.props.deleteComments
                     ? <div onClick={this.deleteComment.bind(this)} className={'fa fa-trash mentions-delete'}/>
                     : null}
+                {<div onClick={this.exitEditing.bind(this)} className={'fa fa-times mentions-cancel'}/>}
             </div>);
         }
 
@@ -160,7 +163,7 @@ class Comment extends React.Component {
             readonlyTextField = true;
             editMenu = <div className={'mentions-edit'}><Spinner size={'small'}/></div>;
         } else {
-            readonlyTextField = !this.state.editMode;
+            readonlyTextField = !(this.state.editMode && this.props.editComments);
             editMenu = this.renderEditMenu();
         }
 
