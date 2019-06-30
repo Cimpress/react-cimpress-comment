@@ -3,15 +3,12 @@ import PropTypes from 'prop-types';
 
 import '../style/index.css';
 
-import {Alert, shapes, Tooltip} from '@cimpress/react-components';
+import {Tooltip} from '@cimpress/react-components';
 
 import CommentsClient from './clients/CommentsClient';
 
 import {getI18nInstance} from './tools/i18n';
 import {translate} from 'react-i18next';
-import {errorToString, getSubFromJWT} from './tools/helper';
-
-let {Spinner} = shapes;
 
 class CommentIndicator extends React.Component {
     constructor(props) {
@@ -73,8 +70,8 @@ class CommentIndicator extends React.Component {
     init() {
         clearInterval(this._refreshIntervalHandle);
         this._refreshIntervalHandle = setInterval(() => {
-          this.fetchCommentCount();
-          this.fetchUnreadCommentCount();
+            this.fetchCommentCount();
+            this.fetchUnreadCommentCount();
         }, Math.max((this.props.refreshInterval || 60) * 1000, 5000));
     }
 
@@ -89,7 +86,7 @@ class CommentIndicator extends React.Component {
             fetchingComments: true,
         }, () => client
             .fetchComments()
-            .then(({ responseJson }) => {
+            .then(({responseJson}) => {
                 this.safeSetState({
                     fetchingComments: false,
                     commentCount: responseJson.length,
@@ -100,7 +97,6 @@ class CommentIndicator extends React.Component {
             .catch((err) => {
                 this.safeSetState({
                     fetchingComments: false,
-                    error: err,
                     failedFetchingComments: true,
                     errorFetchingComments: err,
                 });
@@ -118,7 +114,7 @@ class CommentIndicator extends React.Component {
             fetchingUnreadComments: true,
         }, () => client
             .getUserInfo()
-            .then(({ unreadCount }) => {
+            .then(({unreadCount}) => {
                 this.safeSetState({
                     fetchingUnreadComments: false,
                     unreadCommentCount: unreadCount,
@@ -129,7 +125,6 @@ class CommentIndicator extends React.Component {
             .catch((err) => {
                 this.safeSetState({
                     fetchingUnreadComments: false,
-                    error: err,
                     failedFetchingUnreadComments: true,
                     errorFetchingUnreadComments: err,
                 });
@@ -137,13 +132,13 @@ class CommentIndicator extends React.Component {
     }
 
     onClick(e) {
-      e.preventDefault();
+        e.preventDefault();
 
-      if (this.props.onClick) {
-        this.props.onClick({
-          resourceUri: this.props.resourceUri
-        });
-      }
+        if (this.props.onClick) {
+            this.props.onClick({
+                resourceUri: this.props.resourceUri,
+            });
+        }
     }
 
     tt(key) {
@@ -156,8 +151,8 @@ class CommentIndicator extends React.Component {
         let errorDetails = error && error.message
             ? (<span>
                   Error details: <br/>
-                  {error.message}
-              </span>)
+                {error.message}
+            </span>)
             : null;
 
         let label = (
@@ -168,29 +163,29 @@ class CommentIndicator extends React.Component {
         );
 
         return (
-              <Tooltip
-                  direction="right"
-                  contents={label}
-                  className="rcc-tooltip-wide">
-                  {content}
-              </Tooltip>
+            <Tooltip
+                direction="right"
+                contents={label}
+                className="rcc-tooltip-wide">
+                {content}
+            </Tooltip>
         );
     }
 
     renderError(error) {
-            let content = (
-                <div className="comment-drawer-button">
-                    <span style={{ position: "absolute", color: "red" }} className="fa fa-times"/>
-                    <span className="fa fa-comments-o"/>
-                </div>
-            );
+        let content = (
+            <div className="comment-drawer-button">
+                <span style={{position: 'absolute', color: 'red'}} className="fa fa-times"/>
+                <span className="fa fa-comments-o"/>
+            </div>
+        );
 
-            return this.wrapInErrorTooltip(error, content);
+        return this.wrapInErrorTooltip(error, content);
     }
 
     render() {
         if (!this.props.resourceUri) {
-          return this.renderError(new Error(this.tt('incorrect_component_setup')));
+            return this.renderError(new Error(this.tt('incorrect_component_setup')));
         }
 
         if (this.failedFetching) {
@@ -234,13 +229,11 @@ CommentIndicator.propTypes = {
     refreshInterval: PropTypes.number,
 
     onClick: PropTypes.func,
-    addPadding: PropTypes.bool,
     hideWhenNoUnreadComments: PropTypes.bool,
 };
 
 CommentIndicator.defaultProps = {
     locale: 'eng',
-    addPadding: false,
     hideWhenNoUnreadComments: false,
 };
 
