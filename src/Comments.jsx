@@ -51,7 +51,7 @@ class Comments extends React.Component {
         if (this.props.accessToken !== prevProps.accessToken) {
             this.jwtSub = getSubFromJWT(this.props.accessToken);
         }
-        if (this.props.resourceUri !== prevProps.resourceUri || this.props.newestFirst !== prevProps.newestFirst) {
+        if (this.props.resourceUri !== prevProps.resourceUri || this.props.newestFirst !== prevProps.newestFirst || this.props.accessToken !== prevProps.accessToken) {
             this.commentsClient = new CommentsClient(this.props.accessToken, this.props.resourceUri);
             this.fetchComments();
         }
