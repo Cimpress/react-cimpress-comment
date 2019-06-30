@@ -139,8 +139,6 @@ class CommentIndicator extends React.Component {
     onClick(e) {
       e.preventDefault();
 
-      console.log(this.state);
-
       if (this.props.onClick) {
         this.props.onClick({
           resourceUri: this.props.resourceUri
