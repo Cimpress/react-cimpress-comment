@@ -107,6 +107,21 @@ export default class CommentsClient {
             });
     }
 
+    deleteComment(commentUri) {
+        return fetch(commentUri, this.getDefaultConfig('DELETE'))
+            .then((response) => {
+                if (response.status === 200) {
+                    return;
+                } else if (response.status === 401) {
+                    throw new Error('Unauthorized');
+                } else if (response.status === 403) {
+                    throw new Error('Forbidden');
+                } else {
+                    throw new Error(`Unable to delete comment: ${commentUri} (Status code: ${response.status})`);
+                }
+            });
+    }
+
     putComment(commentUri, comment, visibility) {
         let init = this.getDefaultConfig('PUT', {
             comment,

@@ -54,6 +54,12 @@ storiesOf('List of Comments', module)
         return <Comments accessToken={accessTokenOfTheUser}
             resourceUri={'http://eda234a4-485f-4c0c-806d-1c9748994c00.com'}
             newestFirst={false} editComments={true}/>;
+    })
+    .add('Own comments with editing on and deletion on', () => {
+        initMock();
+        return <Comments accessToken={accessTokenOfTheUser}
+            resourceUri={'http://eda234a4-485f-4c0c-806d-1c9748994c00.com'}
+            newestFirst={false} editComments={true} deleteComments={true}/>;
     });
 
 storiesOf('Mention box', module)
