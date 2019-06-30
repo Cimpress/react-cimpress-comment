@@ -69,7 +69,7 @@ class CommentsDrawerLink extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.resourceUri !== this.props.resourceUri) {
+        if (this.props.resourceUri !== prevProps.resourceUri || this.props.accessToken !== prevProps.accessToken) {
             this.fetchUnreadCount();
         }
         if (prevProps.opened !== this.props.opened) {

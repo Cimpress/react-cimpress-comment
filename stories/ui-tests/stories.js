@@ -2,6 +2,7 @@ import React from 'react';
 import {storiesOf} from '@storybook/react';
 import Comments from '../../src/Comments';
 import CommentsDrawerLink from '../../src/CommentsDrawerLink';
+import CommentIndicator from '../../src/CommentIndicator';
 
 import {mockCustomizer} from './mockCustomizr';
 import {mockCoamPrincipals} from './mockCoam';
@@ -94,8 +95,25 @@ storiesOf('Comments drawer with link', module)
         </div>;
     });
 
+storiesOf('Comment indicator', module)
+    .add('with items', () => {
+        initMock();
+        return <div className={'card'}>
+            <p>
+                Note: depending on props passed, the component below may not render if there are no comments or no unread comments on the resource. If you expected it to be there, try watching a different <em>resourceUri</em> or fiddling with props.
+            </p>
+            <div className={'card-block'}>
+                <CommentIndicator
+                    accessToken={'51d3ab44-efe1-4cc7-b0fa-6c86fa2ca134'}
+                    resourceUri={'http://eda234a4-485f-4c0c-806d-1c9748994c00.com'}
+                    onClick={(data) => alert(`Callback called with value: ${JSON.stringify(data, null, 4)}`)}
+                    hideWhenNoUnreadComments={false} />
+            </div>
+            </div>;
+    });
+
 storiesOf('Errors', module)
-    .add('With get comments returning 403', () => {
+    .add('Comments - With get comments returning 403', () => {
         initMock()
             .get('https://comment.trdlnk.cimpress.io/v0/resources?uri=http%3A%2F%2Feda234a4-485f-4c0c-806d-1c9748994c00.com%2F403', {
                 status: 403,
