@@ -7,6 +7,7 @@ import auth from './auth';
 import Comments from '../../src/Comments';
 import CommentsDrawerLink from '../../src/CommentsDrawerLink';
 import CommentChat from '../../src/CommentChat';
+import CommentIndicator from '../../src/CommentIndicator';
 
 storiesOf('Production-like', module)
     .addDecorator(withKnobs)
@@ -66,6 +67,25 @@ storiesOf('Production-like', module)
                             left: 'left',
                             right: 'right',
                         }, 'left')}
+                    />
+                </div>
+            </div>
+        </Authenticated>;
+    })
+    .add('CommentIndicator', () => {
+        return <Authenticated>
+            <div className={'card'}>
+                <p>
+                    Note: depending on props passed, the component below may not render if there are no comments or no unread comments on the resource. If you expected it to be there, try watching a different <em>resourceUri</em> or fiddling with props.
+                </p>
+                <div className={'card-block'}>
+                    <CommentIndicator
+                        locale={text('locale', null, 'eng')}
+                        accessToken={auth.getAccessToken()}
+                        resourceUri={text('resourceUri', 'https://stereotype.trdlnk.cimpress.io/v1/templates/123123', 'Settings')}
+                        onClick={(data) => alert(`Callback called with value: ${JSON.stringify(data, null, 4)}`)}
+                        refreshInterval={5}
+                        hideWhenNoUnreadComments={boolean('hideWhenNoUnreadComments', false)}
                     />
                 </div>
             </div>

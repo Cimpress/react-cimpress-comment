@@ -84,6 +84,14 @@
     color: #0088a9 !important;
 }
 
+.comment-indicator {
+    font-size: 2em;
+    color: #0088a9;
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+}
+
 .comment-drawer-button {
     font-size: 2em;
     color: #0088a9;
