@@ -188,10 +188,6 @@ class CommentIndicator extends React.Component {
             return this.renderError(new Error(this.tt('incorrect_component_setup')));
         }
 
-        if (this.failedFetching) {
-            return this.renderError(this.errorFetching);
-        }
-
         if (!this.hasComments) {
             return null;
         }
