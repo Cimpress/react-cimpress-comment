@@ -149,6 +149,7 @@ CommentsDrawerLink.propTypes = {
     resourceUri: PropTypes.string.isRequired,
     newestFirst: PropTypes.bool,
     editComments: PropTypes.bool,
+    deleteComments: PropTypes.bool,
     refreshInterval: PropTypes.number,
     position: PropTypes.oneOf(['left', 'right']),
     header: PropTypes.node,
@@ -160,6 +161,7 @@ CommentsDrawerLink.defaultProps = {
     position: 'left',
     newestFirst: true,
     editComments: false,
+    deleteComments: false,
     opened: false,
     locale: 'eng',
 };

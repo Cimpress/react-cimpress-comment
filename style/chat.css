@@ -4,7 +4,7 @@
     flex: 1 1 auto;
 }
 
-.mentions-ok, .mentions-cancel, .mentions-edit {
+.mentions-ok, .mentions-cancel, .mentions-edit, .mentions-delete {
     background-color: transparent;
     text-align: center;
 }

@@ -58,6 +58,8 @@ class CommentChat extends Comments {
                     commentUri={`${uri}/${commentId}`}
                     comment={this.state.commentObjects[commentId]}
                     editComments={this.props.editComments}
+                    deleteComments={this.props.deleteComments}
+                    onDelete={this.handleDelete.bind(this)}
                     commentVisibilityLevels={this.state.commentVisibilityLevels}
                     header={null}
                     footer={timeFooter}
@@ -76,6 +78,7 @@ CommentChat.propTypes = {
     resourceUri: PropTypes.string.isRequired,
     newestFirst: PropTypes.bool,
     editComments: PropTypes.bool,
+    deleteComments: PropTypes.bool,
     refreshInterval: PropTypes.number,
     commentCountRefreshed: PropTypes.func,
     initialValue: PropTypes.string,
@@ -96,6 +99,8 @@ CommentChat.defaultProps = {
     showVisibilityLevels: true,
     autoFocus: true,
     positionSelf: 'left',
+    editComments: false,
+    deleteComments: false,
     textOverrides: {
         placeholder: null,
         subscribe: null,
