@@ -192,7 +192,7 @@ class CommentIndicator extends React.Component {
             return this.renderError(this.errorFetching);
         }
 
-        if (!this.hasComments || (this.props.hideWhenNoUnreadComments && this.state.unreadCommentCount === 0)) {
+        if (!this.hasComments) {
             return null;
         }
 
@@ -228,13 +228,11 @@ CommentIndicator.propTypes = {
 
     refreshInterval: PropTypes.number,
 
-    onClick: PropTypes.func,
-    hideWhenNoUnreadComments: PropTypes.bool,
+    onClick: PropTypes.func
 };
 
 CommentIndicator.defaultProps = {
     locale: 'eng',
-    hideWhenNoUnreadComments: false,
 };
 
 export default translate('translations', {i18n: getI18nInstance()})(CommentIndicator);
