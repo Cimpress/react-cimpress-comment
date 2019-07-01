@@ -26,9 +26,13 @@ class Comment extends React.Component {
         this.state = {
             editMode: false,
             editedComment: null,
-            savingComment: !props.comment.createdAt && !props.comment.updatedAt,
+            updatingComment: !props.comment.createdAt && !props.comment.updatedAt,
             commentObject: props.comment,
         };
+    }
+
+    get canModify() {
+        return this.props.editComments || this.props.deleteComments;
     }
 
     safeSetState(data, callback) {
@@ -54,39 +58,60 @@ class Comment extends React.Component {
     completeEditing() {
         if (this.state.editedComment !== null && this.state.editedComment !== this.state.commentObject.comment) {
             this.safeSetState({
-                savingComment: true,
+                updatingComment: true,
             });
 
             this.props.commentsClient
                 .putComment(this.props.commentUri, this.state.editedComment.trim(), this.state.commentObject.visibility)
                 .then((responseJson) => {
+                    this.exitEditing();
+
                     this.safeSetState({
-                        editedComment: null,
-                        editMode: false,
-                        savingComment: false,
                         commentObject: responseJson,
                     });
                 })
                 .catch((err) => {
                     this.safeSetState({
                         errorPut: err,
-                        savingComment: false,
+                        updatingComment: false,
                     });
                 });
         } else {
             this.safeSetState({
                 editedComment: null,
                 editMode: false,
-                savingComment: false,
+                updatingComment: false,
             });
         }
     }
 
-    cancelEditing() {
+    deleteComment() {
         this.safeSetState({
-            errorPut: undefined,
-            editedComment: null,
+            updatingComment: true,
+        });
+
+        this.props.commentsClient
+            .deleteComment(this.props.commentUri)
+            .then(() => {
+                if (this.props.onDelete) {
+                    this.props.onDelete(this.props.comment);
+                }
+            })
+            .catch((err) => {
+                this.safeSetState({
+                    errorDelete: err,
+                    updatingComment: false,
+                });
+            });
+    }
+
+    exitEditing() {
+        this.safeSetState({
+            updatingComment: false,
             editMode: false,
+            editedComment: null,
+            errorPut: null,
+            errorDelete: null,
         });
     }
 
@@ -106,7 +131,7 @@ class Comment extends React.Component {
     }
 
     renderEditMenu() {
-        if (!this.props.editComments) {
+        if (!this.canModify) {
             // editing disabled
             return null;
         }
@@ -116,13 +141,15 @@ class Comment extends React.Component {
             return null;
         }
 
-
         if (this.state.editMode) {
             return (<div>
                 {(this.state.editedComment !== null && this.state.editedComment !== this.state.commentObject.comment && this.state.editedComment !== '')
                     ? <div onClick={this.completeEditing.bind(this)} className={'fa fa-check mentions-ok'}/>
                     : null}
-                {<div onClick={this.cancelEditing.bind(this)} className={'fa fa-times mentions-cancel'}/>}
+                {this.props.deleteComments
+                    ? <div onClick={this.deleteComment.bind(this)} className={'fa fa-trash mentions-delete'}/>
+                    : null}
+                {<div onClick={this.exitEditing.bind(this)} className={'fa fa-times mentions-cancel'}/>}
             </div>);
         }
 
@@ -132,11 +159,11 @@ class Comment extends React.Component {
     render() {
         let editMenu;
         let readonlyTextField;
-        if (this.state.savingComment === true) {
+        if (this.state.updatingComment === true) {
             readonlyTextField = true;
             editMenu = <div className={'mentions-edit'}><Spinner size={'small'}/></div>;
         } else {
-            readonlyTextField = !this.state.editMode;
+            readonlyTextField = !(this.state.editMode && this.props.editComments);
             editMenu = this.renderEditMenu();
         }
 
@@ -162,6 +189,7 @@ class Comment extends React.Component {
                     renderSuggestion={renderCoamMentionSuggestion}/>
                 </MentionsInput>
                 {this.renderError(this.state.errorPut, this.tt('unable_to_edit_comment'))}
+                {this.renderError(this.state.errorDelete, this.tt('unable_to_delete_comment'))}
                 {editMenu}
             </div>
         );
@@ -221,6 +249,8 @@ Comment.propTypes = {
     commentUri: PropTypes.string,
     comment: PropTypes.object,
     editComments: PropTypes.bool,
+    deleteComments: PropTypes.bool,
+    onDelete: PropTypes.func,
     header: PropTypes.node,
     footer: PropTypes.node,
     commentVisibilityLevels: PropTypes.array,
