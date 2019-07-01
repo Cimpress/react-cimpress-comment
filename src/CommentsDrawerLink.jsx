@@ -158,7 +158,7 @@ CommentsDrawerLink.propTypes = {
 };
 
 CommentsDrawerLink.defaultProps = {
-    position: 'left',
+    position: 'right',
     newestFirst: true,
     editComments: false,
     deleteComments: false,
