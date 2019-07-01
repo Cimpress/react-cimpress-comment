@@ -161,9 +161,6 @@ CommentsDrawerLink.defaultProps = {
     newestFirst: true,
     editComments: false,
     opened: false,
-};
-
-CommentsDrawerLink.defaultProps = {
     locale: 'eng',
 };
 
