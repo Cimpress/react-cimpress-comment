@@ -254,6 +254,36 @@ textarea {
     flex-shrink: 0;
 }
 
+.mentions-delete {
+    justify-content: flex-end;
+    align-content: flex-end;
+    margin-left: auto;
+    position: relative;
+    font-size: 20px;
+    top: 5px;
+    color: red;
+    background-color: white;
+    padding-left: 2px;
+    cursor: pointer;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.mentions-delete {
+    justify-content: flex-end;
+    align-content: flex-end;
+    margin-left: auto;
+    position: relative;
+    font-size: 20px;
+    top: 5px;
+    color: red;
+    background-color: white;
+    padding-left: 2px;
+    cursor: pointer;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
 .mentions__highlighter > strong {
     background-color: seashell;
 }

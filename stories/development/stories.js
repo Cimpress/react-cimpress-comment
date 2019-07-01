@@ -20,6 +20,7 @@ storiesOf('Production-like', module)
                         resourceUri={text('resourceUri', 'https://stereotype.trdlnk.cimpress.io/v1/templates/123123', 'Settings')}
                         newestFirst={boolean('newestFirst', true, 'Settings')}
                         editComments={boolean('editComments', true, 'Settings')}
+                        deleteComments={boolean('deleteComments', true, 'Settings')}
                         showVisibilityLevels={boolean('showVisibilityLevels', true, 'Settings')}
                         autoFocus={boolean('autoFocus', true, 'Settings')}
                         textOverrides={{
@@ -43,7 +44,8 @@ storiesOf('Production-like', module)
                         accessToken={auth.getAccessToken()}
                         resourceUri={text('resourceUri', 'https://stereotype.trdlnk.cimpress.io/v1/templates/123123')}
                         newestFirst={boolean('newestFirst', true)}
-                        editComments={boolean('newestFirst', true)}
+                        editComments={boolean('editComments', true)}
+                        deleteComments={boolean('deleteComments', true, 'Settings')}
                     />
                 </div>
             </div>
@@ -59,6 +61,7 @@ storiesOf('Production-like', module)
                         resourceUri={text('resourceUri', 'https://stereotype.trdlnk.cimpress.io/v1/templates/123123')}
                         newestFirst={boolean('newestFirst', true)}
                         editComments={boolean('editComments', false)}
+                        deleteComments={boolean('deleteComments', true, 'Settings')}
                         positionSelf={select('positionSelf', {
                             left: 'left',
                             right: 'right',
