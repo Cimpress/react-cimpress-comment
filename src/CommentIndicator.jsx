@@ -224,7 +224,7 @@ CommentIndicator.propTypes = {
 
     refreshInterval: PropTypes.number,
 
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
 };
 
 CommentIndicator.defaultProps = {
