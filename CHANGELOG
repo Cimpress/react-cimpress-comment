@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [2.2.2] - 2019-07-01
+### Added
+- Enable the feature of the 'Comments' component to delete comments in other components
+
+## [2.2.0] - 2019-07-01
+### Added
+- Release the 'CommentIndicator' component for greater flexibility of embedding comments
+
+### Fixed
+- Resurface shadowed props in 'CommentsDrawerLink' component
+
+## [2.1.0] - 2019-07-01
+### Added
+- Add the ability to delete comments owned by the user in the 'Comments' component. Depends on `deleteComments` prop.
+
 ## [2.0.0] - 2019-06-05
 ### Change
 - Update peer dependency @cimpress/react-components and made the necessary changes
