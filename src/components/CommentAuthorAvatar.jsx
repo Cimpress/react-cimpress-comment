@@ -24,6 +24,12 @@ class CommentAuthorAvatar extends React.Component {
         this._ismounted = true;
         fetchUserName(this.props.accessToken, this.props.userId)
             .then((responseJson) => {
+                if (!responseJson || !responseJson.profile) {
+                    return this.safeSetState({
+                        name: this.props.userId,
+                    });
+                }
+
                 this.safeSetState({
                     avatar: responseJson.profile.picture,
                     name: responseJson.profile.name,
