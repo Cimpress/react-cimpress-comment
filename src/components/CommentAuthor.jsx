@@ -46,7 +46,7 @@ class CommentAuthor extends React.Component {
         fetchUserName(this.props.accessToken, userId)
             .then((responseJson) => {
                 if (!responseJson || !responseJson.profile) {
-                  return;
+                    return;
                 }
 
                 this.safeSetState({

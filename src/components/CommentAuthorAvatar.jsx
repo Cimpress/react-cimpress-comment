@@ -25,9 +25,9 @@ class CommentAuthorAvatar extends React.Component {
         fetchUserName(this.props.accessToken, this.props.userId)
             .then((responseJson) => {
                 if (!responseJson || !responseJson.profile) {
-                  return this.safeSetState({
-                    name: this.props.userId
-                  });
+                    return this.safeSetState({
+                        name: this.props.userId,
+                    });
                 }
 
                 this.safeSetState({
