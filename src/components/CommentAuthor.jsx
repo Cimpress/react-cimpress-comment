@@ -7,7 +7,7 @@ import '../../style/select.css';
 import {getI18nInstance} from '../tools/i18n';
 import {translate} from 'react-i18next';
 
-import {fetchUserName} from '../clients/mentions';
+import {getPrincipalMemoized} from '../clients/mentions';
 
 class CommentAuthor extends React.Component {
     constructor(props) {
@@ -25,34 +25,32 @@ class CommentAuthor extends React.Component {
 
     componentDidMount() {
         this._ismounted = true;
-        this.fetchUserNames();
+        this.fetchCreatedByName();
     }
 
     componentWillUnmount() {
         this._ismounted = false;
     }
 
-    componentDidUpdate() {
-        this.fetchUserNames();
-    }
-
-    fetchUserNames() {
-        if (!this.state.createdByName && this.props.createdBy) {
-            this.fetchUserName(this.props.createdBy, 'createdByName');
+    componentDidUpdate(prevProps) {
+        if (this.props.accessToken
+            && (prevProps.accessToken !== this.props.accessToken
+                || prevProps.createdBy !== this.props.createdBy)) {
+            this.fetchCreatedByName();
         }
     }
 
-    fetchUserName(userId, stateToUpdate) {
-        fetchUserName(this.props.accessToken, userId)
-            .then((responseJson) => {
-                if (!responseJson || !responseJson.profile) {
-                    return;
-                }
-
-                this.safeSetState({
-                    [stateToUpdate]: responseJson.profile.name,
+    fetchCreatedByName() {
+        if (!this.state.createdByName && this.props.createdBy) {
+            getPrincipalMemoized(this.props.accessToken, this.props.createdBy)
+                .then((responseJson) => {
+                    if (responseJson && responseJson.profile && responseJson.profile.name) {
+                        this.safeSetState({
+                            createdByName: responseJson.profile.name,
+                        });
+                    }
                 });
-            });
+        }
     }
 
     tt(key) {
