@@ -32,6 +32,20 @@ const fetchUserName = (accessToken, userId) => {
     }
 
     let promiseToGetUser = getPrincipal(accessToken, userId)
+        .then((responseJson) => {
+            // At time of writing, users invited to the platform have no "profile.name" field
+            // and instead have their name information stored in user metadata. This behaviour
+            // is filed in COAM as a bug and the field may eventually be backpopulated.
+            // Backpopulating it here in the meantime.
+            if (responseJson
+                && responseJson.profile
+                && !responseJson.profile.name
+                && responseJson.profile.user_metadata
+                && (responseJson.profile.user_metadata.first_name || responseJson.profile.user_metadata.last_name)) {
+                responseJson.profile.name = `${responseJson.profile.user_metadata.first_name} ${responseJson.profile.user_metadata.last_name}`;
+            }
+            return responseJson;
+        })
         .catch((err) => {
             // eslint-disable-next-line no-console
             console.error(err);

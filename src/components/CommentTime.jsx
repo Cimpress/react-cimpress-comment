@@ -34,8 +34,13 @@ class CommentTime extends React.Component {
         this._ismounted = false;
     }
 
-    componentDidUpdate() {
-        this.fetchUserNames();
+    componentDidUpdate(prevProps) {
+        if (this.props.accessToken
+            && (prevProps.accessToken !== this.props.accessToken
+                || prevProps.createdBy !== this.props.createdBy
+                || prevProps.updatedBy !== this.props.updatedBy)) {
+            this.fetchUserNames();
+        }
     }
 
     fetchUserNames() {
@@ -47,7 +52,7 @@ class CommentTime extends React.Component {
     fetchUserName(userId, stateToUpdate) {
         fetchUserName(this.props.accessToken, userId)
             .then((responseJson) => {
-                if (responseJson && responseJson.profile) {
+                if (responseJson && responseJson.profile && responseJson.profile.name) {
                     this.safeSetState({
                         [stateToUpdate]: responseJson.profile.name,
                     });
