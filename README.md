@@ -1,6 +1,6 @@
 # react-cimpress-comment [![Build Status](https://travis-ci.org/Cimpress/react-cimpress-comment.svg?branch=master)](https://travis-ci.org/Cimpress/react-cimpress-comment) [![NPM version](https://img.shields.io/npm/v/react-cimpress-comment.svg)](https://www.npmjs.com/package/react-cimpress-comment)
 
-This repository stores a react component that anyone can use to conveniently collect and display comments related to platform resources.
+This repository stores a react component that anyone can use to conveniently collect and display comments related to platform resources, or other resources.
 
 ## Usage
 

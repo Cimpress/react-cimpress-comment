@@ -18,5 +18,4 @@ export class CommentChat extends _CommentChat {
 export class CommentIndicator extends _CommentIndicator {
 
 }
-
 export default CommentsDrawerLink;
