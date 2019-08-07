@@ -6,10 +6,9 @@ sudo: false
 branches:
   except:
   - results
-addons:
-  chrome: stable
 install:
 - npm install
+- wget -O old_chrome.deb https://www.slimjet.com/chrome/download-chrome.php?file=files%2F75.0.3770.80%2Fgoogle-chrome-stable_current_amd64.deb && sudo apt install ./old_chrome.deb -y --allow-downgrades
 script:
 - npm run translate
 - npm run check
