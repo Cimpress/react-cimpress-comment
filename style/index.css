@@ -277,7 +277,7 @@ textarea {
     flex-shrink: 0;
 }
 
-.mentions__highlighter > strong {
+.mentions__highlighter > strong, .mentions__highlighter__caret > strong {
     background-color: seashell;
 }
 
