@@ -9,7 +9,7 @@ import {translate} from 'react-i18next';
 
 import TimeAgo from 'react-timeago';
 import {reactTimeAgoFormatters} from '../locales/reactTimeAgoFormatters';
-import {fetchUserName} from '../clients/mentions';
+import {getPrincipalMemoized} from '../clients/mentions';
 
 class CommentTime extends React.Component {
     constructor(props) {
@@ -27,32 +27,33 @@ class CommentTime extends React.Component {
 
     componentDidMount() {
         this._ismounted = true;
-        this.fetchUserNames();
+        this.fetchUpdatedByName();
     }
 
     componentWillUnmount() {
         this._ismounted = false;
     }
 
-    componentDidUpdate() {
-        this.fetchUserNames();
-    }
-
-    fetchUserNames() {
-        if (!this.state.updatedByName && this.props.updatedBy) {
-            this.fetchUserName(this.props.updatedBy, 'updatedByName');
+    componentDidUpdate(prevProps) {
+        if (this.props.accessToken
+            && (prevProps.accessToken !== this.props.accessToken
+                || prevProps.createdBy !== this.props.createdBy
+                || prevProps.updatedBy !== this.props.updatedBy)) {
+            this.fetchUpdatedByName();
         }
     }
 
-    fetchUserName(userId, stateToUpdate) {
-        fetchUserName(this.props.accessToken, userId)
-            .then((responseJson) => {
-                if (responseJson && responseJson.profile) {
-                    this.safeSetState({
-                        [stateToUpdate]: responseJson.profile.name,
-                    });
-                }
-            });
+    fetchUpdatedByName() {
+        if (!this.state.updatedByName && this.props.updatedBy) {
+            getPrincipalMemoized(this.props.accessToken, this.props.updatedBy)
+                .then((responseJson) => {
+                    if (responseJson && responseJson.profile && responseJson.profile.name) {
+                        this.safeSetState({
+                            updatedByName: responseJson.profile.name,
+                        });
+                    }
+                });
+        }
     }
 
     tt(key) {
