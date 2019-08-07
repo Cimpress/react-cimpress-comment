@@ -1,6 +1,6 @@
 import _Comments from './Comments';
 import _CommentsDrawerLink from './CommentsDrawerLink';
-import _CommentChat from './CommentChat';
+import _CommentChat from './components/../CommentChat';
 import _CommentIndicator from './CommentIndicator';
 
 export class Comments extends _Comments {
@@ -18,5 +18,4 @@ export class CommentChat extends _CommentChat {
 export class CommentIndicator extends _CommentIndicator {
 
 }
-
 export default CommentsDrawerLink;
