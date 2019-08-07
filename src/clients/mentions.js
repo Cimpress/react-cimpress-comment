@@ -26,7 +26,7 @@ const _fetchMatchingMentions = (accessToken, query) => {
 
 const fetchMatchingMentions = debounce(_fetchMatchingMentions, 300);
 
-const fetchUserName = (accessToken, userId) => {
+const getPrincipalMemoized = (accessToken, userId) => {
     if (mentionsUserCache[userId]) {
         return mentionsUserCache[userId];
     }
@@ -61,5 +61,5 @@ const fetchUserName = (accessToken, userId) => {
 
 export {
     fetchMatchingMentions,
-    fetchUserName,
+    getPrincipalMemoized,
 };

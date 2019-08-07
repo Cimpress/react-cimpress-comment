@@ -7,7 +7,7 @@ import '../../style/select.css';
 import {getI18nInstance} from '../tools/i18n';
 import {translate} from 'react-i18next';
 
-import {fetchUserName} from '../clients/mentions';
+import {getPrincipalMemoized} from '../clients/mentions';
 import UserAvatar from 'react-user-avatar';
 import '../../style/avatar.css';
 
@@ -22,7 +22,7 @@ class CommentAuthorAvatar extends React.Component {
 
     componentDidMount() {
         this._ismounted = true;
-        fetchUserName(this.props.accessToken, this.props.userId)
+        getPrincipalMemoized(this.props.accessToken, this.props.userId)
             .then((responseJson) => {
                 if (responseJson && responseJson.profile && responseJson.profile.picture) {
                     this.safeSetState({
