@@ -35,9 +35,10 @@ class CommentTime extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.accessToken !== this.props.accessToken
-            || prevProps.createdBy !== this.props.createdBy
-            || prevProps.updatedBy !== this.props.updatedBy) {
+        if (this.props.accessToken
+            && (prevProps.accessToken !== this.props.accessToken
+                || prevProps.createdBy !== this.props.createdBy
+                || prevProps.updatedBy !== this.props.updatedBy)) {
             this.fetchUserNames();
         }
     }

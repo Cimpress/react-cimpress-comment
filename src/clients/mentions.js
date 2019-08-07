@@ -32,11 +32,11 @@ const fetchUserName = (accessToken, userId) => {
     }
 
     let promiseToGetUser = getPrincipal(accessToken, userId)
-        .then(responseJson => {
-            // according to https://cimpress.slack.com/archives/C5GD70W9J/p1565168815238400,
-            // users invited to the platform have no "profile.name" field and instead have their
-            // name information stored in user metadata. At time of writing it is filed in COAM
-            // as a bug and the field may be backpopulated. Backpopulating it here in the meantime.
+        .then((responseJson) => {
+            // At time of writing, users invited to the platform have no "profile.name" field
+            // and instead have their name information stored in user metadata. This behaviour
+            // is filed in COAM as a bug and the field may eventually be backpopulated.
+            // Backpopulating it here in the meantime.
             if (responseJson
                 && responseJson.profile
                 && !responseJson.profile.name

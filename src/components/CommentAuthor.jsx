@@ -33,8 +33,9 @@ class CommentAuthor extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.accessToken !== this.props.accessToken
-            || prevProps.createdBy !== this.props.createdBy) {
+        if (this.props.accessToken
+            && (prevProps.accessToken !== this.props.accessToken
+                || prevProps.createdBy !== this.props.createdBy)) {
             this.fetchUserNames();
         }
     }

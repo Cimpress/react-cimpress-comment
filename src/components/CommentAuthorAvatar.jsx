@@ -26,17 +26,17 @@ class CommentAuthorAvatar extends React.Component {
             .then((responseJson) => {
                 if (responseJson && responseJson.profile && responseJson.profile.picture) {
                     this.safeSetState({
-                      avatar: responseJson.profile.picture,
+                        avatar: responseJson.profile.picture,
                     });
                 }
 
                 if (responseJson && responseJson.profile && responseJson.profile.name) {
                     this.safeSetState({
-                      name: responseJson.profile.name,
+                        name: responseJson.profile.name,
                     });
                 } else {
                     this.safeSetState({
-                      name: this.props.userId
+                        name: this.props.userId,
                     });
                 }
             });
