@@ -41,7 +41,7 @@ class CommentAuthor extends React.Component {
     }
 
     fetchCreatedByName() {
-        if (!this.state.createdByName && this.props.createdBy) {
+        if (this.props.createdBy) {
             getPrincipalMemoized(this.props.accessToken, this.props.createdBy)
                 .then((responseJson) => {
                     if (responseJson && responseJson.profile && responseJson.profile.name) {
