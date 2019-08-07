@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 - Fix infinite rendering loop caused by unchecked componentDidUpdate() in `CommentAuthor`, `CommentTime`
 - Apply a quickfix to backpopulate COAM principal name where it's missing and fix crashing UserAvatar component
+- Fix a bug which emerged after Backstop engine update, in mention highlighting where mentions after the caret would not be highlighted
 
 ## [2.2.3] - 2019-07-22
 ### Fixed
