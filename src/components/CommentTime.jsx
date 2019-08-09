@@ -37,14 +37,13 @@ class CommentTime extends React.Component {
     componentDidUpdate(prevProps) {
         if (this.props.accessToken
             && (prevProps.accessToken !== this.props.accessToken
-                || prevProps.createdBy !== this.props.createdBy
                 || prevProps.updatedBy !== this.props.updatedBy)) {
             this.fetchUpdatedByName();
         }
     }
 
     fetchUpdatedByName() {
-        if (!this.state.updatedByName && this.props.updatedBy) {
+        if (this.props.updatedBy) {
             getPrincipalMemoized(this.props.accessToken, this.props.updatedBy)
                 .then((responseJson) => {
                     if (responseJson && responseJson.profile && responseJson.profile.name) {
