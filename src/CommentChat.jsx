@@ -92,6 +92,11 @@ CommentChat.propTypes = {
         unsubscribe: PropTypes.string,
         postComment: PropTypes.string,
     }),
+    emailing: PropTypes.shape({
+        enabled: PropTypes.bool,
+        newCommentsTemplateId: PropTypes.string,
+        newCommentsTemplatePayload: PropTypes.any,
+    }),
 };
 
 CommentChat.defaultProps = {
@@ -106,6 +111,11 @@ CommentChat.defaultProps = {
         subscribe: null,
         unsubscribe: null,
         postComment: null,
+    },
+    emailing: {
+        enabled: false,
+        newCommentsTemplateId: null,
+        newCommentsTemplatePayload: {},
     },
 };
 

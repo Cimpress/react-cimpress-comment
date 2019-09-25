@@ -31,6 +31,18 @@ storiesOf('Production-like', module)
                             postComment: text('postComment', null, 'Text Overrides'),
 
                         }}
+                        emailing={{
+                            enabled: true,
+                            newCommentsTemplateId: 'c80543d4-60c3-4be1-b083-0b39c6d3a5e1',
+                            newCommentsTemplatePayload: {
+                                'links': {
+                                    'order': {
+                                        'href': 'https://fulfillment.at.cimpress.io/v1/items/M1AAHFE828',
+                                        'rel': 'order',
+                                    },
+                                },
+                            },
+                        }}
                     />
                 </div>
             </div>
