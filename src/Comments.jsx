@@ -15,6 +15,7 @@ import {getI18nInstance} from './tools/i18n';
 import {translate} from 'react-i18next';
 import {errorToString, getSubFromJWT} from './tools/helper';
 import AddNewCommentForm from './components/AddNewCommentForm';
+import {sendEmail} from './clients/puremail';
 
 let {Spinner} = shapes;
 
@@ -180,13 +181,31 @@ class Comments extends React.Component {
 
         return this.commentsClient
             .postComment(comment, visibilty)
-            .then(() => {
+            .then((newComment) => {
                 this.safeSetState({
                     failedPost: false,
                     failedPostComment: '',
                     error: undefined,
                 });
+
                 this.fetchComments();
+
+                if (this.props.emailing && this.props.emailing.enabled === true && this.props.emailing.newCommentsTemplateId) {
+                    sendEmail(
+                        this.props.accessToken,
+                        this.props.emailing.newCommentsTemplateId,
+                        {
+                            comment: newComment,
+                            links: {
+                                createdBy: {
+                                    href: `https://api.cimpress.io/auth/access-management/v1/principals/${encodeURIComponent(newComment.createdBy)}`,
+                                    rel: 'createdBy',
+                                },
+                            },
+                            payload: this.props.emailing.newCommentsTemplatePayload || {},
+                        }
+                    );
+                }
             })
             .catch((err) => {
                 let newCommentObjects = Object.assign({}, this.state.commentObjects);
@@ -340,6 +359,11 @@ Comments.propTypes = {
         unsubscribe: PropTypes.string,
         postComment: PropTypes.string,
     }),
+    emailing: PropTypes.shape({
+        enabled: PropTypes.bool,
+        newCommentsTemplateId: PropTypes.string,
+        newCommentsTemplatePayload: PropTypes.any,
+    }),
 };
 
 Comments.defaultProps = {
@@ -352,6 +376,11 @@ Comments.defaultProps = {
         subscribe: null,
         unsubscribe: null,
         postComment: null,
+    },
+    emailing: {
+        enabled: false,
+        newCommentsTemplateId: null,
+        newCommentsTemplatePayload: {},
     },
 };
 
