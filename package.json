@@ -1,6 +1,6 @@
 {
   "name": "react-cimpress-comment",
-  "version": "2.2.5",
+  "version": "2.3.0",
   "description": "Visualizes comment(s) for a particular platform resource",
   "main": "./lib/index.js",
   "scripts": {
@@ -75,7 +75,8 @@
     "react-mentions": "^1.2.2",
     "react-portal": "^4.1.5",
     "react-timeago": "^3.4.3",
-    "react-user-avatar": "^1.10.0"
+    "react-user-avatar": "^1.10.0",
+    "superagent": "latest"
   },
   "peerDependencies": {
     "react": "^15.0.0-0 || ^16.0.0-0 || ^17.0.0-0",
