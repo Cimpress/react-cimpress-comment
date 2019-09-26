@@ -4,7 +4,7 @@ report({
     {
       "pair": {
         "reference": "../bitmaps_reference/cimpress-react-comment_foreign_comments_0_document_0_phone.png",
-        "test": "../bitmaps_test/20190925-210754/cimpress-react-comment_foreign_comments_0_document_0_phone.png",
+        "test": "../bitmaps_test/20190926-071155/cimpress-react-comment_foreign_comments_0_document_0_phone.png",
         "selector": "document",
         "fileName": "cimpress-react-comment_foreign_comments_0_document_0_phone.png",
         "label": "foreign_comments",
@@ -15,22 +15,21 @@ report({
         "expect": 0,
         "viewportLabel": "phone",
         "diff": {
-          "isSameDimensions": false,
+          "isSameDimensions": true,
           "dimensionDifference": {
-            "width": -3,
-            "height": -19
+            "width": 0,
+            "height": 0
           },
-          "misMatchPercentage": "27.32",
-          "analysisTime": 594
-        },
-        "diffImage": "../bitmaps_test/20190925-210754/failed_diff_cimpress-react-comment_foreign_comments_0_document_0_phone.png"
+          "misMatchPercentage": "0.02",
+          "analysisTime": 462
+        }
       },
-      "status": "fail"
+      "status": "pass"
     },
     {
       "pair": {
         "reference": "../bitmaps_reference/cimpress-react-comment_foreign_comments_0_document_1_tablet.png",
-        "test": "../bitmaps_test/20190925-210754/cimpress-react-comment_foreign_comments_0_document_1_tablet.png",
+        "test": "../bitmaps_test/20190926-071155/cimpress-react-comment_foreign_comments_0_document_1_tablet.png",
         "selector": "document",
         "fileName": "cimpress-react-comment_foreign_comments_0_document_1_tablet.png",
         "label": "foreign_comments",
@@ -46,8 +45,8 @@ report({
             "width": 0,
             "height": 0
           },
-          "misMatchPercentage": "0.67",
-          "analysisTime": 394
+          "misMatchPercentage": "0.66",
+          "analysisTime": 368
         }
       },
       "status": "pass"
@@ -55,7 +54,7 @@ report({
     {
       "pair": {
         "reference": "../bitmaps_reference/cimpress-react-comment_own_comments_with_edit_off_0_document_0_phone.png",
-        "test": "../bitmaps_test/20190925-210754/cimpress-react-comment_own_comments_with_edit_off_0_document_0_phone.png",
+        "test": "../bitmaps_test/20190926-071155/cimpress-react-comment_own_comments_with_edit_off_0_document_0_phone.png",
         "selector": "document",
         "fileName": "cimpress-react-comment_own_comments_with_edit_off_0_document_0_phone.png",
         "label": "own_comments_with_edit_off",
@@ -66,22 +65,21 @@ report({
         "expect": 0,
         "viewportLabel": "phone",
         "diff": {
-          "isSameDimensions": false,
+          "isSameDimensions": true,
           "dimensionDifference": {
-            "width": -3,
-            "height": -19
+            "width": 0,
+            "height": 0
           },
-          "misMatchPercentage": "28.11",
-          "analysisTime": 660
-        },
-        "diffImage": "../bitmaps_test/20190925-210754/failed_diff_cimpress-react-comment_own_comments_with_edit_off_0_document_0_phone.png"
+          "misMatchPercentage": "0.02",
+          "analysisTime": 472
+        }
       },
-      "status": "fail"
+      "status": "pass"
     },
     {
       "pair": {
         "reference": "../bitmaps_reference/cimpress-react-comment_own_comments_with_edit_off_0_document_1_tablet.png",
-        "test": "../bitmaps_test/20190925-210754/cimpress-react-comment_own_comments_with_edit_off_0_document_1_tablet.png",
+        "test": "../bitmaps_test/20190926-071155/cimpress-react-comment_own_comments_with_edit_off_0_document_1_tablet.png",
         "selector": "document",
         "fileName": "cimpress-react-comment_own_comments_with_edit_off_0_document_1_tablet.png",
         "label": "own_comments_with_edit_off",
@@ -98,7 +96,7 @@ report({
             "height": 0
           },
           "misMatchPercentage": "0.67",
-          "analysisTime": 331
+          "analysisTime": 274
         }
       },
       "status": "pass"
@@ -106,7 +104,7 @@ report({
     {
       "pair": {
         "reference": "../bitmaps_reference/cimpress-react-comment_own_comments_with_edit_on_0_document_0_phone.png",
-        "test": "../bitmaps_test/20190925-210754/cimpress-react-comment_own_comments_with_edit_on_0_document_0_phone.png",
+        "test": "../bitmaps_test/20190926-071155/cimpress-react-comment_own_comments_with_edit_on_0_document_0_phone.png",
         "selector": "document",
         "fileName": "cimpress-react-comment_own_comments_with_edit_on_0_document_0_phone.png",
         "label": "own_comments_with_edit_on",
@@ -117,22 +115,20 @@ report({
         "expect": 0,
         "viewportLabel": "phone",
         "diff": {
-          "isSameDimensions": false,
+          "isSameDimensions": true,
           "dimensionDifference": {
-            "width": -4,
-            "height": -19
+            "width": 0,
+            "height": 0
           },
-          "misMatchPercentage": "29.53",
-          "analysisTime": 486
-        },
-        "diffImage": "../bitmaps_test/20190925-210754/failed_diff_cimpress-react-comment_own_comments_with_edit_on_0_document_0_phone.png"
+          "misMatchPercentage": "0.00"
+        }
       },
-      "status": "fail"
+      "status": "pass"
     },
     {
       "pair": {
         "reference": "../bitmaps_reference/cimpress-react-comment_own_comments_with_edit_on_0_document_1_tablet.png",
-        "test": "../bitmaps_test/20190925-210754/cimpress-react-comment_own_comments_with_edit_on_0_document_1_tablet.png",
+        "test": "../bitmaps_test/20190926-071155/cimpress-react-comment_own_comments_with_edit_on_0_document_1_tablet.png",
         "selector": "document",
         "fileName": "cimpress-react-comment_own_comments_with_edit_on_0_document_1_tablet.png",
         "label": "own_comments_with_edit_on",
@@ -149,7 +145,7 @@ report({
             "height": 0
           },
           "misMatchPercentage": "0.66",
-          "analysisTime": 349
+          "analysisTime": 252
         }
       },
       "status": "pass"
@@ -157,7 +153,7 @@ report({
     {
       "pair": {
         "reference": "../bitmaps_reference/cimpress-react-comment_own_comments_with_edit_on_editing_0_document_0_phone.png",
-        "test": "../bitmaps_test/20190925-210754/cimpress-react-comment_own_comments_with_edit_on_editing_0_document_0_phone.png",
+        "test": "../bitmaps_test/20190926-071155/cimpress-react-comment_own_comments_with_edit_on_editing_0_document_0_phone.png",
         "selector": "document",
         "fileName": "cimpress-react-comment_own_comments_with_edit_on_editing_0_document_0_phone.png",
         "label": "own_comments_with_edit_on_editing",
@@ -168,22 +164,20 @@ report({
         "expect": 0,
         "viewportLabel": "phone",
         "diff": {
-          "isSameDimensions": false,
+          "isSameDimensions": true,
           "dimensionDifference": {
-            "width": -4,
-            "height": -19
+            "width": 0,
+            "height": 0
           },
-          "misMatchPercentage": "31.60",
-          "analysisTime": 428
-        },
-        "diffImage": "../bitmaps_test/20190925-210754/failed_diff_cimpress-react-comment_own_comments_with_edit_on_editing_0_document_0_phone.png"
+          "misMatchPercentage": "0.00"
+        }
       },
-      "status": "fail"
+      "status": "pass"
     },
     {
       "pair": {
         "reference": "../bitmaps_reference/cimpress-react-comment_own_comments_with_edit_on_editing_0_document_1_tablet.png",
-        "test": "../bitmaps_test/20190925-210754/cimpress-react-comment_own_comments_with_edit_on_editing_0_document_1_tablet.png",
+        "test": "../bitmaps_test/20190926-071155/cimpress-react-comment_own_comments_with_edit_on_editing_0_document_1_tablet.png",
         "selector": "document",
         "fileName": "cimpress-react-comment_own_comments_with_edit_on_editing_0_document_1_tablet.png",
         "label": "own_comments_with_edit_on_editing",
@@ -199,8 +193,8 @@ report({
             "width": 0,
             "height": 0
           },
-          "misMatchPercentage": "0.67",
-          "analysisTime": 305
+          "misMatchPercentage": "0.66",
+          "analysisTime": 239
         }
       },
       "status": "pass"
@@ -208,7 +202,7 @@ report({
     {
       "pair": {
         "reference": "../bitmaps_reference/cimpress-react-comment_comments_drawer_with_link_link_alone_0_document_0_phone.png",
-        "test": "../bitmaps_test/20190925-210754/cimpress-react-comment_comments_drawer_with_link_link_alone_0_document_0_phone.png",
+        "test": "../bitmaps_test/20190926-071155/cimpress-react-comment_comments_drawer_with_link_link_alone_0_document_0_phone.png",
         "selector": "document",
         "fileName": "cimpress-react-comment_comments_drawer_with_link_link_alone_0_document_0_phone.png",
         "label": "comments_drawer_with_link_link_alone",
@@ -225,7 +219,7 @@ report({
             "height": 0
           },
           "misMatchPercentage": "0.00",
-          "analysisTime": 136
+          "analysisTime": 118
         }
       },
       "status": "pass"
@@ -233,7 +227,7 @@ report({
     {
       "pair": {
         "reference": "../bitmaps_reference/cimpress-react-comment_comments_drawer_with_link_link_alone_0_document_1_tablet.png",
-        "test": "../bitmaps_test/20190925-210754/cimpress-react-comment_comments_drawer_with_link_link_alone_0_document_1_tablet.png",
+        "test": "../bitmaps_test/20190926-071155/cimpress-react-comment_comments_drawer_with_link_link_alone_0_document_1_tablet.png",
         "selector": "document",
         "fileName": "cimpress-react-comment_comments_drawer_with_link_link_alone_0_document_1_tablet.png",
         "label": "comments_drawer_with_link_link_alone",
@@ -250,7 +244,7 @@ report({
             "height": 0
           },
           "misMatchPercentage": "0.00",
-          "analysisTime": 243
+          "analysisTime": 227
         }
       },
       "status": "pass"
@@ -258,7 +252,7 @@ report({
     {
       "pair": {
         "reference": "../bitmaps_reference/cimpress-react-comment_comments_drawer_with_link_link_alone_clicked_opens_0_document_0_phone.png",
-        "test": "../bitmaps_test/20190925-210754/cimpress-react-comment_comments_drawer_with_link_link_alone_clicked_opens_0_document_0_phone.png",
+        "test": "../bitmaps_test/20190926-071155/cimpress-react-comment_comments_drawer_with_link_link_alone_clicked_opens_0_document_0_phone.png",
         "selector": "document",
         "fileName": "cimpress-react-comment_comments_drawer_with_link_link_alone_clicked_opens_0_document_0_phone.png",
         "label": "comments_drawer_with_link_link_alone_clicked_opens",
@@ -275,7 +269,7 @@ report({
             "height": 0
           },
           "misMatchPercentage": "0.00",
-          "analysisTime": 165
+          "analysisTime": 142
         }
       },
       "status": "pass"
@@ -283,7 +277,7 @@ report({
     {
       "pair": {
         "reference": "../bitmaps_reference/cimpress-react-comment_comments_drawer_with_link_link_alone_clicked_opens_0_document_1_tablet.png",
-        "test": "../bitmaps_test/20190925-210754/cimpress-react-comment_comments_drawer_with_link_link_alone_clicked_opens_0_document_1_tablet.png",
+        "test": "../bitmaps_test/20190926-071155/cimpress-react-comment_comments_drawer_with_link_link_alone_clicked_opens_0_document_1_tablet.png",
         "selector": "document",
         "fileName": "cimpress-react-comment_comments_drawer_with_link_link_alone_clicked_opens_0_document_1_tablet.png",
         "label": "comments_drawer_with_link_link_alone_clicked_opens",
@@ -300,7 +294,7 @@ report({
             "height": 0
           },
           "misMatchPercentage": "0.00",
-          "analysisTime": 311
+          "analysisTime": 187
         }
       },
       "status": "pass"
@@ -308,7 +302,7 @@ report({
     {
       "pair": {
         "reference": "../bitmaps_reference/cimpress-react-comment_comments_drawer_with_link_link_and_drawer_open_by_default_0_document_0_phone.png",
-        "test": "../bitmaps_test/20190925-210754/cimpress-react-comment_comments_drawer_with_link_link_and_drawer_open_by_default_0_document_0_phone.png",
+        "test": "../bitmaps_test/20190926-071155/cimpress-react-comment_comments_drawer_with_link_link_and_drawer_open_by_default_0_document_0_phone.png",
         "selector": "document",
         "fileName": "cimpress-react-comment_comments_drawer_with_link_link_and_drawer_open_by_default_0_document_0_phone.png",
         "label": "comments_drawer_with_link_link_and_drawer_open_by_default",
@@ -325,7 +319,7 @@ report({
             "height": 0
           },
           "misMatchPercentage": "0.19",
-          "analysisTime": 135
+          "analysisTime": 91
         }
       },
       "status": "pass"
@@ -333,7 +327,7 @@ report({
     {
       "pair": {
         "reference": "../bitmaps_reference/cimpress-react-comment_comments_drawer_with_link_link_and_drawer_open_by_default_0_document_1_tablet.png",
-        "test": "../bitmaps_test/20190925-210754/cimpress-react-comment_comments_drawer_with_link_link_and_drawer_open_by_default_0_document_1_tablet.png",
+        "test": "../bitmaps_test/20190926-071155/cimpress-react-comment_comments_drawer_with_link_link_and_drawer_open_by_default_0_document_1_tablet.png",
         "selector": "document",
         "fileName": "cimpress-react-comment_comments_drawer_with_link_link_and_drawer_open_by_default_0_document_1_tablet.png",
         "label": "comments_drawer_with_link_link_and_drawer_open_by_default",
@@ -350,7 +344,7 @@ report({
             "height": 0
           },
           "misMatchPercentage": "0.06",
-          "analysisTime": 204
+          "analysisTime": 196
         }
       },
       "status": "pass"
@@ -358,7 +352,7 @@ report({
     {
       "pair": {
         "reference": "../bitmaps_reference/cimpress-react-comment_comments_drawer_with_link_link_and_drawer_open_by_default_clicked_hides_0_document_0_phone.png",
-        "test": "../bitmaps_test/20190925-210754/cimpress-react-comment_comments_drawer_with_link_link_and_drawer_open_by_default_clicked_hides_0_document_0_phone.png",
+        "test": "../bitmaps_test/20190926-071155/cimpress-react-comment_comments_drawer_with_link_link_and_drawer_open_by_default_clicked_hides_0_document_0_phone.png",
         "selector": "document",
         "fileName": "cimpress-react-comment_comments_drawer_with_link_link_and_drawer_open_by_default_clicked_hides_0_document_0_phone.png",
         "label": "comments_drawer_with_link_link_and_drawer_open_by_default_clicked_hides",
@@ -375,7 +369,7 @@ report({
             "height": 0
           },
           "misMatchPercentage": "0.19",
-          "analysisTime": 157
+          "analysisTime": 132
         }
       },
       "status": "pass"
@@ -383,7 +377,7 @@ report({
     {
       "pair": {
         "reference": "../bitmaps_reference/cimpress-react-comment_comments_drawer_with_link_link_and_drawer_open_by_default_clicked_hides_0_document_1_tablet.png",
-        "test": "../bitmaps_test/20190925-210754/cimpress-react-comment_comments_drawer_with_link_link_and_drawer_open_by_default_clicked_hides_0_document_1_tablet.png",
+        "test": "../bitmaps_test/20190926-071155/cimpress-react-comment_comments_drawer_with_link_link_and_drawer_open_by_default_clicked_hides_0_document_1_tablet.png",
         "selector": "document",
         "fileName": "cimpress-react-comment_comments_drawer_with_link_link_and_drawer_open_by_default_clicked_hides_0_document_1_tablet.png",
         "label": "comments_drawer_with_link_link_and_drawer_open_by_default_clicked_hides",
@@ -400,7 +394,7 @@ report({
             "height": 0
           },
           "misMatchPercentage": "0.06",
-          "analysisTime": 176
+          "analysisTime": 191
         }
       },
       "status": "pass"
@@ -408,7 +402,7 @@ report({
     {
       "pair": {
         "reference": "../bitmaps_reference/cimpress-react-comment_mention_box_highlighter_for_mentions_0_document_0_phone.png",
-        "test": "../bitmaps_test/20190925-210754/cimpress-react-comment_mention_box_highlighter_for_mentions_0_document_0_phone.png",
+        "test": "../bitmaps_test/20190926-071155/cimpress-react-comment_mention_box_highlighter_for_mentions_0_document_0_phone.png",
         "selector": "document",
         "fileName": "cimpress-react-comment_mention_box_highlighter_for_mentions_0_document_0_phone.png",
         "label": "mention_box_highlighter_for_mentions",
@@ -424,8 +418,8 @@ report({
             "width": 0,
             "height": 0
           },
-          "misMatchPercentage": "0.04",
-          "analysisTime": 177
+          "misMatchPercentage": "0.07",
+          "analysisTime": 153
         }
       },
       "status": "pass"
@@ -433,7 +427,7 @@ report({
     {
       "pair": {
         "reference": "../bitmaps_reference/cimpress-react-comment_mention_box_highlighter_for_mentions_0_document_1_tablet.png",
-        "test": "../bitmaps_test/20190925-210754/cimpress-react-comment_mention_box_highlighter_for_mentions_0_document_1_tablet.png",
+        "test": "../bitmaps_test/20190926-071155/cimpress-react-comment_mention_box_highlighter_for_mentions_0_document_1_tablet.png",
         "selector": "document",
         "fileName": "cimpress-react-comment_mention_box_highlighter_for_mentions_0_document_1_tablet.png",
         "label": "mention_box_highlighter_for_mentions",
@@ -449,8 +443,8 @@ report({
             "width": 0,
             "height": 0
           },
-          "misMatchPercentage": "0.00",
-          "analysisTime": 269
+          "misMatchPercentage": "0.01",
+          "analysisTime": 207
         }
       },
       "status": "pass"
@@ -458,7 +452,7 @@ report({
     {
       "pair": {
         "reference": "../bitmaps_reference/cimpress-react-comment_with_errors_get_comments_with_403_0_document_0_phone.png",
-        "test": "../bitmaps_test/20190925-210754/cimpress-react-comment_with_errors_get_comments_with_403_0_document_0_phone.png",
+        "test": "../bitmaps_test/20190926-071155/cimpress-react-comment_with_errors_get_comments_with_403_0_document_0_phone.png",
         "selector": "document",
         "fileName": "cimpress-react-comment_with_errors_get_comments_with_403_0_document_0_phone.png",
         "label": "with_errors_get_comments_with_403",
@@ -474,8 +468,8 @@ report({
             "width": 0,
             "height": 0
           },
-          "misMatchPercentage": "0.05",
-          "analysisTime": 211
+          "misMatchPercentage": "0.03",
+          "analysisTime": 160
         }
       },
       "status": "pass"
@@ -483,7 +477,7 @@ report({
     {
       "pair": {
         "reference": "../bitmaps_reference/cimpress-react-comment_with_errors_get_comments_with_403_0_document_1_tablet.png",
-        "test": "../bitmaps_test/20190925-210754/cimpress-react-comment_with_errors_get_comments_with_403_0_document_1_tablet.png",
+        "test": "../bitmaps_test/20190926-071155/cimpress-react-comment_with_errors_get_comments_with_403_0_document_1_tablet.png",
         "selector": "document",
         "fileName": "cimpress-react-comment_with_errors_get_comments_with_403_0_document_1_tablet.png",
         "label": "with_errors_get_comments_with_403",
@@ -500,7 +494,7 @@ report({
             "height": 0
           },
           "misMatchPercentage": "0.02",
-          "analysisTime": 204
+          "analysisTime": 158
         }
       },
       "status": "pass"
