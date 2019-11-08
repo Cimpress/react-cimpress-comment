@@ -18,8 +18,6 @@ const _fetchMatchingMentions = (accessToken, query) => {
             }, []);
         })
         .catch((err) => {
-            // eslint-disable-next-line no-console
-            console.error(err);
             return Promise.reject(new Error(`Unable to fetch principals for query: ${query}`));
         });
 };
@@ -47,8 +45,6 @@ const getPrincipalMemoized = (accessToken, userId) => {
             return responseJson;
         })
         .catch((err) => {
-            // eslint-disable-next-line no-console
-            console.error(err);
             mentionsUserCache[userId] = null;
             throw err;
         });
