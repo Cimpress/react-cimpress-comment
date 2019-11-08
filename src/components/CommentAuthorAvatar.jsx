@@ -39,6 +39,12 @@ class CommentAuthorAvatar extends React.Component {
                         name: this.props.userId,
                     });
                 }
+            })
+            .catch((err) => {
+                if (err && err.response && err.response.status != 404) {
+                    // eslint-disable-next-line no-console
+                    console.error(err);
+                }
             });
     }
 
