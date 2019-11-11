@@ -51,6 +51,12 @@ class CommentTime extends React.Component {
                             updatedByName: responseJson.profile.name,
                         });
                     }
+                })
+                .catch((err) => {
+                    if (err && err.response && err.response.status != 404) {
+                        // eslint-disable-next-line no-console
+                        console.error(err);
+                    }
                 });
         }
     }
