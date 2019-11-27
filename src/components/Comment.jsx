@@ -117,7 +117,10 @@ class Comment extends React.Component {
 
     tt(key) {
         // eslint-disable-next-line react/prop-types
-        const {t, locale} = this.props;
+        let {t, locale} = this.props;
+        if (locale.length > 2) {
+            locale = locale.substr(0, 2);
+        }
         return t(key, {lng: locale});
     }
 
@@ -258,7 +261,7 @@ Comment.propTypes = {
 };
 
 Comment.defaultProps = {
-    locale: 'eng',
+    locale: 'en',
     className: 'comment',
 };
 

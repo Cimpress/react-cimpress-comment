@@ -143,7 +143,10 @@ class CommentIndicator extends React.Component {
 
     tt(key) {
         // eslint-disable-next-line react/prop-types
-        const {t, locale} = this.props;
+        let {t, locale} = this.props;
+        if (locale.length > 2) {
+            locale = locale.substr(0, 2);
+        }
         return t(key, {lng: locale});
     }
 
@@ -228,7 +231,7 @@ CommentIndicator.propTypes = {
 };
 
 CommentIndicator.defaultProps = {
-    locale: 'eng',
+    locale: 'en',
 };
 
 export default translate('translations', {i18n: getI18nInstance()})(CommentIndicator);

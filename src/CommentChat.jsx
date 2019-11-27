@@ -100,7 +100,7 @@ CommentChat.propTypes = {
 };
 
 CommentChat.defaultProps = {
-    locale: 'eng',
+    locale: 'en',
     showVisibilityLevels: true,
     autoFocus: true,
     positionSelf: 'left',

@@ -1,0 +1,24 @@
+{
+    "translations": {
+        "unable_to_delete_comment": "Bemerkung kann nicht gelöscht werden.",
+        "show_my_comment_to": "Meine Bemerkung anzeigen für",
+        "use_at_char_for_mentions": "Verwenden Sie das Zeichen <0>@<\/0> zum Erwähnen von Personen. Wir benachrichtigen die Personen per E-Mail über diesen Thread.",
+        "visibility_option_internal_label": "Nur autorisierte Personen",
+        "stop_watching_this_thread": "Diesem Thread nicht mehr folgen",
+        "btn_post": "Veröffentlichen",
+        "Forbidden": "Verboten",
+        "unable_to_retrieve_comments": "Bemerkungen können nicht abgerufen werden.",
+        "unable_to_read_comment": "Bemerkung kann nicht abgerufen werden.",
+        "watch_this_thread": "Diesem Thread folgen",
+        "retrieving_comments": "Bemerkungen werden abgerufen…",
+        "no_comments_exist": "Bisher keine Bemerkungen.",
+        "visibility_option_internal_description": "Personen mit Zugriff auf die Ressource, für die ich die Bemerkung verfasse",
+        "visibility_option_public_description": "Alles Personen bei Cimpress",
+        "by": "von",
+        "modified": "bearbeitet",
+        "unable_to_post_comment": "Bemerkung kann nicht veröffentlicht werden",
+        "visibility_option_public_label": "Jeder",
+        "btn_close": "Schließen",
+        "header_comments": "Bemerkungen"
+    }
+}

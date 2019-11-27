@@ -1,0 +1,24 @@
+{
+    "translations": {
+        "unable_to_delete_comment": "Impossibile eliminare commento.",
+        "show_my_comment_to": "Mostra il mio commento a",
+        "use_at_char_for_mentions": "Usa il carattere <0>@<\/0> per menzionare persone. Li avviseremo via e-mail sulla discussione di questo commento.",
+        "visibility_option_internal_label": "Solo persone autorizzate",
+        "stop_watching_this_thread": "Interrompi la visualizzazione di questa discussione",
+        "btn_post": "Pubblica",
+        "Forbidden": "Vietato",
+        "unable_to_retrieve_comments": "Impossibile recuperare i commenti.",
+        "unable_to_read_comment": "Impossibile recuperare il commento.",
+        "watch_this_thread": "Guarda questa discussione",
+        "retrieving_comments": "Recupero commenti in corso...",
+        "no_comments_exist": "Qui non ci sono ancora commenti.",
+        "visibility_option_internal_description": "Coloro che hanno accesso alla risorsa che sto commentando",
+        "visibility_option_public_description": "Tutti i soggetti Cimpress",
+        "by": "da",
+        "modified": "modificato",
+        "unable_to_post_comment": "Impossibile pubblicare commento",
+        "visibility_option_public_label": "Tutti",
+        "btn_close": "Chiudi",
+        "header_comments": "Commenti"
+    }
+}

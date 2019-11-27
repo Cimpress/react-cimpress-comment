@@ -1,21 +1,19 @@
 
 // import language files for react-timeago component
-import deuStrings from 'react-timeago/lib/language-strings/de';
-import fraStrings from 'react-timeago/lib/language-strings/fr';
-import bulStrings from 'react-timeago/lib/language-strings/bg';
-import polStrings from 'react-timeago/lib/language-strings/pl';
-import spaStrings from 'react-timeago/lib/language-strings/es';
-import engStrings from 'react-timeago/lib/language-strings/en';
-    
+import deStrings from 'react-timeago/lib/language-strings/de';
+import frStrings from 'react-timeago/lib/language-strings/fr';
+import nlStrings from 'react-timeago/lib/language-strings/nl';
+import enStrings from 'react-timeago/lib/language-strings/en';
+import itStrings from 'react-timeago/lib/language-strings/it';
+
 import buildFormatter from 'react-timeago/lib/formatters/buildFormatter';
 
 const reactTimeAgoFormatters = {
-    deu: buildFormatter(deuStrings),
-    fra: buildFormatter(fraStrings),
-    bul: buildFormatter(bulStrings),
-    pol: buildFormatter(polStrings),
-    spa: buildFormatter(spaStrings),
-    eng: buildFormatter(engStrings)
+    de: buildFormatter(deStrings),
+    fr: buildFormatter(frStrings),
+    en: buildFormatter(enStrings),
+    nl: buildFormatter(nlStrings),
+    it: buildFormatter(itStrings)
 };
-    
+
 export { reactTimeAgoFormatters };

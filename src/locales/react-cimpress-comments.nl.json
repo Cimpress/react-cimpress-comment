@@ -1,0 +1,24 @@
+{
+    "translations": {
+        "unable_to_delete_comment": "Kan opmerking niet verwijderen.",
+        "show_my_comment_to": "Laat mijn opmerking zien aan",
+        "use_at_char_for_mentions": "Gebruik <0>@<\/0> teken om mensen te vermelden. We zullen hen via e-mail op de hoogte stellen van deze opmerkingdraad.",
+        "visibility_option_internal_label": "Alleen geautoriseerde personen",
+        "stop_watching_this_thread": "Stop met kijken naar deze draad",
+        "btn_post": "Plaatsen",
+        "Forbidden": "Verboden",
+        "unable_to_retrieve_comments": "Kan opmerkingen niet ophalen.",
+        "unable_to_read_comment": "Kan opmerking niet ophalen.",
+        "watch_this_thread": "Deze draad bekijken",
+        "retrieving_comments": "Opmerkingen ophalen...",
+        "no_comments_exist": "Nog geen opmerkingen.",
+        "visibility_option_internal_description": "Degenen die toegang hebben tot de bron waarop ik een reactie geef",
+        "visibility_option_public_description": "Iedereen in Cimpress",
+        "by": "door",
+        "modified": "gewijzigd",
+        "unable_to_post_comment": "Kan opmerking niet plaatsen",
+        "visibility_option_public_label": "Iedereen",
+        "btn_close": "Afsluiten",
+        "header_comments": "Opmerkingen"
+    }
+}
