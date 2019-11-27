@@ -11,7 +11,6 @@ addons:
 install:
 - npm install
 script:
-- npm run translate
 - npm run check
 - npm run storybook
 - sleep 20 && echo "done waiting"

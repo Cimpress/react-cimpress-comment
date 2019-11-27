@@ -4,8 +4,6 @@
   "description": "Visualizes comment(s) for a particular platform resource",
   "main": "./lib/index.js",
   "scripts": {
-    "translate": "npm run translate-react-timeago",
-    "translate-react-timeago": "node scripts/translate-react-timeago.js",
     "check": "./node_modules/.bin/eslint --ext .js,.jsx src/",
     "build": "babel src -d lib --copy-files",
     "start": "cross-env LOCAL_DEVELOPMENT=yes node_modules/.bin/start-storybook -p 3000",
