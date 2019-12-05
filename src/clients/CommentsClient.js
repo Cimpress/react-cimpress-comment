@@ -76,6 +76,7 @@ export default class CommentsClient {
         let init = this.getDefaultConfig('POST', {
             comment,
             visibility,
+            referer: window.location.href,
         });
 
         return fetch(url, init)
@@ -126,6 +127,7 @@ export default class CommentsClient {
         let init = this.getDefaultConfig('PUT', {
             comment,
             visibility,
+            referer: window.location.href,
         });
 
         return fetch(commentUri, init)
