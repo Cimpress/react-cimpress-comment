@@ -1,4 +1,4 @@
-# react-cimpress-comment
+# react-cimpress-comment [![Build Status](https://travis-ci.org/Cimpress/react-cimpress-comment.svg?branch=master)](https://travis-ci.org/Cimpress/react-cimpress-comment) [![NPM version](https://img.shields.io/npm/v/react-cimpress-comment.svg)](https://www.npmjs.com/package/react-cimpress-comment)
 
 This repository stores a react component that anyone can use to conveniently collect and display comments related to platform resources.
 
@@ -6,7 +6,7 @@ This repository stores a react component that anyone can use to conveniently col
 
 Install the npm package
 
-`npm install @cimpress-technology/react-comments --save`
+`npm install react-cimpress-comment --save`
 
 import the component
 

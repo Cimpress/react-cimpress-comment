@@ -1,6 +1,6 @@
 {
-  "name": "@cimpress-technology/react-comments",
-  "version": "3.0.0",
+  "name": "react-cimpress-comment",
+  "version": "2.5.0",
   "description": "Visualizes comment(s) for a particular platform resource",
   "main": "./lib/index.js",
   "scripts": {
