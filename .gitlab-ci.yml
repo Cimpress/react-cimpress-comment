@@ -1,0 +1,31 @@
+image: node
+
+before_script:
+- echo '//artifactory.cimpress.io/artifactory/api/npm/npm-release-local/:_authToken=${ARTIFACTORY_TOKEN}' >> .npmrc
+- nodejs -v
+- npm install
+
+stages:
+- build
+- deployment
+
+build job:
+  stage: build
+  script:
+  - npm run check
+  - npm run storybook
+  - sleep 20 && echo "done waiting"
+  - node_modules/.bin/backstop test
+  - npm run-script build
+  artifacts:
+    paths:
+    - lib
+
+deploy:
+  stage: deployment
+  only:
+    refs:
+    - master
+  script:
+    - npm publish --registry=https://artifactory.cimpress.io/artifactory/api/npm/npm-release-local/
+
