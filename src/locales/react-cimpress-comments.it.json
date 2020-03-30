@@ -2,7 +2,7 @@
     "translations": {
         "unable_to_delete_comment": "Impossibile eliminare commento.",
         "show_my_comment_to": "Mostra il mio commento a",
-        "use_at_char_for_mentions": "Usa il carattere <0>@<\/0> per menzionare persone. Li avviseremo via e-mail sulla discussione di questo commento.",
+        "use_at_char_for_mentions": "Usa il carattere &lt;0>@&lt;\/0> per menzionare persone. Li avviseremo via e-mail sulla discussione di questo commento.",
         "visibility_option_internal_label": "Solo persone autorizzate",
         "stop_watching_this_thread": "Interrompi la visualizzazione di questa discussione",
         "btn_post": "Pubblica",

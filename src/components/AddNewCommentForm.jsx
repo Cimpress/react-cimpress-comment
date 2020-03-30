@@ -18,7 +18,7 @@ import {translate, Trans} from 'react-i18next';
 import {getSubFromJWT, performActionOnMetaEnter} from '../tools/helper';
 import {fetchMatchingMentions} from '../clients/mentions';
 
-import {WatchLabel} from 'react-cimpress-baywatch';
+import {WatchLabel} from '@cimpress-technology/react-baywatch';
 
 class AddNewCommentForm extends React.Component {
     constructor(props) {

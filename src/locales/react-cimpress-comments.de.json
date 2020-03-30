@@ -2,7 +2,7 @@
     "translations": {
         "unable_to_delete_comment": "Bemerkung kann nicht gelöscht werden.",
         "show_my_comment_to": "Meine Bemerkung anzeigen für",
-        "use_at_char_for_mentions": "Verwenden Sie das Zeichen <0>@<\/0> zum Erwähnen von Personen. Wir benachrichtigen die Personen per E-Mail über diesen Thread.",
+        "use_at_char_for_mentions": "Verwenden Sie das Zeichen &lt;0>@&lt;\/0> zum Erwähnen von Personen. Wir benachrichtigen die Personen per E-Mail über diesen Thread.",
         "visibility_option_internal_label": "Nur autorisierte Personen",
         "stop_watching_this_thread": "Diesem Thread nicht mehr folgen",
         "btn_post": "Veröffentlichen",

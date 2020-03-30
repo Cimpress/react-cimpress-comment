@@ -2,7 +2,7 @@
     "translations": {
         "unable_to_delete_comment": "Kan opmerking niet verwijderen.",
         "show_my_comment_to": "Laat mijn opmerking zien aan",
-        "use_at_char_for_mentions": "Gebruik <0>@<\/0> teken om mensen te vermelden. We zullen hen via e-mail op de hoogte stellen van deze opmerkingdraad.",
+        "use_at_char_for_mentions": "Gebruik &lt;0>@&lt;\/0> teken om mensen te vermelden. We zullen hen via e-mail op de hoogte stellen van deze opmerkingdraad.",
         "visibility_option_internal_label": "Alleen geautoriseerde personen",
         "stop_watching_this_thread": "Stop met kijken naar deze draad",
         "btn_post": "Plaatsen",

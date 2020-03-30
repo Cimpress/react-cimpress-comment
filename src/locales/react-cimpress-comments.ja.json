@@ -1,0 +1,24 @@
+{
+    "translations": {
+        "unable_to_delete_comment": "コメントの削除ができません。",
+        "show_my_comment_to": "へのコメントを表示",
+        "use_at_char_for_mentions": "人には&lt;0>@&lt;\/0>文字を使用。このコメントスレッドについては、Eメールにて相手に通知します。",
+        "visibility_option_internal_label": "許可された人のみ",
+        "stop_watching_this_thread": "このスレッドを見るのをやめる",
+        "btn_post": "投稿",
+        "Forbidden": "禁止",
+        "unable_to_retrieve_comments": "コメントが見つかりません。",
+        "unable_to_read_comment": "コメントが見つかりません。",
+        "watch_this_thread": "このスレッドを見る",
+        "retrieving_comments": "コメントを回収中...",
+        "no_comments_exist": "ここにはまだコメントがありません。",
+        "visibility_option_internal_description": "リソースにアクセスできる、",
+        "visibility_option_public_description": "Cimpressの全員にコメントしています",
+        "by": "より",
+        "modified": "変更済",
+        "unable_to_post_comment": "コメントを投稿することができません",
+        "visibility_option_public_label": "全員",
+        "btn_close": "終了",
+        "header_comments": "コメント"
+    }
+}

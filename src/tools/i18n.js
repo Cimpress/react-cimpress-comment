@@ -17,6 +17,7 @@ function getI18nInstance() {
                     fr: require('../locales/react-cimpress-comments.fr'),
                     it: require('../locales/react-cimpress-comments.it'),
                     nl: require('../locales/react-cimpress-comments.nl'),
+                    ja: require('../locales/react-cimpress-comments.ja'),
                 },
 
                 ns: ['translations'],

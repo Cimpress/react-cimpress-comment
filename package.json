@@ -57,6 +57,7 @@
     "xhr-mock": "^2.4.1"
   },
   "dependencies": {
+    "@cimpress-technology/react-baywatch": "^1.0.1",
     "atob": "^2.1.1",
     "cimpress-customizr": "^1.1.8",
     "coam-client": "^0.1.14",
@@ -66,7 +67,6 @@
     "i18next": "^11.3.2",
     "md5": "^2.2.1",
     "prop-types": "^15.6.2",
-    "react-cimpress-baywatch": "^0.1.2",
     "react-i18next": "^7.6.1",
     "react-mentions": "^1.2.2",
     "react-portal": "^4.1.5",
